@@ -1,10 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QGridLayout, QPushButton, QFileDialog, \
-    QSizePolicy
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy
 
 
 class FullScreenApp(QMainWindow):
-    def __init__(self):
+    def __init__(self, hide_button):
         super().__init__()
 
         self.setWindowTitle("FullScreenApp")
@@ -28,11 +27,11 @@ class FullScreenApp(QMainWindow):
         central_layout.addWidget(info_label1, 0, 0, 2, 16)
         central_layout.addWidget(info_label2, 2, 14, 7, 2)
 
-        button = QPushButton('Przetestuj video')
-        button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        button.clicked.connect(self.openFileDialog)  # Connect the button click event to the file dialog
-
-        central_layout.addWidget(button, 5, 5, 1, 4)  # Add the button at row=5, col=5, 1 row, 4 cols
+        if not hide_button:
+            button = QPushButton('Przetestuj video')
+            button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+            button.clicked.connect(self.openFileDialog)
+            central_layout.addWidget(button, 5, 5, 1, 4)
 
         central_widget.setLayout(central_layout)
 
@@ -47,6 +46,10 @@ class FullScreenApp(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = FullScreenApp()
+
+    # Check for the --test-vid option
+    hide_button = "--test-video" not in sys.argv
+
+    window = FullScreenApp(hide_button)
     window.showFullScreen()
     sys.exit(app.exec_())
