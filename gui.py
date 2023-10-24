@@ -1,6 +1,7 @@
 import sys
 import cv2
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QGridLayout, QPushButton, QFileDialog, \
+    QSizePolicy
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import Qt, QTimer
 import numpy as np
@@ -24,48 +25,111 @@ class FullScreenApp(QMainWindow):
 
         central_layout = QGridLayout()
         central_layout.setContentsMargins(0, 0, 0, 0)
-        central_layout.addWidget(self.video_widget, 2, 0, 7, 14)
+        # central_layout.addWidget(self.video_widget, 2, 0, 7, 14)
+        central_layout.addWidget(self.video_widget, 1, 0, 8, 16)
 
         info_label1 = QLabel("Info 1")
-        info_label2 = QLabel("Info 2")
+        # info_label2 = QLabel("Info 2")
 
-        central_layout.addWidget(info_label1, 0, 0, 2, 16)
-        central_layout.addWidget(info_label2, 2, 14, 7, 2)
+        # central_layout.addWidget(info_label1, 0, 0, 2, 16)
+        central_layout.addWidget(info_label1, 0, 0, 1, 16)
+        # central_layout.addWidget(info_label2, 2, 14, 7, 2)
+
+        self.playing_video = False  # Flag to track video playback
 
         if not hide_button:
-            button = QPushButton('Przetestuj video')
-            button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-            button.clicked.connect(self.openFileDialog)
-            central_layout.addWidget(button, 5, 5, 1, 4)
+            self.button = QPushButton('Przetestuj video')
+            self.button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+            self.button.clicked.connect(self.open_file_dialog)
+            central_layout.addWidget(self.button, 5, 6, 1, 4)
 
         central_widget.setLayout(central_layout)
 
         # Initialize video capture if the --test-video option is not used
         if hide_button:
-            self.cap = cv2.VideoCapture(0)  # 0 for default camera
+            self.cap = cv2.VideoCapture(0)  # 0 for the default camera
+        else:
+            self.cap = None  # Initialize the video capture object as None
 
-            # Create a timer to update the video frame
-            self.timer = QTimer(self)
-            self.timer.timeout.connect(self.update_frame)
-            self.timer.start(30)  # Update every 30 milliseconds
+        # Create a timer to update the video frame
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+        self.timer.start(30)  # Update every 30 milliseconds
 
     def update_frame(self):
-        ret, frame = self.cap.read()
-        if ret:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-            height, width, channel = frame.shape
-            bytesPerLine = 3 * width
-            qImg = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(qImg)
-            self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
+        if self.cap is not None:
+            ret, frame = self.cap.read()
+            if ret:
+                if not self.playing_video:
+                    self.playing_video = True
+                    self.video_widget.setStyleSheet("background-color: black;")
+                    if hide_button is not True:
+                        self.button.hide()  # Hide the button during video playback
 
-    def openFileDialog(self):
+                # Get the size of the video_widget
+                widget_width = self.video_widget.width()
+                widget_height = self.video_widget.height()
+                #
+                # # Get the original video frame size
+                # frame_width = frame.shape[1]
+                # frame_height = frame.shape[0]
+                #
+                # # Calculate the scaling factors for width and height
+                # width_scale = widget_width / frame_width
+                # height_scale = widget_height / frame_height
+                #
+                # # Use the smaller scaling factor to maintain the aspect ratio
+                # scale = min(width_scale, height_scale)
+                #
+                # # Calculate the new size
+                # new_width = int(frame_width * scale)
+                # new_height = int(frame_height * scale)
+                #
+                # # Calculate letterboxing offsets
+                # x_offset = (widget_width - new_width) // 2
+                # y_offset = (widget_height - new_height) // 2
+                #
+                # # Resize the video frame
+                # frame = cv2.resize(frame, (new_width, new_height))
+                frame = cv2.resize(frame, (widget_width, widget_height))
+                #
+                # # Create a blank image of the widget size
+                # widget_frame = np.zeros((widget_height, widget_width, 3), dtype=np.uint8)
+                #
+                # # Place the resized video frame in the center (letterboxing)
+                # widget_frame[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = frame
+
+                # frame = cv2.cvtColor(widget_frame, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+                height, width, channel = frame.shape
+                bytesPerLine = 3 * width
+                qImg = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
+                pixmap = QPixmap.fromImage(qImg)
+                self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
+            else:
+                if self.playing_video:
+                    self.playing_video = False
+                    self.video_widget.setStyleSheet("background-color: black")
+                    self.button.show()  # Show the button after video playback
+
+    def open_file_dialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         file, _ = QFileDialog.getOpenFileName(self, "Open Video File", "",
                                               "Video Files (*.mp4 *.avi *.mov);;All Files (*)", options=options)
         if file:
-            print(f"Selected file: {file}")
+            # Release the existing video capture object
+            if self.cap is not None:
+                self.cap.release()
+
+            # Open the selected video file
+            self.cap = cv2.VideoCapture(file)
+
+            if self.cap.isOpened():
+                print(f"Selected file: {file}")
+            else:
+                print(f"Failed to open the video file: {file}")
 
 
 if __name__ == '__main__':
@@ -74,6 +138,12 @@ if __name__ == '__main__':
     # Check for the --test-video option
     hide_button = "--test-video" not in sys.argv
 
-    window = FullScreenApp(hide_button)
-    window.showFullScreen()
-    sys.exit(app.exec_())
+    if "--fullhd-window" in sys.argv:
+        window = FullScreenApp(hide_button)
+        window.setGeometry(100, 100, 1920, 1080)  # Set window size to 1920x1080
+        window.show()
+    else:
+        window = FullScreenApp(hide_button)
+        window.showFullScreen()
+
+    sys.exit(app.exec())
