@@ -28,16 +28,12 @@ class FullScreenApp(QMainWindow):
         # central_layout.addWidget(self.video_widget, 2, 0, 7, 14)
         central_layout.addWidget(self.video_widget, 1, 0, 8, 16)
 
-        # info_label1 = QLabel("Info 1")
         info_label1 = QLabel("PARKING AUTOMATYCZNY")
         info_label1.setAlignment(Qt.AlignCenter)
         info_label1.setStyleSheet("background-color: black; color: white;")
         info_label1.setFont(QFont("Arial", 75, QFont.Bold))  # Change the font and size
-        # info_label2 = QLabel("Info 2")
 
-        # central_layout.addWidget(info_label1, 0, 0, 2, 16)
         central_layout.addWidget(info_label1, 0, 0, 1, 16)
-        # central_layout.addWidget(info_label2, 2, 14, 7, 2)
 
         self.playing_video = False  # Flag to track video playback
 
@@ -70,41 +66,10 @@ class FullScreenApp(QMainWindow):
                     if hide_button is not True:
                         self.button.hide()  # Hide the button during video playback
 
-                # Get the size of the video_widget
                 widget_width = self.video_widget.width()
                 widget_height = self.video_widget.height()
-                #
-                # # Get the original video frame size
-                # frame_width = frame.shape[1]
-                # frame_height = frame.shape[0]
-                #
-                # # Calculate the scaling factors for width and height
-                # width_scale = widget_width / frame_width
-                # height_scale = widget_height / frame_height
-                #
-                # # Use the smaller scaling factor to maintain the aspect ratio
-                # scale = min(width_scale, height_scale)
-                #
-                # # Calculate the new size
-                # new_width = int(frame_width * scale)
-                # new_height = int(frame_height * scale)
-                #
-                # # Calculate letterboxing offsets
-                # x_offset = (widget_width - new_width) // 2
-                # y_offset = (widget_height - new_height) // 2
-                #
-                # # Resize the video frame
-                # frame = cv2.resize(frame, (new_width, new_height))
+
                 frame = cv2.resize(frame, (widget_width, widget_height))
-                #
-                # # Create a blank image of the widget size
-                # widget_frame = np.zeros((widget_height, widget_width, 3), dtype=np.uint8)
-                #
-                # # Place the resized video frame in the center (letterboxing)
-                # widget_frame[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = frame
-
-                # frame = cv2.cvtColor(widget_frame, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
                 height, width, channel = frame.shape
                 bytesPerLine = 3 * width
