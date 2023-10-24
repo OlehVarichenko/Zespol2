@@ -2,9 +2,9 @@ import sys
 import cv2
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QGridLayout, QPushButton, QFileDialog, \
     QSizePolicy
-from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtGui import QImage, QPixmap, QFont
 from PyQt5.QtCore import Qt, QTimer
-import numpy as np
+# import numpy as np
 
 
 class FullScreenApp(QMainWindow):
@@ -28,7 +28,11 @@ class FullScreenApp(QMainWindow):
         # central_layout.addWidget(self.video_widget, 2, 0, 7, 14)
         central_layout.addWidget(self.video_widget, 1, 0, 8, 16)
 
-        info_label1 = QLabel("Info 1")
+        # info_label1 = QLabel("Info 1")
+        info_label1 = QLabel("PARKING AUTOMATYCZNY")
+        info_label1.setAlignment(Qt.AlignCenter)
+        info_label1.setStyleSheet("background-color: black; color: white;")
+        info_label1.setFont(QFont("Arial", 75, QFont.Bold))  # Change the font and size
         # info_label2 = QLabel("Info 2")
 
         # central_layout.addWidget(info_label1, 0, 0, 2, 16)
