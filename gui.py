@@ -39,13 +39,13 @@ class SecondScreen(QWidget):
 
         vehicle_type_label = QLabel()
         vehicle_type_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        vehicle_type_label.setFont(QFont("Arial", 75, QFont.Bold))
-        vehicle_type_label.setText("Samochód")
+        vehicle_type_label.setFont(QFont("Arial", 65, QFont.Bold))
+        vehicle_type_label.setText("Motocykl")
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon('resources/images/car.png')
+        vehicle_original_icon = QIcon('resources/images/motorbike.png')
         vehicle_icon_label = QLabel()
-        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(300, 300))
+        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
         vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
 
@@ -59,6 +59,32 @@ class SecondScreen(QWidget):
         layout.addLayout(h_layout, 1, 4, 1, 7)
 
         ##
+        button_h_layout = QHBoxLayout()
+
+        map_original_icon = QIcon('resources/images/location_help.png')
+        map_icon_label = QLabel()
+        map_icon_label.setPixmap(map_original_icon.pixmap(50, 50))
+        map_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
+        map_icon_label.setContentsMargins(5, 5, 5, 5)
+
+        button_label = QLabel()
+        button_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
+        button_label.setFont(QFont("Arial", 20, QFont.Bold))
+        button_label.setText("Pokaż miejsce na schemacie")
+        button_label.setContentsMargins(5, 5, 5, 5)
+
+        button_h_layout.addWidget(map_icon_label)
+        button_h_layout.addWidget(button_label)
+        button_h_layout.setAlignment(Qt.AlignCenter)
+
+        button = QPushButton()
+        button.setStyleSheet(
+            "background-color: black; color: white; border-radius: 15px;"
+        )
+        button.setLayout(button_h_layout)
+        button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+
+        layout.addWidget(button, 5, 6, 1, 4)
 
         self.setLayout(layout)
 
