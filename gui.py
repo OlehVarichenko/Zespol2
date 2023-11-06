@@ -20,73 +20,100 @@ class SecondScreen(QWidget):
         p.setColor(self.backgroundRole(), Qt.black)
         self.setPalette(p)
 
-        layout = QGridLayout()
-        layout.setSpacing(5)
+        main_layout = QGridLayout()
+        main_layout.setSpacing(5)
 
-        layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setContentsMargins(0, 0, 0, 0)
 
-        info_label = QLabel()
-        info_label.setStyleSheet("background-color: white;")
-        layout.addWidget(info_label, 1, 0, 8, 16)
+        white_fullscreen_label = QLabel()
+        white_fullscreen_label.setStyleSheet("background-color: white;")
+        main_layout.addWidget(white_fullscreen_label, 1, 0, 8, 16)
+
+        ## -- NR REJESTRACYJNY
 
         license_plate_label = QLabel("SC 12345")
         license_plate_label.setAlignment(Qt.AlignCenter)
         license_plate_label.setStyleSheet("background-color: white; color: black;")
         license_plate_label.setFont(QFont("Arial", 75, QFont.Bold))
-        layout.addWidget(license_plate_label, 0, 0, 1, 16)
+        main_layout.addWidget(license_plate_label, 0, 0, 1, 16)
 
-        ##
+        ## -- TYP POJAZDU
 
         vehicle_type_label = QLabel()
         vehicle_type_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        vehicle_type_label.setFont(QFont("Arial", 65, QFont.Bold))
-        vehicle_type_label.setText("Motocykl")
+        vehicle_type_label.setFont(QFont("Arial", 45, QFont.Bold))
+        vehicle_type_label.setText("Samochód")
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon('resources/images/motorbike.png')
+        vehicle_original_icon = QIcon('resources/images/car.png')
         vehicle_icon_label = QLabel()
-        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
+        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(100, 100))
         vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
 
         # Create a horizontal layout for the icon and text
-        h_layout = QHBoxLayout()
-        h_layout.addWidget(vehicle_icon_label)
-        h_layout.addWidget(vehicle_type_label)
-        h_layout.setAlignment(Qt.AlignCenter)
+        vehicle_type_layout = QHBoxLayout()
+        vehicle_type_layout.addWidget(vehicle_icon_label)
+        vehicle_type_layout.addWidget(vehicle_type_label)
+        vehicle_type_layout.setAlignment(Qt.AlignCenter)
+        vehicle_type_layout.setContentsMargins(0, 0, 0, 0)
 
         # Add the horizontal layout to the grid layout
-        layout.addLayout(h_layout, 1, 4, 1, 7)
+        main_layout.addLayout(vehicle_type_layout, 1, 5, 1, 6)
 
-        ##
-        button_h_layout = QHBoxLayout()
+        ## -- MIEJSCE PARKINGU
+
+        location_label = QLabel()
+        location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
+        location_label.setFont(QFont("Arial", 45, QFont.Bold))
+        location_label.setText("Miejsce parkingu: Sektor C")
+        location_label.setContentsMargins(20, 20, 20, 20)
+
+        location_original_icon = QIcon('resources/images/location.png')
+        location_icon_label = QLabel()
+        location_icon_label.setPixmap(location_original_icon.pixmap(100, 100))
+        location_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
+        location_icon_label.setContentsMargins(20, 20, 20, 20)
+
+        # Create a horizontal layout for the icon and text
+        location_layout = QHBoxLayout()
+        location_layout.addWidget(location_icon_label)
+        location_layout.addWidget(location_label)
+        location_layout.setAlignment(Qt.AlignCenter)
+        location_layout.setContentsMargins(0, 0, 0, 0)
+
+        # Add the horizontal layout to the grid layout
+        main_layout.addLayout(location_layout, 3, 5, 1, 6)
+
+        ## -- PRZYCISK "POKAŻ MAPĘ"
 
         map_original_icon = QIcon('resources/images/location_help.png')
-        map_icon_label = QLabel()
-        map_icon_label.setPixmap(map_original_icon.pixmap(50, 50))
-        map_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
-        map_icon_label.setContentsMargins(5, 5, 5, 5)
+        show_location_icon = QLabel()
+        show_location_icon.setPixmap(map_original_icon.pixmap(100, 100))
+        show_location_icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
+        show_location_icon.setContentsMargins(5, 5, 5, 5)
 
-        button_label = QLabel()
-        button_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        button_label.setFont(QFont("Arial", 20, QFont.Bold))
-        button_label.setText("Pokaż miejsce na schemacie")
-        button_label.setContentsMargins(5, 5, 5, 5)
+        show_location_label = QLabel()
+        show_location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
+        show_location_label.setFont(QFont("Arial", 40, QFont.Bold))
+        show_location_label.setText("Pokaż miejsce na schemacie")
+        show_location_label.setContentsMargins(5, 5, 5, 5)
 
-        button_h_layout.addWidget(map_icon_label)
-        button_h_layout.addWidget(button_label)
-        button_h_layout.setAlignment(Qt.AlignCenter)
+        show_location_button_layout = QHBoxLayout()
+        show_location_button_layout.addWidget(show_location_icon)
+        show_location_button_layout.addWidget(show_location_label)
+        show_location_button_layout.setAlignment(Qt.AlignCenter)
 
-        button = QPushButton()
-        button.setStyleSheet(
+        show_location_button = QPushButton()
+        show_location_button.setStyleSheet(
             "background-color: black; color: white; border-radius: 15px;"
         )
-        button.setLayout(button_h_layout)
-        button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        show_location_button.setLayout(show_location_button_layout)
+        show_location_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 
-        layout.addWidget(button, 5, 6, 1, 4)
+        main_layout.addWidget(show_location_button, 5, 5, 1, 6)
 
-        self.setLayout(layout)
+        self.setLayout(main_layout)
 
 
 class FullScreenApp(QMainWindow):
