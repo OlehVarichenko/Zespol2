@@ -8,6 +8,57 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
 from PyQt5.QtGui import QImage, QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt, QTimer
 
+from lpr.algorithm.object_detector import YOLOv7
+from lpr.utils.detections import draw
+
+
+# Inicjalizacja detektora
+yolov7 = YOLOv7()
+ocr_classes = ['tablica']
+yolov7.set(ocr_classes=ocr_classes)
+yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' for CUDA GPU inference
+
+
+def recognize_license_plate(frame):
+    texts = {}
+
+    # Wykrywanie obiektów w klatce
+    detections = yolov7.detect(frame, track=True)
+
+    # Sprawdzenie i zapisywanie tekstu o ile został wykryty
+    for detection in detections:
+        if detection['class'] in ocr_classes:
+            detection_id = detection['id']
+            text = detection['text']
+            if len(text) > 0:
+                if detection_id not in texts:
+                    texts[detection_id] = {
+                        'most_frequent': {
+                            'value': '',
+                            'count': 0
+                        },
+                        'all': {}
+                    }
+
+                if text not in texts[detection_id]['all']:
+                    texts[detection_id]['all'][text] = 0
+
+                texts[detection_id]['all'][text] += 1
+
+                if texts[detection_id]['all'][text] > texts[detection_id]['most_frequent']['count']:
+                    texts[detection_id]['most_frequent']['value'] = text
+                    texts[detection_id]['most_frequent']['count'] = texts[detection_id]['all'][text]
+
+                if detection_id in texts:
+                    detection['text'] = texts[detection_id]['most_frequent']['value']
+
+                # Zapisujemy tekst do pliku
+                with open('logs/output.txt', 'a') as file:
+                    file.write(f'Detected license plate: {text}\n')
+
+    detected_frame = draw(frame, detections)
+    return detected_frame
+
 
 class SecondScreen(QWidget):
     def __init__(self):
