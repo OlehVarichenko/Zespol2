@@ -41,13 +41,13 @@ class SecondScreen(QWidget):
 
         vehicle_type_label = QLabel()
         vehicle_type_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        vehicle_type_label.setFont(QFont("Arial", 45, QFont.Bold))
+        vehicle_type_label.setFont(QFont("Arial", 65, QFont.Bold))
         vehicle_type_label.setText("Samochód")
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
         vehicle_original_icon = QIcon('resources/images/car.png')
         vehicle_icon_label = QLabel()
-        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(100, 100))
+        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(200, 200))
         vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
 
@@ -83,19 +83,19 @@ class SecondScreen(QWidget):
         location_layout.setContentsMargins(0, 0, 0, 0)
 
         # Add the horizontal layout to the grid layout
-        main_layout.addLayout(location_layout, 3, 5, 1, 6)
+        main_layout.addLayout(location_layout, 2, 5, 1, 6)
 
         ## -- PRZYCISK "POKAŻ MAPĘ"
 
         map_original_icon = QIcon('resources/images/location_help.png')
         show_location_icon = QLabel()
-        show_location_icon.setPixmap(map_original_icon.pixmap(100, 100))
+        show_location_icon.setPixmap(map_original_icon.pixmap(75, 75))
         show_location_icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         show_location_icon.setContentsMargins(5, 5, 5, 5)
 
         show_location_label = QLabel()
         show_location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        show_location_label.setFont(QFont("Arial", 40, QFont.Bold))
+        show_location_label.setFont(QFont("Arial", 30, QFont.Bold))
         show_location_label.setText("Pokaż miejsce na schemacie")
         show_location_label.setContentsMargins(5, 5, 5, 5)
 
