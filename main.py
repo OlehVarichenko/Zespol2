@@ -20,22 +20,34 @@ yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' f
 
 
 def recognize_license_plate(frame):
-    detected_plates = set()
+    # detected_plates = set()
 
     # Wykrywanie obiektów na klatce
     detections = yolov7.detect(frame, track=True)
 
+    vehicle_type: str = None
+    license_plate: str = None
+
     # Sprawdzanie i zapisywanie tekstu, jeśli istnieje
     for detection in detections:
-        if detection['class'] in ocr_classes:
-            detection_id = detection['id']
-            text = detection.get('text', '')  # Użyj get(), aby uniknąć KeyError
+        # if detection['class'] in ocr_classes:
+        #     detection_id = detection['id']
+        #     text = detection.get('text', '')  # Użyj get(), aby uniknąć KeyError
+        #
+        #     if text and detection_id not in detected_plates:
+        #         detected_plates.add(text)
 
-            if text and detection_id not in detected_plates:
-                detected_plates.add(text)
+        if detection['class'] == 'tablica':
+            license_plate = detection.get('text', '')
+        elif detection['class'] == 'car':
+            vehicle_type = 'car'
+        elif detection['class'] == 'truck':
+            vehicle_type = 'truck'
+        elif detection['class'] == 'motorcycle':
+            vehicle_type = 'motorcycle'
 
     # detected_frame = draw(frame, detections)
-    return detected_plates
+    return license_plate, vehicle_type
 
 
 class ParkingApp(QMainWindow):
@@ -83,10 +95,10 @@ class ParkingApp(QMainWindow):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(30)  # Update every 30 milliseconds
 
-    def open_welcome_screen(self, license_plate: str):
+    def open_welcome_screen(self, license_plate: str, vehicle_type: str):
         if self.cap is not None:
             self.cap.release()
-        welcome_screen = WelcomeScreen(license_plate)
+        welcome_screen = WelcomeScreen(license_plate, vehicle_type)
         self.setCentralWidget(welcome_screen)
         self.is_central_widget_active = False
 
@@ -109,9 +121,9 @@ class ParkingApp(QMainWindow):
                 qImg = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
                 pixmap = QPixmap.fromImage(qImg)
                 self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
-                license_plates = recognize_license_plate(frame)
-                if len(license_plates) > 0:
-                    self.open_welcome_screen(list(license_plates)[0])
+                license_plate, vehicle_type = recognize_license_plate(frame)
+                if license_plate is not None and vehicle_type is not None:
+                    self.open_welcome_screen(license_plate, vehicle_type)
             else:
                 if self.playing_video and self.is_central_widget_active:
                     self.playing_video = False

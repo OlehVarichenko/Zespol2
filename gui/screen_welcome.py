@@ -17,15 +17,27 @@ class WelcomeScreen(QWidget):
 
         return license_plate_label
 
+    def get_vehicle_type_text(self, class_name: str) -> str:
+        vehicle_type_text = None
+
+        if class_name == 'car':
+            vehicle_type_text = 'Samochód'
+        elif class_name == 'truck':
+            vehicle_type_text = 'Ciężarówka'
+        elif class_name == 'motorcycle':
+            vehicle_type_text = 'Motocykl'
+
+        return vehicle_type_text
+
     def get_vehicle_type_layout(self):
         vehicle_type_label = QLabel()
         # vehicle_type_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
         vehicle_type_label.setAlignment(Qt.AlignCenter)
         vehicle_type_label.setFont(QFont("Arial", 65, QFont.Bold))
-        vehicle_type_label.setText('Ciężarówka')
+        vehicle_type_label.setText(self.get_vehicle_type_text(self.vehicle_type))
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon(f'gui/resources/images/truck.png')
+        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_type}.png')
         vehicle_icon_label = QLabel()
         vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
         # vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
