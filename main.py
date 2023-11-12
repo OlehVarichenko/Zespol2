@@ -20,55 +20,35 @@ yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' f
 
 
 def recognize_license_plate(frame):
-    texts = {}
+    detected_plates = set()
 
-    # Wykrywanie obiektów w klatce
+    # Wykrywanie obiektów na klatce
     detections = yolov7.detect(frame, track=True)
 
-    # Sprawdzenie i zapisywanie tekstu o ile został wykryty
+    # Sprawdzanie i zapisywanie tekstu, jeśli istnieje
     for detection in detections:
         if detection['class'] in ocr_classes:
             detection_id = detection['id']
-            text = detection['text']
-            if len(text) > 0:
-                if detection_id not in texts:
-                    texts[detection_id] = {
-                        'most_frequent': {
-                            'value': '',
-                            'count': 0
-                        },
-                        'all': {}
-                    }
+            text = detection.get('text', '')  # Użyj get(), aby uniknąć KeyError
 
-                if text not in texts[detection_id]['all']:
-                    texts[detection_id]['all'][text] = 0
+            if text and detection_id not in detected_plates:
+                detected_plates.add(detection_id)
 
-                texts[detection_id]['all'][text] += 1
-
-                if texts[detection_id]['all'][text] > texts[detection_id]['most_frequent']['count']:
-                    texts[detection_id]['most_frequent']['value'] = text
-                    texts[detection_id]['most_frequent']['count'] = texts[detection_id]['all'][text]
-
-                if detection_id in texts:
-                    detection['text'] = texts[detection_id]['most_frequent']['value']
-
-                # Zapisujemy tekst do pliku
-                with open('logs/output.txt', 'a') as file:
-                    file.write(f'Detected license plate: {text}\n')
-
-    detected_frame = draw(frame, detections)
-    return detected_frame
+    # detected_frame = draw(frame, detections)
+    return detected_plates
 
 
 class ParkingApp(QMainWindow):
 
-    def __init__(self, hide_button):
+    def __init__(self, show_load_video_button: bool):
         super().__init__()
 
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
+
+        self.is_central_widget_active = True
 
         self.video_widget = QLabel()  # Use a QLabel to display the video
         self.video_widget.setStyleSheet("background-color: black")
@@ -78,39 +58,37 @@ class ParkingApp(QMainWindow):
         central_layout.setContentsMargins(0, 0, 0, 0)
         central_layout.addWidget(self.video_widget, 1, 0, 8, 16)
 
-        info_label1 = QLabel("PARKING AUTOMATYCZNY")
-        info_label1.setAlignment(Qt.AlignCenter)
-        info_label1.setStyleSheet("background-color: black; color: white;")
-        info_label1.setFont(QFont("Arial", 75, QFont.Bold))  # Change the font and size
+        header_label = QLabel("PARKING AUTOMATYCZNY")
+        header_label.setAlignment(Qt.AlignCenter)
+        header_label.setStyleSheet("background-color: black; color: white;")
+        header_label.setFont(QFont("Arial", 75, QFont.Bold))  # Change the font and size
 
-        central_layout.addWidget(info_label1, 0, 0, 1, 16)
+        central_layout.addWidget(header_label, 0, 0, 1, 16)
 
         self.playing_video = False  # Flag to track video playback
 
-        if not hide_button:
-            self.button = QPushButton('Przetestuj video')
-            self.button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-            self.button.clicked.connect(self.open_file_dialog)
-            central_layout.addWidget(self.button, 5, 6, 1, 4)
+        if show_load_video_button:
+            self.load_video_button = QPushButton('Przetestuj video')
+            self.load_video_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+            self.load_video_button.clicked.connect(self.open_file_dialog)
+            central_layout.addWidget(self.load_video_button, 5, 6, 1, 4)
+            self.cap = None  # Initialize the video capture object as None
+        else:
+            self.cap = cv2.VideoCapture(0)  # 0 for the default camera
 
         central_widget.setLayout(central_layout)
 
-        # Initialize video capture if the --test-video option is not used
-        if hide_button:
-            self.cap = cv2.VideoCapture(0)  # 0 for the default camera
-        else:
-            self.cap = None  # Initialize the video capture object as None
-
         # Create a timer to update the video frame
-        # self.timer = QTimer(self)
-        # self.timer.timeout.connect(self.update_frame)
-        # self.timer.start(30)  # Update every 30 milliseconds
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+        self.timer.start(30)  # Update every 30 milliseconds
 
-        self.open_second_screen()
-
-    def open_second_screen(self):
-        welcome_screen = WelcomeScreen()
+    def open_welcome_screen(self, license_plate: str):
+        if self.cap is not None:
+            self.cap.release()
+        welcome_screen = WelcomeScreen(license_plate)
         self.setCentralWidget(welcome_screen)
+        self.is_central_widget_active = False
 
     def update_frame(self):
         if self.cap is not None:
@@ -118,9 +96,9 @@ class ParkingApp(QMainWindow):
             if ret:
                 if not self.playing_video:
                     self.playing_video = True
-                    self.video_widget.setStyleSheet("background-color: black;")
-                    if hide_button is not True:
-                        self.button.hide()  # Hide the button during video playback
+                    # self.video_widget.setStyleSheet("background-color: black;")
+                    if self.load_video_button is not None:
+                        self.load_video_button.hide()  # Hide the button during video playback
 
                 widget_width = self.video_widget.width()
                 widget_height = self.video_widget.height()
@@ -132,11 +110,15 @@ class ParkingApp(QMainWindow):
                 qImg = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
                 pixmap = QPixmap.fromImage(qImg)
                 self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
+                license_plates = recognize_license_plate(frame)
+                if len(license_plates) > 0:
+                    self.open_welcome_screen(list(license_plates)[0])
             else:
-                if self.playing_video:
+                if self.playing_video and self.is_central_widget_active:
                     self.playing_video = False
                     self.video_widget.setStyleSheet("background-color: black")
-                    self.button.show()  # Show the button after video playback
+                    if self.load_video_button is not None:
+                        self.load_video_button.show()  # Show the button after video playback
 
     def open_file_dialog(self):
         options = QFileDialog.Options()
@@ -161,14 +143,14 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Check for the --test-video option
-    hide_button = "--test-video" not in sys.argv
+    show_test_video_button = "--test-video" in sys.argv
 
     if "--fullhd-window" in sys.argv:
-        window = ParkingApp(hide_button)
+        window = ParkingApp(show_test_video_button)
         window.setGeometry(100, 100, 1920, 1080)  # Set window size to 1920x1080
         window.show()
     else:
-        window = ParkingApp(hide_button)
+        window = ParkingApp(show_test_video_button)
         window.showFullScreen()
 
     sys.exit(app.exec())

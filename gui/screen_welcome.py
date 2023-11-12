@@ -25,7 +25,7 @@ class WelcomeScreen(QWidget):
         vehicle_type_label.setText('Ciężarówka')
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_type}.png')
+        vehicle_original_icon = QIcon(f'gui/resources/images/truck.png')
         vehicle_icon_label = QLabel()
         vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
         # vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
