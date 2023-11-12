@@ -96,8 +96,7 @@ class ParkingApp(QMainWindow):
             if ret:
                 if not self.playing_video:
                     self.playing_video = True
-                    # self.video_widget.setStyleSheet("background-color: black;")
-                    if self.load_video_button is not None:
+                    if hasattr(self, 'load_video_button'):
                         self.load_video_button.hide()  # Hide the button during video playback
 
                 widget_width = self.video_widget.width()
