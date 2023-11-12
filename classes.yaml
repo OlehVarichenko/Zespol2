@@ -2,3 +2,12 @@ classes:
   - name: tablica
     color: '#9e59dc'
     skeleton: {}
+  - name: truck
+    color: '#0800ff'
+    skeleton: {}
+  - name: motorcycle
+    color: '#11cba2'
+    skeleton: {}
+  - name: car
+    color: '#fc0202'
+    skeleton: {}

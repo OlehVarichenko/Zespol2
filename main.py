@@ -14,8 +14,8 @@ from gui.screen_welcome import WelcomeScreen
 
 # Inicjalizacja detektora
 yolov7 = YOLOv7()
-ocr_classes = ['tablica']
-yolov7.set(ocr_classes=ocr_classes)
+ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
+yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7) # Ustaw progi pewności na 0.7
 yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' for CUDA GPU inference
 
 
@@ -32,7 +32,7 @@ def recognize_license_plate(frame):
             text = detection.get('text', '')  # Użyj get(), aby uniknąć KeyError
 
             if text and detection_id not in detected_plates:
-                detected_plates.add(detection_id)
+                detected_plates.add(text)
 
     # detected_frame = draw(frame, detections)
     return detected_plates
@@ -71,7 +71,7 @@ class ParkingApp(QMainWindow):
             self.load_video_button = QPushButton('Przetestuj video')
             self.load_video_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
             self.load_video_button.clicked.connect(self.open_file_dialog)
-            central_layout.addWidget(self.load_video_button, 5, 6, 1, 4)
+            central_layout.addWidget(self.load_video_button, 5, 5, 1, 6)
             self.cap = None  # Initialize the video capture object as None
         else:
             self.cap = cv2.VideoCapture(0)  # 0 for the default camera
