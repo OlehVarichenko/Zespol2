@@ -100,6 +100,8 @@ class ParkingApp(QMainWindow):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(10)  # Update every 10 milliseconds
 
+        self.frames_without_license_plate: int = 0
+
     def open_welcome_screen(self, license_plate: str, vehicle_type: str):
         if self.stacked_widget.currentIndex() == 0:
             self.welcome_screen = WelcomeScreen(self.stacked_widget, license_plate, vehicle_type)
@@ -124,8 +126,6 @@ class ParkingApp(QMainWindow):
                 widget.setParent(None)
 
     def update_frame(self):
-        frames_without_license_plate: int = 0
-
         if self.cap is not None:
             ret, frame = self.cap.read()
             if ret:
@@ -150,14 +150,15 @@ class ParkingApp(QMainWindow):
                 license_plate, vehicle_type = recognize_license_plate(frame)
                 if license_plate is not None and vehicle_type is not None:
                     self.open_welcome_screen(license_plate, vehicle_type)
-                    frames_without_license_plate = 0
+                    self.frames_without_license_plate = 0
                 else:
-                    frames_without_license_plate += 1
-                    if frames_without_license_plate > 60:
+                    self.frames_without_license_plate += 1
+                    if self.frames_without_license_plate > 60:
                         self.close_all_screens()
 
             else:
                 self.close_all_screens()
+                self.frames_without_license_plate = 0
                 self.video_widget.setStyleSheet("background-color: black")
                 if hasattr(self, 'load_video_button'):
                     self.load_video_button.show()  # Show the button after video playback
