@@ -2,7 +2,7 @@ import sys
 
 import cv2
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
-    QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QHBoxLayout, QFrame
+    QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QHBoxLayout, QFrame, QStackedWidget
 from PyQt5.QtGui import QImage, QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
 
@@ -55,27 +55,30 @@ class ParkingApp(QMainWindow):
     def __init__(self, show_load_video_button: bool):
         super().__init__()
 
+        self.welcome_screen = None
+
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
-        self.central_widget = QWidget(self)
-        self.setCentralWidget(self.central_widget)
+        self.stacked_widget = QStackedWidget(self)
 
-        self.is_central_widget_active = True
+        self.setCentralWidget(self.stacked_widget)
+
+        self.main_window_widget = QWidget(self)
 
         self.video_widget = QLabel()  # Use a QLabel to display the video
         self.video_widget.setStyleSheet("background-color: black")
 
-        central_layout = QGridLayout()
-        central_layout.setSpacing(5)
-        central_layout.setContentsMargins(0, 0, 0, 0)
-        central_layout.addWidget(self.video_widget, 1, 0, 8, 16)
+        main_window_layout = QGridLayout()
+        main_window_layout.setSpacing(5)
+        main_window_layout.setContentsMargins(0, 0, 0, 0)
+        main_window_layout.addWidget(self.video_widget, 1, 0, 8, 16)
 
         header_label = QLabel("PARKING AUTOMATYCZNY")
         header_label.setAlignment(Qt.AlignCenter)
         header_label.setStyleSheet("background-color: black; color: white;")
         header_label.setFont(QFont("Arial", 75, QFont.Bold))  # Change the font and size
 
-        central_layout.addWidget(header_label, 0, 0, 1, 16)
+        main_window_layout.addWidget(header_label, 0, 0, 1, 16)
 
         self.playing_video = False  # Flag to track video playback
 
@@ -83,12 +86,14 @@ class ParkingApp(QMainWindow):
             self.load_video_button = QPushButton('Przetestuj video')
             self.load_video_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
             self.load_video_button.clicked.connect(self.open_file_dialog)
-            central_layout.addWidget(self.load_video_button, 5, 5, 1, 6)
+            main_window_layout.addWidget(self.load_video_button, 5, 5, 1, 6)
             self.cap = None  # Initialize the video capture object as None
         else:
             self.cap = cv2.VideoCapture(0)  # 0 for the default camera
 
-        self.central_widget.setLayout(central_layout)
+        self.main_window_widget.setLayout(main_window_layout)
+
+        self.stacked_widget.addWidget(self.main_window_widget)
 
         # Create a timer to update the video frame
         self.timer = QTimer(self)
@@ -96,12 +101,27 @@ class ParkingApp(QMainWindow):
         self.timer.start(10)  # Update every 10 milliseconds
 
     def open_welcome_screen(self, license_plate: str, vehicle_type: str):
-        if self.cap is not None:
-            self.cap.release()
-        welcome_screen = WelcomeScreen(license_plate, vehicle_type)
+        if self.stacked_widget.currentIndex() == 0:
+            self.welcome_screen = WelcomeScreen(self.stacked_widget, license_plate, vehicle_type)
 
-        self.setCentralWidget(welcome_screen)
-        self.is_central_widget_active = False
+            # self.setCentralWidget(self.welcome_screen)
+            self.stacked_widget.addWidget(self.welcome_screen)
+            self.stacked_widget.setCurrentIndex(1)
+
+    # def close_welcome_screen(self):
+    #     if self.stacked_widget.currentIndex() != 0:
+    #         self.stacked_widget.setCurrentIndex(0)
+    #         self.stacked_widget.removeWidget(self.welcome_screen)
+    #         self.welcome_screen.setParent(None)
+    #         self.welcome_screen = None
+
+    def close_all_screens(self):
+        if self.stacked_widget.currentIndex() != 0:
+            self.stacked_widget.setCurrentIndex(0)
+            for i in range(self.stacked_widget.count() - 1, 0, -1):
+                widget = self.stacked_widget.widget(i)
+                self.stacked_widget.removeWidget(widget)
+                widget.setParent(None)
 
     def update_frame(self):
         frames_without_license_plate: int = 0
@@ -114,16 +134,18 @@ class ParkingApp(QMainWindow):
                     if hasattr(self, 'load_video_button'):
                         self.load_video_button.hide()  # Hide the button during video playback
 
-                widget_width = self.video_widget.width()
-                widget_height = self.video_widget.height()
+                if self.stacked_widget.currentIndex() == 0:
 
-                frame = cv2.resize(frame, (widget_width, widget_height))
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-                height, width, channel = frame.shape
-                bytesPerLine = 3 * width
-                qImg = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
-                pixmap = QPixmap.fromImage(qImg)
-                self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
+                    widget_width = self.video_widget.width()
+                    widget_height = self.video_widget.height()
+
+                    frame_resized = cv2.resize(frame, (widget_width, widget_height))
+                    frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+                    height, width, channel = frame_resized.shape
+                    bytesPerLine = 3 * width
+                    qImg = QImage(frame_resized.data, width, height, bytesPerLine, QImage.Format_RGB888)
+                    pixmap = QPixmap.fromImage(qImg)
+                    self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
 
                 license_plate, vehicle_type = recognize_license_plate(frame)
                 if license_plate is not None and vehicle_type is not None:
@@ -132,14 +154,13 @@ class ParkingApp(QMainWindow):
                 else:
                     frames_without_license_plate += 1
                     if frames_without_license_plate > 60:
-                        self.setCentralWidget(self.central_widget)
+                        self.close_all_screens()
 
             else:
-                if self.playing_video and self.is_central_widget_active:
-                    self.playing_video = False
-                    self.video_widget.setStyleSheet("background-color: black")
-                    if hasattr(self, 'load_video_button'):
-                        self.load_video_button.show()  # Show the button after video playback
+                self.close_all_screens()
+                self.video_widget.setStyleSheet("background-color: black")
+                if hasattr(self, 'load_video_button'):
+                    self.load_video_button.show()  # Show the button after video playback
 
     def open_file_dialog(self):
         options = QFileDialog.Options()

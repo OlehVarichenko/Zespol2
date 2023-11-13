@@ -77,8 +77,8 @@ class WelcomeScreen(QWidget):
 
         return location_layout
 
-    def __init__(self, license_plate: str = 'SC 12345', vehicle_type: str = 'car'):
-        super().__init__()
+    def __init__(self, parent, license_plate: str = 'SC 12345', vehicle_type: str = 'car'):
+        super().__init__(parent)
         self.setWindowTitle("WJAZD")
 
         self.vehicle_type: str = vehicle_type
