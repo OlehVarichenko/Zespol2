@@ -4,7 +4,7 @@ import cv2
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
     QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QHBoxLayout, QFrame
 from PyQt5.QtGui import QImage, QPixmap, QFont, QIcon
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
 
 from algorithm.object_detector import YOLOv7
 from utils.detections import draw
@@ -57,8 +57,8 @@ class ParkingApp(QMainWindow):
 
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
-        central_widget = QWidget(self)
-        self.setCentralWidget(central_widget)
+        self.central_widget = QWidget(self)
+        self.setCentralWidget(self.central_widget)
 
         self.is_central_widget_active = True
 
@@ -88,21 +88,24 @@ class ParkingApp(QMainWindow):
         else:
             self.cap = cv2.VideoCapture(0)  # 0 for the default camera
 
-        central_widget.setLayout(central_layout)
+        self.central_widget.setLayout(central_layout)
 
         # Create a timer to update the video frame
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(30)  # Update every 30 milliseconds
+        self.timer.start(10)  # Update every 10 milliseconds
 
     def open_welcome_screen(self, license_plate: str, vehicle_type: str):
         if self.cap is not None:
             self.cap.release()
         welcome_screen = WelcomeScreen(license_plate, vehicle_type)
+
         self.setCentralWidget(welcome_screen)
         self.is_central_widget_active = False
 
     def update_frame(self):
+        frames_without_license_plate: int = 0
+
         if self.cap is not None:
             ret, frame = self.cap.read()
             if ret:
@@ -121,14 +124,21 @@ class ParkingApp(QMainWindow):
                 qImg = QImage(frame.data, width, height, bytesPerLine, QImage.Format_RGB888)
                 pixmap = QPixmap.fromImage(qImg)
                 self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
+
                 license_plate, vehicle_type = recognize_license_plate(frame)
                 if license_plate is not None and vehicle_type is not None:
                     self.open_welcome_screen(license_plate, vehicle_type)
+                    frames_without_license_plate = 0
+                else:
+                    frames_without_license_plate += 1
+                    if frames_without_license_plate > 60:
+                        self.setCentralWidget(self.central_widget)
+
             else:
                 if self.playing_video and self.is_central_widget_active:
                     self.playing_video = False
                     self.video_widget.setStyleSheet("background-color: black")
-                    if self.load_video_button is not None:
+                    if hasattr(self, 'load_video_button'):
                         self.load_video_button.show()  # Show the button after video playback
 
     def open_file_dialog(self):
