@@ -10,6 +10,7 @@ from algorithm.object_detector import YOLOv7
 from utils.detections import draw
 
 from gui.screen_welcome import WelcomeScreen
+from gui.screen_no_entry import NoEntryScreen
 
 
 # Inicjalizacja detektora
@@ -60,6 +61,7 @@ class ParkingApp(QMainWindow):
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
         self.stacked_widget = QStackedWidget(self)
+        self.no_entry_screen = None
 
         self.setCentralWidget(self.stacked_widget)
 
@@ -110,6 +112,16 @@ class ParkingApp(QMainWindow):
             self.stacked_widget.addWidget(self.welcome_screen)
             self.stacked_widget.setCurrentIndex(1)
 
+    def open_no_entry_screen(self):
+        self.close_all_screens()
+
+        if self.stacked_widget.currentIndex() == 0:
+            self.no_entry_screen = NoEntryScreen(self.stacked_widget)
+
+            # self.setCentralWidget(self.welcome_screen)
+            self.stacked_widget.addWidget(self.no_entry_screen)
+            self.stacked_widget.setCurrentIndex(1)
+
     # def close_welcome_screen(self):
     #     if self.stacked_widget.currentIndex() != 0:
     #         self.stacked_widget.setCurrentIndex(0)
@@ -149,7 +161,8 @@ class ParkingApp(QMainWindow):
 
                 license_plate, vehicle_type = recognize_license_plate(frame)
                 if license_plate is not None and vehicle_type is not None:
-                    self.open_welcome_screen(license_plate, vehicle_type)
+                    # self.open_welcome_screen(license_plate, vehicle_type)
+                    self.open_no_entry_screen()
                     self.frames_without_license_plate = 0
                 else:
                     self.frames_without_license_plate += 1
