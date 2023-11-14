@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from PyQt5.QtWidgets import QWidget, \
     QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QIcon
@@ -6,8 +8,56 @@ from PyQt5 import QtCore
 
 
 class ExitScreen(QWidget):
-    def init_ui(self):
-        pass
+    @staticmethod
+    def generate_button(text: str, img_path: str):
+        original_icon = QIcon(img_path)
+        icon_label = QLabel()
+        icon_label.setPixmap(original_icon.pixmap(75, 75))
+        icon_label.setAlignment(Qt.AlignCenter)
+        icon_label.setContentsMargins(5, 5, 5, 5)
+
+        text_label = QLabel()
+        text_label.setAlignment(Qt.AlignCenter)
+        text_label.setFont(QFont("Arial", 30, QFont.Bold))
+        text_label.setText(text)
+        text_label.setContentsMargins(5, 5, 5, 5)
+
+        button_layout = QVBoxLayout()
+        button_layout.addWidget(icon_label)
+        button_layout.addWidget(text_label)
+        button_layout.setAlignment(Qt.AlignCenter)
+
+        button = QPushButton()
+        button.setStyleSheet(
+            "background-color: black; color: white; border-radius: 20px;"
+        )
+        button.setLayout(button_layout)
+        button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+
+        return button
+
+    @staticmethod
+    def get_icon_n_text_layout(text: str, text_size: int, icon_path: str, icon_size: int):
+        original_icon = QIcon(icon_path)
+        icon_label = QLabel()
+        icon_label.setPixmap(original_icon.pixmap(icon_size, icon_size))
+        icon_label.setAlignment(Qt.AlignCenter)
+        icon_label.setContentsMargins(20, 20, 20, 20)
+
+        text_label = QLabel()
+        text_label.setAlignment(Qt.AlignCenter)
+        text_label.setFont(QFont("Arial", text_size, QFont.Bold))
+        text_label.setText(text)
+        text_label.setContentsMargins(20, 20, 20, 20)
+
+        # Create a horizontal layout for the icon and text
+        horizontal_layout = QHBoxLayout()
+        horizontal_layout.addWidget(icon_label)
+        horizontal_layout.addWidget(text_label)
+        horizontal_layout.setAlignment(Qt.AlignCenter)
+        horizontal_layout.setContentsMargins(0, 0, 0, 0)
+
+        return horizontal_layout
 
     def get_license_plate_label(self):
         license_plate_label = QLabel(f"{self.license_plate}: opłaty")
@@ -17,89 +67,42 @@ class ExitScreen(QWidget):
 
         return license_plate_label
 
-    def get_vehicle_type_text(self, class_name: str) -> str:
-        vehicle_type_text = None
+    @staticmethod
+    def get_vehicle_tariff(class_name: str) -> Decimal:
+        vehicle_tariff_text = None
 
         if class_name == 'car':
-            vehicle_type_text = 'Samochód'
+            vehicle_tariff_text = Decimal(5.0)
         elif class_name == 'truck':
-            vehicle_type_text = 'Ciężarówka'
+            vehicle_tariff_text = Decimal(10.0)
         elif class_name == 'motorcycle':
-            vehicle_type_text = 'Motocykl'
+            vehicle_tariff_text = Decimal(3.0)
 
-        return vehicle_type_text
+        return vehicle_tariff_text
 
-    def get_vehicle_type_layout(self):
-        vehicle_type_label = QLabel()
-        # vehicle_type_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        vehicle_type_label.setAlignment(Qt.AlignCenter)
-        vehicle_type_label.setFont(QFont("Arial", 50, QFont.Bold))
-        vehicle_type_label.setText('Taryfa: 2zł/s')
-        vehicle_type_label.setContentsMargins(20, 20, 20, 20)
+    @staticmethod
+    def get_parking_time(license_plate: str) -> int:
+        return 122000
 
-        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_type}_2.png')
-        vehicle_icon_label = QLabel()
-        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(120, 120))
-        # vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
-        vehicle_icon_label.setAlignment(Qt.AlignCenter)
-        vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
+    def get_vehicle_tariff_layout(self):
+        icon_path = f'gui/resources/images/{self.vehicle_type}_2.png'
+        return self.get_icon_n_text_layout(
+            f'Taryfa: {self.tariff}', 50, icon_path,120
+        )
 
-        # Create a horizontal layout for the icon and text
-        vehicle_type_layout = QHBoxLayout()
-        vehicle_type_layout.addWidget(vehicle_icon_label)
-        vehicle_type_layout.addWidget(vehicle_type_label)
-        vehicle_type_layout.setAlignment(Qt.AlignCenter)
-        vehicle_type_layout.setContentsMargins(0, 0, 0, 0)
-
-        return vehicle_type_layout
-
-    def get_parking_sector_layout(self):
-        location_label = QLabel()
-        # location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        location_label.setAlignment(Qt.AlignCenter)
-        location_label.setFont(QFont("Arial", 50, QFont.Bold))
-        location_label.setText("Czas postoju: 19 min")
-        location_label.setContentsMargins(20, 20, 20, 20)
-
-        location_original_icon = QIcon('gui/resources/images/clock.png')
-        location_icon_label = QLabel()
-        location_icon_label.setPixmap(location_original_icon.pixmap(120, 120))
-        # location_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
-        location_icon_label.setAlignment(Qt.AlignCenter)
-        location_icon_label.setContentsMargins(20, 20, 20, 20)
-
-        # Create a horizontal layout for the icon and text
-        location_layout = QHBoxLayout()
-        location_layout.addWidget(location_icon_label)
-        location_layout.addWidget(location_label)
-        location_layout.setAlignment(Qt.AlignCenter)
-        location_layout.setContentsMargins(0, 0, 0, 0)
-
-        return location_layout
+    def get_parking_time_layout(self):
+        icon_path = f'gui/resources/images/clock.png'
+        return self.get_icon_n_text_layout(
+            f'Czas postoju: {self.parking_time}', 50, icon_path, 120
+        )
 
     def get_total_layout(self):
-        location_label = QLabel()
-        # location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        location_label.setAlignment(Qt.AlignCenter)
-        location_label.setFont(QFont("Arial", 50, QFont.Bold))
-        location_label.setText("Do zapłaty: 122 zł")
-        location_label.setContentsMargins(20, 20, 20, 20)
+        icon_path = f'gui/resources/images/wallet.png'
+        total = self.tariff * self.parking_time
 
-        location_original_icon = QIcon('gui/resources/images/wallet.png')
-        location_icon_label = QLabel()
-        location_icon_label.setPixmap(location_original_icon.pixmap(120, 120))
-        # location_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
-        location_icon_label.setAlignment(Qt.AlignCenter)
-        location_icon_label.setContentsMargins(20, 20, 20, 20)
-
-        # Create a horizontal layout for the icon and text
-        location_layout = QHBoxLayout()
-        location_layout.addWidget(location_icon_label)
-        location_layout.addWidget(location_label)
-        location_layout.setAlignment(Qt.AlignCenter)
-        location_layout.setContentsMargins(0, 0, 0, 0)
-
-        return location_layout
+        return self.get_icon_n_text_layout(
+            f'Do zapłaty: {total}', 50, icon_path, 120
+        )
 
     def __init__(self, parent, license_plate: str = 'SC 12345', vehicle_type: str = 'car'):
         super().__init__(parent)
@@ -108,7 +111,10 @@ class ExitScreen(QWidget):
         self.vehicle_type: str = vehicle_type
         self.license_plate: str = license_plate
 
-        # dodanie czarnego tłą dla spacingu
+        self.tariff: Decimal = self.get_vehicle_tariff(self.vehicle_type)
+        self.parking_time: int = self.get_parking_time(self.license_plate)
+
+        # dodanie czarnego tła dla spacingu
         self.setAutoFillBackground(True)
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.black)
@@ -127,104 +133,34 @@ class ExitScreen(QWidget):
         license_plate_label = self.get_license_plate_label()
         main_layout.addWidget(license_plate_label, 0, 0, 1, 16)
 
-        ## -- TYP POJAZDU
-        vehicle_type_layout = self.get_vehicle_type_layout()
+        ## -- TARYFA DLA TYPU POJAZDU
+        vehicle_type_layout = self.get_vehicle_tariff_layout()
         main_layout.addLayout(vehicle_type_layout, 1, 6, 1, 4)
 
-        ## -- MIEJSCE PARKINGU
-        parking_sector_layout = self.get_parking_sector_layout()
+        ## -- CZAS POSTOJU
+        parking_sector_layout = self.get_parking_time_layout()
         main_layout.addLayout(parking_sector_layout, 2, 5, 1, 6)
 
-        ## -- MIEJSCE PARKINGU 2
+        ## -- PODSUMOWANIE
         parking_sector_layout_2 = self.get_total_layout()
         main_layout.addLayout(parking_sector_layout_2, 3, 5, 1, 6)
 
-        ## -- PRZYCISK "POKAŻ MAPĘ"
-
-        map_original_icon = QIcon('gui/resources/images/blik.png')
-        show_location_icon = QLabel()
-        show_location_icon.setPixmap(map_original_icon.pixmap(75, 75))
-        show_location_icon.setAlignment(Qt.AlignCenter)
-        show_location_icon.setContentsMargins(5, 5, 5, 5)
-
-        show_location_label = QLabel()
-        show_location_label.setAlignment(Qt.AlignCenter)
-        show_location_label.setFont(QFont("Arial", 30, QFont.Bold))
-        show_location_label.setText("Zapłać\nBLIKiem")
-        show_location_label.setContentsMargins(5, 5, 5, 5)
-
-        show_location_button_layout = QVBoxLayout()
-        show_location_button_layout.addWidget(show_location_icon)
-        show_location_button_layout.addWidget(show_location_label)
-        show_location_button_layout.setAlignment(Qt.AlignCenter)
-
-        show_location_button = QPushButton()
-        show_location_button.setStyleSheet(
-            "background-color: black; color: white; border-radius: 20px;"
+        ## -- PRZYCISK BLIK
+        blik_button = self.generate_button(
+            "Zapłać\nBLIKiem", 'gui/resources/images/blik.png'
         )
-        show_location_button.setLayout(show_location_button_layout)
-        show_location_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        main_layout.addWidget(blik_button, 5, 1, 3, 4)
 
-        main_layout.addWidget(show_location_button, 5, 1, 3, 4)
-
-        ### PRZYCISK 2
-
-        ## -- PRZYCISK "POKAŻ MAPĘ"
-
-        map_original_icon = QIcon('gui/resources/images/credit_card.png')
-        show_location_icon = QLabel()
-        show_location_icon.setPixmap(map_original_icon.pixmap(75, 75))
-        show_location_icon.setAlignment(Qt.AlignCenter)
-        show_location_icon.setContentsMargins(5, 5, 5, 5)
-
-        show_location_label = QLabel()
-        show_location_label.setAlignment(Qt.AlignCenter)
-        show_location_label.setFont(QFont("Arial", 30, QFont.Bold))
-        show_location_label.setText("Zapłać\nkartą")
-        show_location_label.setContentsMargins(5, 5, 5, 5)
-
-        show_location_button_layout = QVBoxLayout()
-        show_location_button_layout.addWidget(show_location_icon)
-        show_location_button_layout.addWidget(show_location_label)
-        show_location_button_layout.setAlignment(Qt.AlignCenter)
-
-        show_location_button = QPushButton()
-        show_location_button.setStyleSheet(
-            "background-color: black; color: white; border-radius: 20px;"
+        ### PRZYCISK KARTA
+        card_button = self.generate_button(
+            "Zapłać\nkartą", 'gui/resources/images/credit_card.png'
         )
-        show_location_button.setLayout(show_location_button_layout)
-        show_location_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        main_layout.addWidget(card_button, 5, 6, 3, 4)
 
-        main_layout.addWidget(show_location_button, 5, 6, 3, 4)
-
-
-        # PRZYCISK 3
-        ## -- PRZYCISK "POKAŻ MAPĘ"
-
-        map_original_icon = QIcon('gui/resources/images/coupon.png')
-        show_location_icon = QLabel()
-        show_location_icon.setPixmap(map_original_icon.pixmap(75, 75))
-        show_location_icon.setAlignment(Qt.AlignCenter)
-        show_location_icon.setContentsMargins(5, 5, 5, 5)
-
-        show_location_label = QLabel()
-        show_location_label.setAlignment(Qt.AlignCenter)
-        show_location_label.setFont(QFont("Arial", 30, QFont.Bold))
-        show_location_label.setText("Zapłać\nkuponem")
-        show_location_label.setContentsMargins(5, 5, 5, 5)
-
-        show_location_button_layout = QVBoxLayout()
-        show_location_button_layout.addWidget(show_location_icon)
-        show_location_button_layout.addWidget(show_location_label)
-        show_location_button_layout.setAlignment(Qt.AlignCenter)
-
-        show_location_button = QPushButton()
-        show_location_button.setStyleSheet(
-            "background-color: black; color: white; border-radius: 20px;"
+        # PRZYCISK KUPON
+        voucher_button = self.generate_button(
+            "Zapłać\nkuponem", 'gui/resources/images/coupon.png'
         )
-        show_location_button.setLayout(show_location_button_layout)
-        show_location_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-
-        main_layout.addWidget(show_location_button, 5, 11, 3, 4)
+        main_layout.addWidget(voucher_button, 5, 11, 3, 4)
 
         self.setLayout(main_layout)
