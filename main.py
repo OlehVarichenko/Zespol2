@@ -1,5 +1,6 @@
 import sys
 from enum import IntEnum
+from typing import Optional
 
 import cv2
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
@@ -19,6 +20,13 @@ yolov7 = YOLOv7()
 ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
 yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustaw progi pewności na 0.7
 yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' for CUDA GPU inference
+
+
+def sanitize_license_plate(license_plate: str) -> str:
+    license_plate = license_plate.replace(' ', '')
+    license_plate = license_plate.replace('-', '')
+    license_plate = license_plate.replace('/', '')
+    return license_plate
 
 
 def recognize_license_plate(frame):
@@ -103,7 +111,10 @@ class ParkingApp(QMainWindow):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(10)  # Update every 10 milliseconds
 
-        self.frames_without_license_plate: int = 0
+        self.frames_without_detection: int = 0
+        self.previous_license_plate: Optional[str] = None
+        self.previous_vehicle_type: Optional[str] = None
+        self.frames_with_same_detection: int = 0
 
     def open_welcome_screen(self, license_plate: str, vehicle_type: str):
         if self.stacked_widget.currentIndex() == 0:
@@ -147,7 +158,6 @@ class ParkingApp(QMainWindow):
                         self.load_video_button.hide()  # Hide the button during video playback
 
                 if self.stacked_widget.currentIndex() == 0:
-
                     widget_width = self.video_widget.width()
                     widget_height = self.video_widget.height()
 
@@ -160,19 +170,32 @@ class ParkingApp(QMainWindow):
                     self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
 
                 license_plate, vehicle_type = recognize_license_plate(frame)
+
                 if license_plate is not None and vehicle_type is not None:
-                    self.open_welcome_screen(license_plate, vehicle_type)
+                    license_plate = sanitize_license_plate(license_plate)
+
+                    if license_plate == self.previous_license_plate \
+                            and vehicle_type == self.previous_vehicle_type:
+                        self.frames_with_same_detection += 1
+                    else:
+                        self.frames_with_same_detection = 0
+
+                    if self.frames_with_same_detection > 5:
+                        self.open_welcome_screen(license_plate, vehicle_type)
                     # self.open_message_screen(Messages.DETECTION_ERROR)
                     # self.open_exit_screen(license_plate, vehicle_type)
-                    self.frames_without_license_plate = 0
+
+                    self.previous_license_plate = license_plate
+                    self.previous_vehicle_type = vehicle_type
+                    self.frames_without_detection = 0
                 else:
-                    self.frames_without_license_plate += 1
-                    if self.frames_without_license_plate > 60:
+                    self.frames_without_detection += 1
+                    if self.frames_without_detection > 60:
                         self.close_all_screens()
 
             else:
                 self.close_all_screens()
-                self.frames_without_license_plate = 0
+                self.frames_without_detection = 0
                 self.video_widget.setStyleSheet("background-color: black")
                 if hasattr(self, 'load_video_button'):
                     self.load_video_button.show()  # Show the button after video playback
