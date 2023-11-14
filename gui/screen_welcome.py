@@ -37,7 +37,7 @@ class WelcomeScreen(QWidget):
         vehicle_type_label.setText(self.get_vehicle_type_text(self.vehicle_type))
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_type}.png')
+        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_type}_2.png')
         vehicle_icon_label = QLabel()
         vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
         # vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
@@ -137,6 +137,6 @@ class WelcomeScreen(QWidget):
         show_location_button.setLayout(show_location_button_layout)
         show_location_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 
-        main_layout.addWidget(show_location_button, 5, 5, 1, 6)
+        main_layout.addWidget(show_location_button, 5, 5, 2, 6)
 
         self.setLayout(main_layout)

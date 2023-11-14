@@ -1,4 +1,5 @@
 import sys
+from enum import IntEnum
 
 import cv2
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
@@ -11,13 +12,12 @@ from gui.screen_exit import ExitScreen
 from utils.detections import draw
 
 from gui.screen_welcome import WelcomeScreen
-from gui.screen_no_entry import NoEntryScreen
-
+from gui.screen_message import MessageScreen, Messages
 
 # Inicjalizacja detektora
 yolov7 = YOLOv7()
 ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
-yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7) # Ustaw progi pewności na 0.7
+yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustaw progi pewności na 0.7
 yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' for CUDA GPU inference
 
 
@@ -58,7 +58,7 @@ class ParkingApp(QMainWindow):
         super().__init__()
 
         self.welcome_screen = None
-        self.no_entry_screen = None
+        self.message_screen = None
         self.exit_screen = None
 
         self.setWindowTitle("PARKING AUTOMATYCZNY")
@@ -112,13 +112,14 @@ class ParkingApp(QMainWindow):
             self.stacked_widget.addWidget(self.welcome_screen)
             self.stacked_widget.setCurrentIndex(1)
 
-    def open_no_entry_screen(self):
+    def open_message_screen(self, message_enum: IntEnum):
         self.close_all_screens()
 
         if self.stacked_widget.currentIndex() == 0:
-            self.no_entry_screen = NoEntryScreen(self.stacked_widget)
+            self.message_screen = MessageScreen(self.stacked_widget,
+                                                message_enum)
 
-            self.stacked_widget.addWidget(self.no_entry_screen)
+            self.stacked_widget.addWidget(self.message_screen)
             self.stacked_widget.setCurrentIndex(1)
 
     def open_exit_screen(self, license_plate: str, vehicle_type: str):
@@ -127,13 +128,6 @@ class ParkingApp(QMainWindow):
 
             self.stacked_widget.addWidget(self.exit_screen)
             self.stacked_widget.setCurrentIndex(1)
-
-    # def close_welcome_screen(self):
-    #     if self.stacked_widget.currentIndex() != 0:
-    #         self.stacked_widget.setCurrentIndex(0)
-    #         self.stacked_widget.removeWidget(self.welcome_screen)
-    #         self.welcome_screen.setParent(None)
-    #         self.welcome_screen = None
 
     def close_all_screens(self):
         if self.stacked_widget.currentIndex() != 0:
@@ -167,9 +161,9 @@ class ParkingApp(QMainWindow):
 
                 license_plate, vehicle_type = recognize_license_plate(frame)
                 if license_plate is not None and vehicle_type is not None:
-                    # self.open_welcome_screen(license_plate, vehicle_type)
-                    # self.open_no_entry_screen()
-                    self.open_exit_screen(license_plate, vehicle_type)
+                    self.open_welcome_screen(license_plate, vehicle_type)
+                    # self.open_message_screen(Messages.DETECTION_ERROR)
+                    # self.open_exit_screen(license_plate, vehicle_type)
                     self.frames_without_license_plate = 0
                 else:
                     self.frames_without_license_plate += 1
