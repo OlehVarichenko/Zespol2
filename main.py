@@ -7,6 +7,7 @@ from PyQt5.QtGui import QImage, QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
 
 from algorithm.object_detector import YOLOv7
+from gui.screen_exit import ExitScreen
 from utils.detections import draw
 
 from gui.screen_welcome import WelcomeScreen
@@ -57,12 +58,12 @@ class ParkingApp(QMainWindow):
         super().__init__()
 
         self.welcome_screen = None
+        self.no_entry_screen = None
+        self.exit_screen = None
 
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
         self.stacked_widget = QStackedWidget(self)
-        self.no_entry_screen = None
-
         self.setCentralWidget(self.stacked_widget)
 
         self.main_window_widget = QWidget(self)
@@ -108,7 +109,6 @@ class ParkingApp(QMainWindow):
         if self.stacked_widget.currentIndex() == 0:
             self.welcome_screen = WelcomeScreen(self.stacked_widget, license_plate, vehicle_type)
 
-            # self.setCentralWidget(self.welcome_screen)
             self.stacked_widget.addWidget(self.welcome_screen)
             self.stacked_widget.setCurrentIndex(1)
 
@@ -118,8 +118,14 @@ class ParkingApp(QMainWindow):
         if self.stacked_widget.currentIndex() == 0:
             self.no_entry_screen = NoEntryScreen(self.stacked_widget)
 
-            # self.setCentralWidget(self.welcome_screen)
             self.stacked_widget.addWidget(self.no_entry_screen)
+            self.stacked_widget.setCurrentIndex(1)
+
+    def open_exit_screen(self, license_plate: str, vehicle_type: str):
+        if self.stacked_widget.currentIndex() == 0:
+            self.exit_screen = ExitScreen(self.stacked_widget, license_plate, vehicle_type)
+
+            self.stacked_widget.addWidget(self.exit_screen)
             self.stacked_widget.setCurrentIndex(1)
 
     # def close_welcome_screen(self):
@@ -162,7 +168,8 @@ class ParkingApp(QMainWindow):
                 license_plate, vehicle_type = recognize_license_plate(frame)
                 if license_plate is not None and vehicle_type is not None:
                     # self.open_welcome_screen(license_plate, vehicle_type)
-                    self.open_no_entry_screen()
+                    # self.open_no_entry_screen()
+                    self.open_exit_screen(license_plate, vehicle_type)
                     self.frames_without_license_plate = 0
                 else:
                     self.frames_without_license_plate += 1
