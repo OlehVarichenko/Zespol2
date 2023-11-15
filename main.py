@@ -5,22 +5,20 @@ from typing import Optional
 import cv2
 from torch import cuda
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
-    QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QHBoxLayout, QFrame, QStackedWidget
-from PyQt5.QtGui import QImage, QPixmap, QFont, QIcon
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
+    QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QStackedWidget
+from PyQt5.QtGui import QImage, QPixmap, QFont
+from PyQt5.QtCore import Qt, QTimer
 
 from algorithm.object_detector import YOLOv7
 from gui.screen_exit import ExitScreen
-from utils.detections import draw
 
 from gui.screen_welcome import WelcomeScreen
-from gui.screen_message import MessageScreen, Messages
+from gui.screen_message import MessageScreen
 
 # Inicjalizacja detektora
 yolov7 = YOLOv7()
 ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
 yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustaw progi pewności na 0.7
-
 # wybór cpu/gpu
 device = 'cuda' if cuda.is_available() else 'cpu'
 yolov7.load('best.weights', classes='classes.yaml', device=device)
@@ -44,12 +42,6 @@ def recognize_license_plate(frame):
 
     # Sprawdzanie i zapisywanie tekstu, jeśli istnieje
     for detection in detections:
-        # if detection['class'] in ocr_classes:
-        #     detection_id = detection['id']
-        #     text = detection.get('text', '')  # Użyj get(), aby uniknąć KeyError
-        #
-        #     if text and detection_id not in detected_plates:
-        #         detected_plates.add(text)
 
         if detection['class'] == 'tablica':
             license_plate = detection.get('text', '')
@@ -60,7 +52,6 @@ def recognize_license_plate(frame):
         elif detection['class'] == 'motorcycle':
             vehicle_type = 'motorcycle'
 
-    # detected_frame = draw(frame, detections)
     return license_plate, vehicle_type
 
 
@@ -152,6 +143,17 @@ class ParkingApp(QMainWindow):
                 self.stacked_widget.removeWidget(widget)
                 widget.setParent(None)
 
+    @staticmethod
+    def get_resized_pixmap_from_frame(frame, width: int, height: int):
+        frame_resized = cv2.resize(frame, (width, height))
+        frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+        height, width, channel = frame_resized.shape
+        bytesPerLine = 3 * width
+        qImg = QImage(frame_resized.data, width, height, bytesPerLine, QImage.Format_RGB888)
+        pixmap = QPixmap.fromImage(qImg)
+
+        return pixmap
+
     def update_frame(self):
         if self.cap is not None:
             ret, frame = self.cap.read()
@@ -159,19 +161,15 @@ class ParkingApp(QMainWindow):
                 if not self.playing_video:
                     self.playing_video = True
                     if hasattr(self, 'load_video_button'):
-                        self.load_video_button.hide()  # Hide the button during video playback
+                        self.load_video_button.hide()
 
                 if self.stacked_widget.currentIndex() == 0:
-                    widget_width = self.video_widget.width()
-                    widget_height = self.video_widget.height()
-
-                    frame_resized = cv2.resize(frame, (widget_width, widget_height))
-                    frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-                    height, width, channel = frame_resized.shape
-                    bytesPerLine = 3 * width
-                    qImg = QImage(frame_resized.data, width, height, bytesPerLine, QImage.Format_RGB888)
-                    pixmap = QPixmap.fromImage(qImg)
-                    self.video_widget.setPixmap(pixmap)  # Update the QLabel with the new frame
+                    pixmap = self.get_resized_pixmap_from_frame(
+                        frame,
+                        self.video_widget.width(),
+                        self.video_widget.height()
+                    )
+                    self.video_widget.setPixmap(pixmap)
 
                 license_plate, vehicle_type = recognize_license_plate(frame)
 
@@ -186,8 +184,8 @@ class ParkingApp(QMainWindow):
 
                     if self.frames_with_same_detection > 5:
                         self.open_welcome_screen(license_plate, vehicle_type)
-                    # self.open_message_screen(Messages.DETECTION_ERROR)
-                    # self.open_exit_screen(license_plate, vehicle_type)
+                        # self.open_message_screen(Messages.DETECTION_ERROR)
+                        # self.open_exit_screen(license_plate, vehicle_type)
 
                     self.previous_license_plate = license_plate
                     self.previous_vehicle_type = vehicle_type
@@ -198,11 +196,12 @@ class ParkingApp(QMainWindow):
                         self.close_all_screens()
 
             else:
+                self.playing_video = False
                 self.close_all_screens()
                 self.frames_without_detection = 0
                 self.video_widget.setStyleSheet("background-color: black")
                 if hasattr(self, 'load_video_button'):
-                    self.load_video_button.show()  # Show the button after video playback
+                    self.load_video_button.show()
 
     def open_file_dialog(self):
         options = QFileDialog.Options()
@@ -210,7 +209,6 @@ class ParkingApp(QMainWindow):
         file, _ = QFileDialog.getOpenFileName(self, "Open Video File", "",
                                               "Video Files (*.mp4 *.avi *.mov);;All Files (*)", options=options)
         if file:
-            # Release the existing video capture object
             if self.cap is not None:
                 self.cap.release()
 
@@ -226,12 +224,11 @@ class ParkingApp(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    # Check for the --test-video option
     show_test_video_button = "--test-video" in sys.argv
 
     if "--fullhd-window" in sys.argv:
         window = ParkingApp(show_test_video_button)
-        window.setGeometry(100, 100, 1920, 1080)  # Set window size to 1920x1080
+        window.setGeometry(100, 100, 1920, 1080)
         window.show()
     else:
         window = ParkingApp(show_test_video_button)
