@@ -6,9 +6,6 @@ from PyQt5 import QtCore
 
 
 class WelcomeScreen(QWidget):
-    def init_ui(self):
-        pass
-
     def get_license_plate_label(self):
         license_plate_label = QLabel(f"Witaj, {self.license_plate}!")
         license_plate_label.setAlignment(Qt.AlignCenter)
@@ -87,6 +84,33 @@ class WelcomeScreen(QWidget):
 
         return location_layout
 
+    def get_horizontal_button(self, text: str, icon_path: str):
+        original_icon = QIcon(icon_path)
+        icon_label = QLabel()
+        icon_label.setPixmap(original_icon.pixmap(65, 65))
+        icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
+        icon_label.setContentsMargins(5, 5, 5, 5)
+
+        text_label = QLabel()
+        text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
+        text_label.setFont(QFont("Arial", 30, QFont.Bold))
+        text_label.setText(text)
+        text_label.setContentsMargins(5, 5, 5, 5)
+
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(icon_label)
+        button_layout.addWidget(text_label)
+        button_layout.setAlignment(Qt.AlignCenter)
+
+        button = QPushButton()
+        button.setStyleSheet(
+            "background-color: black; color: white; border-radius: 20px;"
+        )
+        button.setLayout(button_layout)
+        button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+
+        return button
+
     def __init__(self, parent, license_plate: str, vehicle_class: str):
         super().__init__(parent)
         self.setWindowTitle("WJAZD")
@@ -102,7 +126,6 @@ class WelcomeScreen(QWidget):
 
         main_layout = QGridLayout()
         main_layout.setSpacing(5)
-
         main_layout.setContentsMargins(0, 0, 0, 0)
 
         white_fullscreen_label = QLabel()
@@ -121,31 +144,11 @@ class WelcomeScreen(QWidget):
         parking_sector_layout = self.get_parking_sector_layout()
         main_layout.addLayout(parking_sector_layout, 2, 4, 1, 8)
 
-        ## -- PRZYCISK "POKAŻ MAPĘ"
-        map_original_icon = QIcon('gui/resources/images/location_help.png')
-        show_location_icon = QLabel()
-        show_location_icon.setPixmap(map_original_icon.pixmap(65, 65))
-        show_location_icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
-        show_location_icon.setContentsMargins(5, 5, 5, 5)
-
-        show_location_label = QLabel()
-        show_location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        show_location_label.setFont(QFont("Arial", 30, QFont.Bold))
-        show_location_label.setText("Pokaż miejsce na schemacie")
-        show_location_label.setContentsMargins(5, 5, 5, 5)
-
-        show_location_button_layout = QHBoxLayout()
-        show_location_button_layout.addWidget(show_location_icon)
-        show_location_button_layout.addWidget(show_location_label)
-        show_location_button_layout.setAlignment(Qt.AlignCenter)
-
-        show_location_button = QPushButton()
-        show_location_button.setStyleSheet(
-            "background-color: black; color: white; border-radius: 20px;"
+        ## -- PRZYCISK "POKAŻ SCHEMAT"
+        show_location_button = self.get_horizontal_button(
+            "Pokaż miejsce na schemacie",
+            'gui/resources/images/location_help.png'
         )
-        show_location_button.setLayout(show_location_button_layout)
-        show_location_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-
         main_layout.addWidget(show_location_button, 5, 5, 2, 6)
 
         self.setLayout(main_layout)
