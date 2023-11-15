@@ -17,7 +17,8 @@ class WelcomeScreen(QWidget):
 
         return license_plate_label
 
-    def get_vehicle_type_text(self, class_name: str) -> str:
+    @staticmethod
+    def get_vehicle_type_text(class_name: str) -> str:
         vehicle_type_text = None
 
         if class_name == 'car':
@@ -29,18 +30,29 @@ class WelcomeScreen(QWidget):
 
         return vehicle_type_text
 
+    @staticmethod
+    def get_sector_text(class_name: str) -> str:
+        sector_text = None
+
+        if class_name == 'car':
+            sector_text = 'A'
+        elif class_name == 'truck':
+            sector_text = 'B'
+        elif class_name == 'motorcycle':
+            sector_text = 'C'
+
+        return sector_text
+
     def get_vehicle_type_layout(self):
         vehicle_type_label = QLabel()
-        # vehicle_type_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
         vehicle_type_label.setAlignment(Qt.AlignCenter)
         vehicle_type_label.setFont(QFont("Arial", 65, QFont.Bold))
-        vehicle_type_label.setText(self.get_vehicle_type_text(self.vehicle_type))
+        vehicle_type_label.setText(self.get_vehicle_type_text(self.vehicle_class))
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_type}_2.png')
+        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_class}_2.png')
         vehicle_icon_label = QLabel()
         vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
-        # vehicle_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         vehicle_icon_label.setAlignment(Qt.AlignCenter)
         vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
 
@@ -55,16 +67,14 @@ class WelcomeScreen(QWidget):
 
     def get_parking_sector_layout(self):
         location_label = QLabel()
-        # location_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
         location_label.setAlignment(Qt.AlignCenter)
         location_label.setFont(QFont("Arial", 45, QFont.Bold))
-        location_label.setText("Miejsce do parkowania: Sektor C")
+        location_label.setText(f"Miejsce do parkowania: Sektor {self.get_sector_text(self.vehicle_class)}")
         location_label.setContentsMargins(20, 20, 20, 20)
 
         location_original_icon = QIcon('gui/resources/images/location.png')
         location_icon_label = QLabel()
         location_icon_label.setPixmap(location_original_icon.pixmap(100, 100))
-        # location_icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         location_icon_label.setAlignment(Qt.AlignCenter)
         location_icon_label.setContentsMargins(20, 20, 20, 20)
 
@@ -77,11 +87,11 @@ class WelcomeScreen(QWidget):
 
         return location_layout
 
-    def __init__(self, parent, license_plate: str = 'SC 12345', vehicle_type: str = 'car'):
+    def __init__(self, parent, license_plate: str, vehicle_class: str):
         super().__init__(parent)
         self.setWindowTitle("WJAZD")
 
-        self.vehicle_type: str = vehicle_type
+        self.vehicle_class: str = vehicle_class
         self.license_plate: str = license_plate
 
         # dodanie czarnego tłą dla spacingu
@@ -112,10 +122,9 @@ class WelcomeScreen(QWidget):
         main_layout.addLayout(parking_sector_layout, 2, 4, 1, 8)
 
         ## -- PRZYCISK "POKAŻ MAPĘ"
-
         map_original_icon = QIcon('gui/resources/images/location_help.png')
         show_location_icon = QLabel()
-        show_location_icon.setPixmap(map_original_icon.pixmap(50, 50))
+        show_location_icon.setPixmap(map_original_icon.pixmap(65, 65))
         show_location_icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         show_location_icon.setContentsMargins(5, 5, 5, 5)
 
