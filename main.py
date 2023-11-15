@@ -3,6 +3,7 @@ from enum import IntEnum
 from typing import Optional
 
 import cv2
+from torch import cuda
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
     QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QHBoxLayout, QFrame, QStackedWidget
 from PyQt5.QtGui import QImage, QPixmap, QFont, QIcon
@@ -19,7 +20,10 @@ from gui.screen_message import MessageScreen, Messages
 yolov7 = YOLOv7()
 ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
 yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustaw progi pewności na 0.7
-yolov7.load('best.weights', classes='classes.yaml', device='cpu')  # use 'gpu' for CUDA GPU inference
+
+# wybór cpu/gpu
+device = 'cuda' if cuda.is_available() else 'cpu'
+yolov7.load('best.weights', classes='classes.yaml', device=device)
 
 
 def sanitize_license_plate(license_plate: str) -> str:
