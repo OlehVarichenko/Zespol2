@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_parking
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: parking
+      POSTGRES_PASSWORD: Q1234567
+      POSTGRES_DB: ParkingDB
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
