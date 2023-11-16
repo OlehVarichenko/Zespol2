@@ -3,11 +3,19 @@ CREATE TABLE vehicle_types (
     vehicle_type VARCHAR(50) UNIQUE
 );
 
+INSERT INTO vehicle_types(vehicle_type) VALUES('motorcycle');
+INSERT INTO vehicle_types(vehicle_type) VALUES('car');
+INSERT INTO vehicle_types(vehicle_type) VALUES('truck');
+
 CREATE TABLE vehicle_types_tariffs (
     id SERIAL PRIMARY KEY,
     type_id INTEGER REFERENCES vehicle_types(id) NOT NULL,
     price_per_hour DECIMAL(8, 2) NOT NULL
 );
+
+INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(1, 2.5);
+INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(1, 5);
+INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(1, 10);
 
 CREATE TABLE vehicles (
     id SERIAL PRIMARY KEY,

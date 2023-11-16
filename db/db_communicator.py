@@ -1,4 +1,6 @@
 from decimal import Decimal
+from typing import Optional
+
 import psycopg2
 from psycopg2 import Error
 
@@ -31,26 +33,32 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
                  host: str, port: int, database: str):
         super().__init__()
 
+        self.user = user
+        self.password = password
+        self.host = host
+        self.port = port
+        self.database = database
+
+    def __enter__(self):
         try:
             self.connection = psycopg2.connect(
-                user=user,
-                password=password,
-                host=host,
-                port=port,
-                database=database
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                port=self.port,
+                database=self.database
             )
-
             self.cursor = self.connection.cursor()
-
-            self.cursor.close()
-            self.connection.close()
-
-        except (Exception, Error) as error:
+            # return self.cursor
+            return self
+        except (Exception, psycopg2.Error) as error:
             print("Nie udało się połączyć z bazą danych.\nBłąd: ", error, "\n")
-        finally:
-            if self.connection:
-                self.cursor.close()
-                self.connection.close()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.cursor:
+            self.cursor.close()
+        if self.connection:
+            self.connection.close()
 
     def new_stay(self, vehicle_type: str, license_plate: str) -> bool:
         self.cursor.callproc('new_stay', [vehicle_type, license_plate])
@@ -60,7 +68,12 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
 
     def get_bill(self, license_plate: str) -> Bill:
         self.cursor.callproc('get_bill', [license_plate])
-        bill: Bill = Bill(*self.cursor.fetchone()[0])
+
+        bill: Optional[Bill] = None
+
+        buf = self.cursor.fetchone()[0]
+        if buf is not None:
+            bill = Bill(*buf)
 
         return bill
 
@@ -68,6 +81,7 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
                              payment_amount: Decimal) -> bool:
         self.cursor.callproc('insert_stay_end_info',
                              [stay_id, stay_duration, payment_amount])
+
         result = self.cursor.fetchone()[0]
 
         return result

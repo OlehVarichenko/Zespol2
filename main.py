@@ -116,13 +116,14 @@ class ParkingApp(QMainWindow):
         self.frames_with_same_detection: int = 0
 
     def on_vehicle_detection(self, vehicle_type: str, license_plate: str):
-        bill = self.db_communicator.get_bill(license_plate)
-        if bill.stay_id is None:
-            self.open_welcome_screen(vehicle_type, license_plate)
-        else:
-            self.message_screen = MessageScreen(self.stacked_widget, Messages.GENERAL_ERROR)
-            self.stacked_widget.addWidget(self.message_screen)
-            self.stacked_widget.setCurrentIndex(1)
+        with self.db_communicator as comm:
+            bill = comm.get_bill(license_plate)
+            if bill is None:
+                self.open_welcome_screen(vehicle_type, license_plate)
+            else:
+                self.message_screen = MessageScreen(self.stacked_widget, Messages.GENERAL_ERROR)
+                self.stacked_widget.addWidget(self.message_screen)
+                self.stacked_widget.setCurrentIndex(1)
 
     def open_welcome_screen(self, vehicle_type: str, license_plate: str):
         if self.stacked_widget.currentIndex() == 0:
@@ -130,7 +131,7 @@ class ParkingApp(QMainWindow):
             result = self.db_communicator.new_stay(vehicle_type, license_plate)
 
             if result is True:
-                self.welcome_screen = WelcomeScreen(self.stacked_widget, license_plate, vehicle_type)
+                self.welcome_screen = WelcomeScreen(self.stacked_widget, vehicle_type, license_plate)
                 self.stacked_widget.addWidget(self.welcome_screen)
                 self.stacked_widget.setCurrentIndex(1)
             else:
@@ -206,7 +207,7 @@ class ParkingApp(QMainWindow):
                         # self.open_welcome_screen(vehicle_type, license_plate)
                         # self.open_message_screen(Messages.DETECTION_ERROR)
                         # self.open_exit_screen(license_plate, vehicle_type)
-                        self.on_vehicle_detection(license_plate, vehicle_type)
+                        self.on_vehicle_detection(vehicle_type, license_plate)
 
                     self.previous_license_plate = license_plate
                     self.previous_vehicle_type = vehicle_type
