@@ -64,6 +64,8 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
         self.cursor.callproc('new_stay', [vehicle_type, license_plate])
         result = self.cursor.fetchone()[0]
 
+        self.connection.commit()
+
         return result
 
     def get_bill(self, license_plate: str) -> Bill:
@@ -71,8 +73,8 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
 
         bill: Optional[Bill] = None
 
-        buf = self.cursor.fetchone()[0]
-        if buf is not None:
+        buf = self.cursor.fetchone()
+        if buf is not None and len(buf) == 3 and not any([x is None for x in buf]):
             bill = Bill(*buf)
 
         return bill
@@ -83,5 +85,7 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
                              [stay_id, stay_duration, payment_amount])
 
         result = self.cursor.fetchone()[0]
+
+        self.connection.commit()
 
         return result

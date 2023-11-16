@@ -44,24 +44,22 @@ CREATE TYPE bill AS
 );
 
 CREATE OR REPLACE FUNCTION get_bill(plate_number VARCHAR)
-RETURNS SETOF bill AS $$
+RETURNS bill AS $$
 DECLARE
     my_current_time TIMESTAMP := CURRENT_TIMESTAMP;
-    stay_id INTEGER;
-    tariff DECIMAL(8, 2);
-    stay_duration INTEGER;
+    bill_object bill;
 BEGIN
     SELECT vs.id,
            vtt.price_per_hour,
            EXTRACT(EPOCH FROM (my_current_time - vs.start_time))::INTEGER
-    INTO stay_id, tariff, stay_duration
+    INTO bill_object.stay_id, bill_object.tariff, bill_object.stay_duration
     FROM VEHICLE_STAYS vs
         JOIN vehicles v on v.id = vs.vehicle_id
         JOIN vehicle_types_tariffs vtt on v.type_id = vtt.type_id
     WHERE v.license_plate = plate_number
     AND END_TIME IS NULL;
 
-    RETURN NEXT ROW(stay_id, tariff, stay_duration);
+    RETURN bill_object;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -90,7 +88,7 @@ RETURNS BOOLEAN AS $$
 DECLARE
     vehicle_id INTEGER;
     vehicle_type_id INTEGER;
-    result BOOLEAN;
+    result BOOLEAN := false;
 BEGIN
     SELECT id INTO vehicle_id FROM vehicles WHERE license_plate = arg_plate_number;
 
@@ -103,12 +101,14 @@ BEGIN
 
             SELECT id INTO vehicle_id FROM vehicles WHERE license_plate = arg_plate_number;
 
-            INSERT INTO vehicle_stays(vehicle_id, start_time) VALUES (vehicle_id, CURRENT_TIMESTAMP);
-        ELSE
-            INSERT INTO vehicle_stays(vehicle_id, start_time) VALUES (vehicle_id, CURRENT_TIMESTAMP);
-    END CASE;
+            INSERT INTO vehicle_stays(vehicle_id, start_time, end_time) VALUES (vehicle_id, CURRENT_TIMESTAMP, null);
 
-    result := true;
+            result := true;
+        ELSE
+            INSERT INTO vehicle_stays(vehicle_id, start_time, end_time) VALUES (vehicle_id, CURRENT_TIMESTAMP, null);
+
+            result := true;
+    END CASE;
 
     RETURN result;
 END;

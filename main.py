@@ -33,7 +33,7 @@ def sanitize_license_plate(license_plate: str) -> str:
     return license_plate
 
 
-def recognize_license_plate(frame):
+def recognize_vehicle(frame):
     # Wykrywanie obiektów na klatce
     detections = yolov7.detect(frame, track=True)
 
@@ -91,6 +91,7 @@ class ParkingApp(QMainWindow):
         main_window_layout.addWidget(header_label, 0, 0, 1, 16)
 
         self.playing_video = False  # Flag to track video playback
+        self.vehicle_already_detected = False
 
         if show_load_video_button:
             self.load_video_button = QPushButton('Przetestuj video')
@@ -192,7 +193,7 @@ class ParkingApp(QMainWindow):
                     )
                     self.video_widget.setPixmap(pixmap)
 
-                license_plate, vehicle_type = recognize_license_plate(frame)
+                license_plate, vehicle_type = recognize_vehicle(frame)
 
                 if license_plate is not None and vehicle_type is not None:
                     license_plate = sanitize_license_plate(license_plate)
@@ -207,14 +208,18 @@ class ParkingApp(QMainWindow):
                         # self.open_welcome_screen(vehicle_type, license_plate)
                         # self.open_message_screen(Messages.DETECTION_ERROR)
                         # self.open_exit_screen(license_plate, vehicle_type)
-                        self.on_vehicle_detection(vehicle_type, license_plate)
+                        if not self.vehicle_already_detected:
+                            self.on_vehicle_detection(vehicle_type, license_plate)
+                        self.vehicle_already_detected = True
 
                     self.previous_license_plate = license_plate
                     self.previous_vehicle_type = vehicle_type
                     self.frames_without_detection = 0
                 else:
+
                     self.frames_without_detection += 1
                     if self.frames_without_detection > 60:
+                        self.vehicle_already_detected = False
                         self.close_all_screens()
 
             else:
