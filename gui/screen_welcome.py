@@ -111,7 +111,7 @@ class WelcomeScreen(QWidget):
 
         return button
 
-    def __init__(self, parent, license_plate: str, vehicle_class: str):
+    def __init__(self, parent, vehicle_class: str, license_plate: str):
         super().__init__(parent)
         self.setWindowTitle("WJAZD")
 

@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QWidget, \
     QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
-from PyQt5 import QtCore
 
 
 class ExitScreen(QWidget):
@@ -104,7 +103,7 @@ class ExitScreen(QWidget):
             f'Do zapłaty: {total}', 50, icon_path, 120
         )
 
-    def __init__(self, parent, license_plate: str = 'SC 12345', vehicle_type: str = 'car'):
+    def __init__(self, parent, vehicle_type: str, license_plate: str):
         super().__init__(parent)
         self.setWindowTitle("WYJAZD")
 

@@ -1,11 +1,10 @@
 from typing import Dict, Tuple
+from enum import IntEnum
 
 from PyQt5.QtWidgets import QWidget, \
-    QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout, QVBoxLayout
+    QLabel, QGridLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
-from PyQt5 import QtCore
-from enum import IntEnum
 
 
 # Define an Enum class for keys

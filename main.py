@@ -10,10 +10,12 @@ from PyQt5.QtGui import QImage, QPixmap, QFont
 from PyQt5.QtCore import Qt, QTimer
 
 from algorithm.object_detector import YOLOv7
-from gui.screen_exit import ExitScreen
 
+from gui.screen_exit import ExitScreen
 from gui.screen_welcome import WelcomeScreen
-from gui.screen_message import MessageScreen
+from gui.screen_message import MessageScreen, Messages
+
+from db.db_communicator import PostrgesDatabaseCommunicator
 
 # Inicjalizacja detektora
 yolov7 = YOLOv7()
@@ -32,17 +34,14 @@ def sanitize_license_plate(license_plate: str) -> str:
 
 
 def recognize_license_plate(frame):
-    # detected_plates = set()
-
     # Wykrywanie obiektów na klatce
     detections = yolov7.detect(frame, track=True)
 
-    vehicle_type: str = None
-    license_plate: str = None
+    vehicle_type: Optional[str] = None
+    license_plate: Optional[str] = None
 
     # Sprawdzanie i zapisywanie tekstu, jeśli istnieje
     for detection in detections:
-
         if detection['class'] == 'tablica':
             license_plate = detection.get('text', '')
         elif detection['class'] == 'car':
@@ -63,6 +62,11 @@ class ParkingApp(QMainWindow):
         self.welcome_screen = None
         self.message_screen = None
         self.exit_screen = None
+
+        self.db_communicator = PostrgesDatabaseCommunicator(
+            "parking", "Q1234567",
+            "127.0.0.1", 5432, "ParkingDB"
+        )
 
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
@@ -111,12 +115,28 @@ class ParkingApp(QMainWindow):
         self.previous_vehicle_type: Optional[str] = None
         self.frames_with_same_detection: int = 0
 
-    def open_welcome_screen(self, license_plate: str, vehicle_type: str):
-        if self.stacked_widget.currentIndex() == 0:
-            self.welcome_screen = WelcomeScreen(self.stacked_widget, license_plate, vehicle_type)
-
-            self.stacked_widget.addWidget(self.welcome_screen)
+    def on_vehicle_detection(self, vehicle_type: str, license_plate: str):
+        bill = self.db_communicator.get_bill(license_plate)
+        if bill.stay_id is None:
+            self.open_welcome_screen(vehicle_type, license_plate)
+        else:
+            self.message_screen = MessageScreen(self.stacked_widget, Messages.GENERAL_ERROR)
+            self.stacked_widget.addWidget(self.message_screen)
             self.stacked_widget.setCurrentIndex(1)
+
+    def open_welcome_screen(self, vehicle_type: str, license_plate: str):
+        if self.stacked_widget.currentIndex() == 0:
+
+            result = self.db_communicator.new_stay(vehicle_type, license_plate)
+
+            if result is True:
+                self.welcome_screen = WelcomeScreen(self.stacked_widget, license_plate, vehicle_type)
+                self.stacked_widget.addWidget(self.welcome_screen)
+                self.stacked_widget.setCurrentIndex(1)
+            else:
+                self.message_screen = MessageScreen(self.stacked_widget, Messages.GENERAL_ERROR)
+                self.stacked_widget.addWidget(self.message_screen)
+                self.stacked_widget.setCurrentIndex(1)
 
     def open_message_screen(self, message_enum: IntEnum):
         self.close_all_screens()
@@ -128,9 +148,9 @@ class ParkingApp(QMainWindow):
             self.stacked_widget.addWidget(self.message_screen)
             self.stacked_widget.setCurrentIndex(1)
 
-    def open_exit_screen(self, license_plate: str, vehicle_type: str):
+    def open_exit_screen(self, vehicle_type: str, license_plate: str):
         if self.stacked_widget.currentIndex() == 0:
-            self.exit_screen = ExitScreen(self.stacked_widget, license_plate, vehicle_type)
+            self.exit_screen = ExitScreen(self.stacked_widget, vehicle_type, license_plate)
 
             self.stacked_widget.addWidget(self.exit_screen)
             self.stacked_widget.setCurrentIndex(1)
@@ -183,9 +203,10 @@ class ParkingApp(QMainWindow):
                         self.frames_with_same_detection = 0
 
                     if self.frames_with_same_detection > 5:
-                        self.open_welcome_screen(license_plate, vehicle_type)
+                        # self.open_welcome_screen(vehicle_type, license_plate)
                         # self.open_message_screen(Messages.DETECTION_ERROR)
                         # self.open_exit_screen(license_plate, vehicle_type)
+                        self.on_vehicle_detection(license_plate, vehicle_type)
 
                     self.previous_license_plate = license_plate
                     self.previous_vehicle_type = vehicle_type

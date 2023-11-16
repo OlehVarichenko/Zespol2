@@ -3,11 +3,19 @@ import psycopg2
 from psycopg2 import Error
 
 
+class Bill:
+    def __init__(self, stay_id: int, tariff: Decimal, stay_duration: int):
+        super().__init__()
+        self.stay_id = stay_id
+        self.tariff = tariff
+        self.stay_duration = stay_duration
+
+
 class DatabaseCommunicator:
     def __init__(self):
         super().__init__()
 
-    def new_stay(self, license_plate: str) -> bool:
+    def new_stay(self, vehicle_type: str, license_plate: str) -> bool:
         raise NotImplementedError()
 
     def get_bill(self, license_plate: str):
@@ -44,15 +52,15 @@ class PostrgesDatabaseCommunicator(DatabaseCommunicator):
                 self.cursor.close()
                 self.connection.close()
 
-    def new_stay(self, license_plate: str) -> bool:
-        self.cursor.callproc('new_stay', [license_plate])
+    def new_stay(self, vehicle_type: str, license_plate: str) -> bool:
+        self.cursor.callproc('new_stay', [vehicle_type, license_plate])
         result = self.cursor.fetchone()[0]
 
         return result
 
-    def get_bill(self, license_plate: str):
+    def get_bill(self, license_plate: str) -> Bill:
         self.cursor.callproc('get_bill', [license_plate])
-        bill = self.cursor.fetchone()[0]
+        bill: Bill = Bill(*self.cursor.fetchone()[0])
 
         return bill
 
