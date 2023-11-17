@@ -49,27 +49,6 @@ class PostgresDatabaseCommunicator(DatabaseCommunicator):
         )
         return connection
 
-    # def __enter__(self):
-    #     try:
-    #         self.connection = psycopg2.connect(
-    #             user=self.user,
-    #             password=self.password,
-    #             host=self.host,
-    #             port=self.port,
-    #             database=self.database
-    #         )
-    #         self.cursor = self.connection.cursor()
-    #         # return self.cursor
-    #         return self
-    #     except (Exception, psycopg2.Error) as error:
-    #         print("Nie udało się połączyć z bazą danych.\nBłąd: ", error, "\n")
-    #
-    # def __exit__(self, exc_type, exc_value, traceback):
-    #     if self.cursor:
-    #         self.cursor.close()
-    #     if self.connection:
-    #         self.connection.close()
-
     def new_stay(self, vehicle_type: str, license_plate: str) -> str:
         with self._return_connection() as connection:
             with connection.cursor() as cursor:
