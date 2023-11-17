@@ -1,4 +1,5 @@
 from decimal import Decimal
+from math import floor
 
 from PyQt5.QtWidgets import QWidget, \
     QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout, QVBoxLayout
@@ -66,52 +67,46 @@ class ExitScreen(QWidget):
 
         return license_plate_label
 
-    @staticmethod
-    def get_vehicle_tariff(class_name: str) -> Decimal:
-        vehicle_tariff_text = None
-
-        if class_name == 'car':
-            vehicle_tariff_text = Decimal(5.0)
-        elif class_name == 'truck':
-            vehicle_tariff_text = Decimal(10.0)
-        elif class_name == 'motorcycle':
-            vehicle_tariff_text = Decimal(3.0)
-
-        return vehicle_tariff_text
-
-    @staticmethod
-    def get_parking_time(license_plate: str) -> int:
-        return 122000
-
     def get_vehicle_tariff_layout(self):
         icon_path = f'gui/resources/images/{self.vehicle_type}_2.png'
         return self.get_icon_n_text_layout(
-            f'Taryfa: {self.tariff}', 50, icon_path,120
+            f'Taryfa: {round(self.tariff, 2)} zł/h', 50, icon_path,120
         )
 
     def get_parking_time_layout(self):
         icon_path = f'gui/resources/images/clock.png'
+        parking_time_string = ''
+        days = self.parking_time / 60 / 60 / 24
+        if days >= 1:
+            parking_time_string += f'{floor(days)} dni'
+        hours = self.parking_time / 60 / 60
+        if hours >= 1:
+            parking_time_string += f' {floor(hours)} godzin'
+        minutes = self.parking_time / 60
+        if minutes >= 1:
+            parking_time_string += f' {floor(minutes)} minut'
         return self.get_icon_n_text_layout(
-            f'Czas postoju: {self.parking_time}', 50, icon_path, 120
+            f'Czas postoju: {parking_time_string}', 50, icon_path, 120
         )
 
     def get_total_layout(self):
         icon_path = f'gui/resources/images/wallet.png'
-        total = self.tariff * self.parking_time
+        total = round(self.tariff * self.parking_time / 60 / 60, 2)
 
         return self.get_icon_n_text_layout(
-            f'Do zapłaty: {total}', 50, icon_path, 120
+            f'Do zapłaty: {total} zł', 50, icon_path, 120
         )
 
-    def __init__(self, parent, vehicle_type: str, license_plate: str):
+    def __init__(self, parent, vehicle_type: str, license_plate: str,
+                 tariff: Decimal, stay_duration: int):
         super().__init__(parent)
         self.setWindowTitle("WYJAZD")
 
         self.vehicle_type: str = vehicle_type
         self.license_plate: str = license_plate
 
-        self.tariff: Decimal = self.get_vehicle_tariff(self.vehicle_type)
-        self.parking_time: int = self.get_parking_time(self.license_plate)
+        self.tariff: Decimal = tariff
+        self.parking_time: int = stay_duration
 
         # dodanie czarnego tła dla spacingu
         self.setAutoFillBackground(True)

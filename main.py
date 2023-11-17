@@ -1,4 +1,5 @@
 import sys
+from decimal import Decimal
 from enum import IntEnum
 from typing import Optional
 
@@ -121,7 +122,7 @@ class ParkingApp(QMainWindow):
         if bill is None:
             self.open_welcome_screen(vehicle_type, license_plate)
         else:
-            self.open_message_screen(Messages.GENERAL_ERROR)
+            self.open_exit_screen(vehicle_type, license_plate, bill.tariff, bill.stay_duration)
 
     def open_welcome_screen(self, vehicle_type: str, license_plate: str):
         if self.stacked_widget.currentIndex() == 0:
@@ -146,9 +147,11 @@ class ParkingApp(QMainWindow):
             self.stacked_widget.addWidget(self.message_screen)
             self.stacked_widget.setCurrentIndex(1)
 
-    def open_exit_screen(self, vehicle_type: str, license_plate: str):
+    def open_exit_screen(self, vehicle_type: str, license_plate: str,
+                         tariff: Decimal, stay_duration: int):
         if self.stacked_widget.currentIndex() == 0:
-            self.exit_screen = ExitScreen(self.stacked_widget, vehicle_type, license_plate)
+            self.exit_screen = ExitScreen(self.stacked_widget, vehicle_type,
+                                          license_plate, tariff, stay_duration)
 
             self.stacked_widget.addWidget(self.exit_screen)
             self.stacked_widget.setCurrentIndex(1)
@@ -220,6 +223,7 @@ class ParkingApp(QMainWindow):
 
             else:
                 self.playing_video = False
+                self.vehicle_already_detected = False
                 self.close_all_screens()
                 self.frames_without_detection = 0
                 self.video_widget.setStyleSheet("background-color: black")
