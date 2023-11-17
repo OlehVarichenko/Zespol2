@@ -15,7 +15,7 @@ from gui.screen_exit import ExitScreen
 from gui.screen_welcome import WelcomeScreen
 from gui.screen_message import MessageScreen, Messages
 
-from db.db_communicator import PostrgesDatabaseCommunicator
+from db.db_communicator import PostgresDatabaseCommunicator
 
 # Inicjalizacja detektora
 yolov7 = YOLOv7()
@@ -63,7 +63,7 @@ class ParkingApp(QMainWindow):
         self.message_screen = None
         self.exit_screen = None
 
-        self.db_communicator = PostrgesDatabaseCommunicator(
+        self.db_communicator = PostgresDatabaseCommunicator(
             "parking", "Q1234567",
             "127.0.0.1", 5432, "ParkingDB"
         )
@@ -117,28 +117,24 @@ class ParkingApp(QMainWindow):
         self.frames_with_same_detection: int = 0
 
     def on_vehicle_detection(self, vehicle_type: str, license_plate: str):
-        with self.db_communicator as comm:
-            bill = comm.get_bill(license_plate)
-            if bill is None:
-                self.open_welcome_screen(vehicle_type, license_plate)
-            else:
-                self.message_screen = MessageScreen(self.stacked_widget, Messages.GENERAL_ERROR)
-                self.stacked_widget.addWidget(self.message_screen)
-                self.stacked_widget.setCurrentIndex(1)
+        bill = self.db_communicator.get_bill(license_plate)
+        if bill is None:
+            self.open_welcome_screen(vehicle_type, license_plate)
+        else:
+            self.open_message_screen(Messages.GENERAL_ERROR)
 
     def open_welcome_screen(self, vehicle_type: str, license_plate: str):
         if self.stacked_widget.currentIndex() == 0:
 
-            result = self.db_communicator.new_stay(vehicle_type, license_plate)
+            try:
+                sector_name = self.db_communicator.new_stay(vehicle_type, license_plate)
 
-            if result is True:
-                self.welcome_screen = WelcomeScreen(self.stacked_widget, vehicle_type, license_plate)
+                self.welcome_screen = WelcomeScreen(self.stacked_widget, vehicle_type,
+                                                    license_plate, sector_name)
                 self.stacked_widget.addWidget(self.welcome_screen)
                 self.stacked_widget.setCurrentIndex(1)
-            else:
-                self.message_screen = MessageScreen(self.stacked_widget, Messages.GENERAL_ERROR)
-                self.stacked_widget.addWidget(self.message_screen)
-                self.stacked_widget.setCurrentIndex(1)
+            except:
+                self.open_message_screen(Messages.GENERAL_ERROR)
 
     def open_message_screen(self, message_enum: IntEnum):
         self.close_all_screens()

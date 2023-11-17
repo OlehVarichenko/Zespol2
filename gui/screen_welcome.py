@@ -66,7 +66,7 @@ class WelcomeScreen(QWidget):
         location_label = QLabel()
         location_label.setAlignment(Qt.AlignCenter)
         location_label.setFont(QFont("Arial", 45, QFont.Bold))
-        location_label.setText(f"Miejsce do parkowania: Sektor {self.get_sector_text(self.vehicle_class)}")
+        location_label.setText(f"Miejsce do parkowania: Sektor {self.sector_name}")
         location_label.setContentsMargins(20, 20, 20, 20)
 
         location_original_icon = QIcon('gui/resources/images/location.png')
@@ -111,12 +111,14 @@ class WelcomeScreen(QWidget):
 
         return button
 
-    def __init__(self, parent, vehicle_class: str, license_plate: str):
+    def __init__(self, parent, vehicle_class: str,
+                 license_plate: str, sector_name: str):
         super().__init__(parent)
         self.setWindowTitle("WJAZD")
 
         self.vehicle_class: str = vehicle_class
         self.license_plate: str = license_plate
+        self.sector_name: str = sector_name
 
         # dodanie czarnego tłą dla spacingu
         self.setAutoFillBackground(True)
