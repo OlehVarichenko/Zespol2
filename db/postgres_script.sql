@@ -29,8 +29,8 @@ CREATE TABLE vehicle_types_tariffs (
 );
 
 INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(1, 2.5);
-INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(1, 5);
-INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(1, 10);
+INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(2, 5);
+INSERT INTO vehicle_types_tariffs(type_id, price_per_hour) VALUES(3, 10);
 
 CREATE TABLE vehicles (
     id SERIAL PRIMARY KEY,
