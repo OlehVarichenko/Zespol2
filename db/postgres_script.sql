@@ -7,6 +7,21 @@ INSERT INTO vehicle_types(vehicle_type) VALUES('motorcycle');
 INSERT INTO vehicle_types(vehicle_type) VALUES('car');
 INSERT INTO vehicle_types(vehicle_type) VALUES('truck');
 
+CREATE TABLE sectors (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(10) UNIQUE,
+    vehicle_type_id INTEGER REFERENCES vehicle_types(id) NOT NULL,
+    number_of_places SMALLINT NOT NULL,
+    places_occupied SMALLINT NOT NULL DEFAULT 0
+);
+
+INSERT INTO sectors(name, vehicle_type_id, number_of_places)
+VALUES ('A', 1, 20);
+INSERT INTO sectors(name, vehicle_type_id, number_of_places)
+VALUES ('B', 2, 30);
+INSERT INTO sectors(name, vehicle_type_id, number_of_places)
+VALUES ('C', 3, 10);
+
 CREATE TABLE vehicle_types_tariffs (
     id SERIAL PRIMARY KEY,
     type_id INTEGER REFERENCES vehicle_types(id) NOT NULL,
