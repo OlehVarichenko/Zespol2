@@ -76,15 +76,29 @@ class ExitScreen(QWidget):
     def get_parking_time_layout(self):
         icon_path = f'gui/resources/images/clock.png'
         parking_time_string = ''
-        days = self.parking_time / 60 / 60 / 24
-        if days >= 1:
-            parking_time_string += f'{floor(days)} dni'
-        hours = self.parking_time / 60 / 60
-        if hours >= 1:
-            parking_time_string += f' {floor(hours)} godzin'
-        minutes = self.parking_time / 60
-        if minutes >= 1:
+
+        days = floor(self.parking_time / 60 / 60 / 24)
+        if days == 1:
+            parking_time_string += f'{days} dzień '
+        elif days >= 2:
+            parking_time_string += f'{days} dni '
+
+        hours = floor(self.parking_time / 60 / 60 - days * 24)
+        if hours == 1:
+            parking_time_string += f'{hours} godzina '
+        elif 2 <= hours <= 4:
+            parking_time_string += f'{hours} godziny '
+        elif hours >= 5:
+            parking_time_string += f'{hours} godzin '
+
+        minutes = floor(self.parking_time / 60 - hours * 60)
+        if minutes == 1:
+            parking_time_string += f' {floor(minutes)} minuta'
+        elif 2 <= minutes <= 4:
+            parking_time_string += f' {floor(minutes)} minuty'
+        elif minutes >= 5:
             parking_time_string += f' {floor(minutes)} minut'
+
         return self.get_icon_n_text_layout(
             f'Czas postoju: {parking_time_string}', 50, icon_path, 120
         )
