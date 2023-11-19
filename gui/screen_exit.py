@@ -86,7 +86,7 @@ class ExitScreen(QWidget):
         hours = floor(self.parking_time / 60 / 60 - days * 24)
         if hours == 1:
             parking_time_string += f'{hours} godzina '
-        elif 2 <= hours <= 4:
+        elif 2 <= hours % 10 <= 4 and not 12 <= hours <= 14:
             parking_time_string += f'{hours} godziny '
         elif hours >= 5:
             parking_time_string += f'{hours} godzin '
@@ -94,7 +94,7 @@ class ExitScreen(QWidget):
         minutes = floor(self.parking_time / 60 - hours * 60)
         if minutes == 1:
             parking_time_string += f' {floor(minutes)} minuta'
-        elif 2 <= minutes <= 4:
+        elif 2 <= minutes % 10 <= 4 and not 12 <= minutes <= 14:
             parking_time_string += f' {floor(minutes)} minuty'
         elif minutes >= 5:
             parking_time_string += f' {floor(minutes)} minut'
@@ -167,7 +167,7 @@ class ExitScreen(QWidget):
 
         # PRZYCISK KUPON
         voucher_button = self.generate_button(
-            "Zapłać\nkuponem", 'gui/resources/images/coupon.png'
+            "Zapłać\nkodem", 'gui/resources/images/coupon.png'
         )
         main_layout.addWidget(voucher_button, 5, 11, 3, 4)
 
