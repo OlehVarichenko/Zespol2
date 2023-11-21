@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QWidget, \
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
 
+from gui.screen_message import Messages
+
 
 class ExitScreen(QWidget):
     @staticmethod
@@ -91,7 +93,7 @@ class ExitScreen(QWidget):
         elif hours >= 5:
             parking_time_string += f'{hours} godzin '
 
-        minutes = floor(self.parking_time / 60 - hours * 60)
+        minutes = floor(self.parking_time / 60 - hours * 60 - days * 24 * 60)
         if minutes == 1:
             parking_time_string += f' {floor(minutes)} minuta'
         elif 2 <= minutes % 10 <= 4 and not 12 <= minutes <= 14:
@@ -105,22 +107,28 @@ class ExitScreen(QWidget):
 
     def get_total_layout(self):
         icon_path = f'gui/resources/images/wallet.png'
-        total = round(self.tariff * self.parking_time / 60 / 60, 2)
-
         return self.get_icon_n_text_layout(
-            f'Do zapłaty: {total} zł', 50, icon_path, 120
+            f'Do zapłaty: {self.total} zł', 50, icon_path, 120
         )
 
-    def __init__(self, parent, vehicle_type: str, license_plate: str,
-                 tariff: Decimal, stay_duration: int):
+    def on_voucher_button_click(self):
+        self.parent().parent().db_communicator.finish_stay(self.stay_id,
+                                                           self.parking_time, self.total)
+        self.parent().parent().open_message_screen(Messages.PAYMENT_SUCCESSFUL)
+
+    def __init__(self, parent, stay_id: int, vehicle_type: str,
+                 license_plate: str, tariff: Decimal, stay_duration: int):
         super().__init__(parent)
         self.setWindowTitle("WYJAZD")
 
         self.vehicle_type: str = vehicle_type
         self.license_plate: str = license_plate
+        self.stay_id = stay_id
 
         self.tariff: Decimal = tariff
         self.parking_time: int = stay_duration
+
+        self.total = round(self.tariff * self.parking_time / 60 / 60, 2)
 
         # dodanie czarnego tła dla spacingu
         self.setAutoFillBackground(True)
@@ -165,10 +173,11 @@ class ExitScreen(QWidget):
         )
         main_layout.addWidget(card_button, 5, 6, 3, 4)
 
-        # PRZYCISK KUPON
+        # PRZYCISK KOD
         voucher_button = self.generate_button(
             "Zapłać\nkodem", 'gui/resources/images/coupon.png'
         )
+        voucher_button.clicked.connect(self.on_voucher_button_click)
         main_layout.addWidget(voucher_button, 5, 11, 3, 4)
 
         self.setLayout(main_layout)
