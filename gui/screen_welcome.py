@@ -4,6 +4,8 @@ from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
 
+from gui.screen_location import LocationHelpScreen
+
 
 class WelcomeScreen(QWidget):
     def get_license_plate_label(self):
@@ -111,6 +113,12 @@ class WelcomeScreen(QWidget):
 
         return button
 
+    def show_sector_location_help(self):
+        location_help_screen = LocationHelpScreen(2, parent=self)
+
+        self.parent().addWidget(location_help_screen)
+        self.parent().setCurrentIndex(self.parent().currentIndex() + 1)
+
     def __init__(self, parent, vehicle_class: str,
                  license_plate: str, sector_name: str):
         super().__init__(parent)
@@ -151,6 +159,7 @@ class WelcomeScreen(QWidget):
             "Pokaż miejsce na schemacie",
             'gui/resources/images/location_help.png'
         )
+        show_location_button.clicked.connect(self.show_sector_location_help)
         main_layout.addWidget(show_location_button, 5, 5, 2, 6)
 
         self.setLayout(main_layout)
