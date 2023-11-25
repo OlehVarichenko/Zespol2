@@ -65,18 +65,25 @@ class LocationHelpScreen(QWidget):
             sector_layout = QVBoxLayout(sector_widget)
             sector_layout.setAlignment(Qt.AlignCenter)
 
-            icon_label = QLabel()
-            sector_name_label = QLabel(sector['sector_name'])
-            sector_name_label.setFont(QFont("Arial", 10, QFont.Bold))
+            vehicle_original_icon = QIcon(f'gui/resources/images/car_2.png')
+            vehicle_icon_label = QLabel()
+            vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(100, 100))
+            vehicle_icon_label.setAlignment(Qt.AlignCenter)
+            vehicle_icon_label.setContentsMargins(5, 5, 5, 5)
+            vehicle_icon_label.setStyleSheet("border-width: 0px;")
 
-            sector_layout.addWidget(icon_label)
+            sector_name_label = QLabel(sector['sector_name'])
+            sector_name_label.setFont(QFont("Arial", 30, QFont.Bold))
+            sector_name_label.setStyleSheet("border-width: 0px;")
+
+            sector_layout.addWidget(vehicle_icon_label)
             sector_layout.addWidget(sector_name_label)
 
-            sector_widget.setStyleSheet("border: 1px solid black;")  # Normal solid black border
+            sector_widget.setStyleSheet("border: 5px solid black;")
 
             # Highlight the specified sector
             if sector['sector_id'] == self.highlight_sector_id:
-                sector_widget.setStyleSheet("border: 2px solid red;")  # Customize highlight appearance
+                sector_widget.setStyleSheet("border: 5px solid black;background-color: yellow;")
 
             parking_scheme_layout.addWidget(sector_widget, sector['row'],
                                             sector['col'], sector['row_span'], sector['column_span'])
