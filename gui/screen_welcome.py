@@ -101,7 +101,7 @@ class WelcomeScreen(QWidget):
         return button
 
     def show_sector_location_help(self):
-        location_help_screen = LocationHelpScreen(2, parent=self)
+        location_help_screen = LocationHelpScreen(self.sector_name, parent=self)
 
         self.parent().addWidget(location_help_screen)
         self.parent().setCurrentIndex(self.parent().currentIndex() + 1)

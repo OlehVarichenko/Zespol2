@@ -24,7 +24,7 @@ INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
 VALUES ('A', 0, 0, 150, 200, 1, 40);
 INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
                     scheme_col_span, vehicle_type_id, number_of_places)
-VALUES ('B', 750, 900, 150, 300, 2, 30);
+VALUES ('B', 750, 0, 150, 300, 2, 30);
 INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
                     scheme_col_span, vehicle_type_id, number_of_places)
 VALUES ('C', 0, 900, 200, 300, 3, 10);

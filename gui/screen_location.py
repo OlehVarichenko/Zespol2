@@ -5,9 +5,9 @@ from PyQt5.QtCore import Qt
 
 
 class LocationHelpScreen(QWidget):
-    def __init__(self, highlight_sector_id, parent=None):
+    def __init__(self, highlight_sector_name: str, parent=None):
         super().__init__(parent)
-        self.highlight_sector_id = highlight_sector_id
+        self.highlight_sector_name: str = highlight_sector_name
         self.sectors_data = self.parent().parent().parent().db_communicator.get_sectors_data()
         self.init_ui()
 
@@ -70,8 +70,9 @@ class LocationHelpScreen(QWidget):
             vehicle_icon_label.setContentsMargins(5, 5, 5, 5)
             vehicle_icon_label.setStyleSheet("border-width: 0px;")
 
-            sector_name_label = QLabel(sector.name)
+            sector_name_label = QLabel(f"Sektor {sector.name}")
             sector_name_label.setFont(QFont("Arial", 40, QFont.Bold))
+            sector_name_label.setAlignment(Qt.AlignCenter)
             sector_name_label.setStyleSheet("border-width: 0px;")
 
             sector_layout.addWidget(vehicle_icon_label)
@@ -79,7 +80,7 @@ class LocationHelpScreen(QWidget):
 
             sector_widget.setStyleSheet("border: 5px solid black;")
 
-            if sector.id == self.highlight_sector_id:
+            if sector.name.lower() == self.highlight_sector_name.lower():
                 sector_widget.setStyleSheet("border: 5px solid black;background-color: yellow;")
 
             parking_scheme_layout.addWidget(
