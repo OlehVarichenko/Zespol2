@@ -1,5 +1,6 @@
 from decimal import Decimal
 from typing import Optional
+from collections import namedtuple
 
 import psycopg2
 from psycopg2 import Error
@@ -11,6 +12,11 @@ class Bill:
         self.stay_id = stay_id
         self.tariff = tariff
         self.stay_duration = stay_duration
+
+
+Sector = namedtuple('Sector', [
+    'id', 'name', 'vehicle_type_name', 'row', 'col', 'row_span', 'col_span'
+])
 
 
 class DatabaseCommunicator:
@@ -26,6 +32,9 @@ class DatabaseCommunicator:
     def finish_stay(self, stay_id: int, stay_duration: int,
                     payment_amount: Decimal) -> bool:
         raise NotImplementedError()
+
+    def get_sectors_data(self):
+        raise NotImplementedError
 
 
 class PostgresDatabaseCommunicator(DatabaseCommunicator):
@@ -83,3 +92,13 @@ class PostgresDatabaseCommunicator(DatabaseCommunicator):
                 connection.commit()
 
                 return result
+
+    def get_sectors_data(self):
+        with self._return_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.callproc('get_sectors_data', [])
+                results = cursor.fetchall()
+                for i in range(len(results)):
+                    results[i] = Sector(*results[i])
+
+                return results

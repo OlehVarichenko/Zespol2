@@ -70,7 +70,7 @@ class ExitScreen(QWidget):
         return license_plate_label
 
     def get_vehicle_tariff_layout(self):
-        icon_path = f'gui/resources/images/{self.vehicle_type}_2.png'
+        icon_path = f'gui/resources/images/{self.vehicle_type}.png'
         return self.get_icon_n_text_layout(
             f'Taryfa: {round(self.tariff, 2)} zł/h', 50, icon_path,120
         )
@@ -158,8 +158,8 @@ class ExitScreen(QWidget):
         main_layout.addLayout(parking_sector_layout, 2, 5, 1, 6)
 
         ## -- PODSUMOWANIE
-        parking_sector_layout_2 = self.get_total_layout()
-        main_layout.addLayout(parking_sector_layout_2, 3, 5, 1, 6)
+        total_sum_layout = self.get_total_layout()
+        main_layout.addLayout(total_sum_layout, 3, 5, 1, 6)
 
         ## -- PRZYCISK BLIK
         blik_button = self.generate_button(

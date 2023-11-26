@@ -29,19 +29,6 @@ class WelcomeScreen(QWidget):
 
         return vehicle_type_text
 
-    @staticmethod
-    def get_sector_text(class_name: str) -> str:
-        sector_text = None
-
-        if class_name == 'car':
-            sector_text = 'A'
-        elif class_name == 'truck':
-            sector_text = 'B'
-        elif class_name == 'motorcycle':
-            sector_text = 'C'
-
-        return sector_text
-
     def get_vehicle_type_layout(self):
         vehicle_type_label = QLabel()
         vehicle_type_label.setAlignment(Qt.AlignCenter)
@@ -49,7 +36,7 @@ class WelcomeScreen(QWidget):
         vehicle_type_label.setText(self.get_vehicle_type_text(self.vehicle_class))
         vehicle_type_label.setContentsMargins(20, 20, 20, 20)
 
-        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_class}_2.png')
+        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_class}.png')
         vehicle_icon_label = QLabel()
         vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
         vehicle_icon_label.setAlignment(Qt.AlignCenter)

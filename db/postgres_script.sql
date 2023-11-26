@@ -1,26 +1,42 @@
 CREATE TABLE vehicle_types (
     id SERIAL PRIMARY KEY,
-    vehicle_type VARCHAR(50) UNIQUE
+    name VARCHAR(50) UNIQUE
 );
 
-INSERT INTO vehicle_types(vehicle_type) VALUES('motorcycle');
-INSERT INTO vehicle_types(vehicle_type) VALUES('car');
-INSERT INTO vehicle_types(vehicle_type) VALUES('truck');
+INSERT INTO vehicle_types(name) VALUES('motorcycle');
+INSERT INTO vehicle_types(name) VALUES('car');
+INSERT INTO vehicle_types(name) VALUES('truck');
 
 CREATE TABLE sectors (
     id SERIAL PRIMARY KEY,
     name VARCHAR(10) UNIQUE,
     vehicle_type_id INTEGER REFERENCES vehicle_types(id) NOT NULL,
+    scheme_row INTEGER NOT NULL,
+    scheme_col INTEGER NOT NULL,
+    scheme_row_span INTEGER NOT NULL,
+    scheme_col_span INTEGER NOT NULL,
     number_of_places SMALLINT NOT NULL,
     places_occupied SMALLINT NOT NULL DEFAULT 0
 );
 
-INSERT INTO sectors(name, vehicle_type_id, number_of_places)
-VALUES ('A', 1, 20);
-INSERT INTO sectors(name, vehicle_type_id, number_of_places)
-VALUES ('B', 2, 30);
-INSERT INTO sectors(name, vehicle_type_id, number_of_places)
-VALUES ('C', 3, 10);
+INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
+                    scheme_col_span, vehicle_type_id, number_of_places)
+VALUES ('A', 0, 0, 150, 200, 1, 40);
+INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
+                    scheme_col_span, vehicle_type_id, number_of_places)
+VALUES ('B', 750, 900, 150, 300, 2, 30);
+INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
+                    scheme_col_span, vehicle_type_id, number_of_places)
+VALUES ('C', 0, 900, 200, 300, 3, 10);
+INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
+                    scheme_col_span, vehicle_type_id, number_of_places)
+VALUES ('D', 200, 900, 200, 300, 2, 40);
+INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
+                    scheme_col_span, vehicle_type_id, number_of_places)
+VALUES ('E', 500, 900, 200, 300, 2, 40);
+INSERT INTO sectors(name, scheme_row, scheme_col, scheme_row_span,
+                    scheme_col_span, vehicle_type_id, number_of_places)
+VALUES ('F', 700, 900, 200, 300, 2, 40);
 
 CREATE TABLE vehicle_types_tariffs (
     id SERIAL PRIMARY KEY,
@@ -79,6 +95,18 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_sectors_data()
+RETURNS TABLE (id INTEGER, name VARCHAR, vehicle_type_name VARCHAR,
+               scheme_row INTEGER, scheme_col INTEGER,
+               scheme_row_span INTEGER, scheme_col_span INTEGER) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.id, s.name, vt.name, s.scheme_row,
+           s.scheme_col, s.scheme_row_span, s.scheme_col_span
+    FROM sectors s JOIN vehicle_types vt on vt.id = s.vehicle_type_id;
+END;
+$$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION finish_stay(arg_stay_id INTEGER,
                                        arg_stay_duration INTEGER,
@@ -118,7 +146,7 @@ DECLARE
 BEGIN
     SELECT s.id, s.name INTO new_stay_sector_id, new_stay_sector_name
     FROM sectors s JOIN vehicle_types vt on vt.id = s.vehicle_type_id
-    WHERE vt.vehicle_type = arg_type
+    WHERE vt.name = arg_type
     ORDER BY s.places_occupied
     LIMIT 1;
 
@@ -131,7 +159,7 @@ BEGIN
 
     IF new_stay_vehicle_id IS NULL THEN
         SELECT id INTO new_stay_vehicle_type_id
-        FROM vehicle_types WHERE vehicle_type = arg_type;
+        FROM vehicle_types WHERE name = arg_type;
 
         INSERT INTO vehicles(type_id, license_plate)
         VALUES(new_stay_vehicle_type_id, arg_plate_number);
@@ -150,20 +178,3 @@ BEGIN
     RETURN new_stay_sector_name;
 END;
 $$ LANGUAGE plpgsql;
-
------------------------------------
-
-DROP TABLE IF EXISTS payments;
-DROP TABLE IF EXISTS vehicle_stays;
-DROP TABLE IF EXISTS vehicles;
-DROP TABLE IF EXISTS sectors;
-DROP TABLE IF EXISTS vehicle_types_tariffs;
-DROP TABLE IF EXISTS vehicle_types;
-
-DROP FUNCTION IF EXISTS get_bill(plate_number VARCHAR);
-
-DROP FUNCTION IF EXISTS finish_stay(arg_stay_id INTEGER,
-                                             arg_stay_duration INTEGER,
-                                             arg_payment DECIMAL(11, 2));
-
-DROP FUNCTION IF EXISTS new_stay(arg_type VARCHAR, arg_plate_number VARCHAR);

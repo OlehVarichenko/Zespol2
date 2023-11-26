@@ -76,7 +76,7 @@ class ParkingApp(QMainWindow):
 
         self.main_window_widget = QWidget(self)
 
-        self.video_widget = QLabel()  # Use a QLabel to display the video
+        self.video_widget = QLabel()
         self.video_widget.setStyleSheet("background-color: black")
 
         main_window_layout = QGridLayout()
@@ -87,11 +87,11 @@ class ParkingApp(QMainWindow):
         header_label = QLabel("PARKING AUTOMATYCZNY")
         header_label.setAlignment(Qt.AlignCenter)
         header_label.setStyleSheet("background-color: black; color: white;")
-        header_label.setFont(QFont("Arial", 75, QFont.Bold))  # Change the font and size
+        header_label.setFont(QFont("Arial", 75, QFont.Bold))
 
         main_window_layout.addWidget(header_label, 0, 0, 1, 16)
 
-        self.playing_video = False  # Flag to track video playback
+        self.playing_video = False
         self.vehicle_already_detected = False
 
         if show_load_video_button:
@@ -99,18 +99,17 @@ class ParkingApp(QMainWindow):
             self.load_video_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
             self.load_video_button.clicked.connect(self.open_file_dialog)
             main_window_layout.addWidget(self.load_video_button, 5, 5, 1, 6)
-            self.cap = None  # Initialize the video capture object as None
+            self.cap = None
         else:
-            self.cap = cv2.VideoCapture(0)  # 0 for the default camera
+            self.cap = cv2.VideoCapture(0)
 
         self.main_window_widget.setLayout(main_window_layout)
 
         self.stacked_widget.addWidget(self.main_window_widget)
 
-        # Create a timer to update the video frame
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(10)  # Update every 10 milliseconds
+        self.timer.start(10)
 
         self.frames_without_detection: int = 0
         self.previous_license_plate: Optional[str] = None
@@ -168,7 +167,7 @@ class ParkingApp(QMainWindow):
     @staticmethod
     def get_resized_pixmap_from_frame(frame, width: int, height: int):
         frame_resized = cv2.resize(frame, (width, height))
-        frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+        frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
         height, width, channel = frame_resized.shape
         bytesPerLine = 3 * width
         qImg = QImage(frame_resized.data, width, height, bytesPerLine, QImage.Format_RGB888)
@@ -205,9 +204,6 @@ class ParkingApp(QMainWindow):
                         self.frames_with_same_detection = 0
 
                     if self.frames_with_same_detection > 5:
-                        # self.open_welcome_screen(vehicle_type, license_plate)
-                        # self.open_message_screen(Messages.DETECTION_ERROR)
-                        # self.open_exit_screen(license_plate, vehicle_type)
                         if not self.vehicle_already_detected:
                             self.on_vehicle_detection(vehicle_type, license_plate)
                         self.vehicle_already_detected = True
@@ -240,7 +236,6 @@ class ParkingApp(QMainWindow):
             if self.cap is not None:
                 self.cap.release()
 
-            # Open the selected video file
             self.cap = cv2.VideoCapture(file)
 
             if self.cap.isOpened():
