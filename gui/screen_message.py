@@ -21,13 +21,13 @@ messages_dict: Dict[IntEnum, Tuple[str, str]] = {
                              "gui/resources/images/error.png"),
     Messages.DETECTION_ERROR: ("WYSTĄPIŁ BŁĄD DETEKCJI\nPROSIMY O ZWRÓCENIE SIĘ DO OBSŁUGI",
                                "gui/resources/images/error.png"),
-    Messages.NO_FREE_PARKING_LOTS: ("BRAK\nMIEJSC\nPARKINGOWYCH",
+    Messages.NO_FREE_PARKING_LOTS: ("BRAK MIEJSC PARKINGOWYCH",
                                     "gui/resources/images/no_entry.png"),
     Messages.NO_FREE_PARKING_LOTS_SOME_TYPE: ("BRAK MIEJSC PARKINGOWYCH\nDLA DANEGO TYPU POJAZDU",
                                               "gui/resources/images/no_entry.png"),
-    Messages.PAYMENT_SUCCESSFUL: ("PŁATNOŚĆ DOKONANA POMYŚLNIE\n\nMIŁEGO DNIA!",
+    Messages.PAYMENT_SUCCESSFUL: ("PŁATNOŚĆ DOKONANA POMYŚLNIE\nMIŁEGO DNIA!",
                                   "gui/resources/images/ok.png"),
-    Messages.PAYMENT_UNSUCCESSFUL: ("WYSTĄPIŁ PROBLEM Z PŁATNOŚCIĄ\n\nPROSIMY SPRÓBOWAĆ PONOWNIE",
+    Messages.PAYMENT_UNSUCCESSFUL: ("WYSTĄPIŁ PROBLEM Z PŁATNOŚCIĄ\nPROSIMY SPRÓBOWAĆ PONOWNIE",
                                     "gui/resources/images/error.png")
 }
 
