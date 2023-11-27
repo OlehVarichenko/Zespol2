@@ -7,7 +7,6 @@ from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
 
 
-# Define an Enum class for keys
 class Messages(IntEnum):
     DETECTION_ERROR = -2
     GENERAL_ERROR = -1
@@ -17,10 +16,11 @@ class Messages(IntEnum):
     PAYMENT_UNSUCCESSFUL = 4
 
 
-# Create a dictionary with enum-like keys and tuple values
 messages_dict: Dict[IntEnum, Tuple[str, str]] = {
-    Messages.GENERAL_ERROR: ("WYSTĄPIŁ BŁĄD SYSTEMU", "gui/resources/images/error.png"),
-    Messages.DETECTION_ERROR: ("WYSTĄPIŁ BŁĄD DETEKCJI", "gui/resources/images/error.png"),
+    Messages.GENERAL_ERROR: ("WYSTĄPIŁ BŁĄD SYSTEMU\nPROSIMY O ZWRÓCENIE SIĘ DO OBSŁUGI",
+                             "gui/resources/images/error.png"),
+    Messages.DETECTION_ERROR: ("WYSTĄPIŁ BŁĄD DETEKCJI\nPROSIMY O ZWRÓCENIE SIĘ DO OBSŁUGI",
+                               "gui/resources/images/error.png"),
     Messages.NO_FREE_PARKING_LOTS: ("BRAK\nMIEJSC\nPARKINGOWYCH",
                                     "gui/resources/images/no_entry.png"),
     Messages.NO_FREE_PARKING_LOTS_SOME_TYPE: ("BRAK MIEJSC PARKINGOWYCH\nDLA DANEGO TYPU POJAZDU",
@@ -51,7 +51,6 @@ class MessageScreen(QWidget):
         text_label.setStyleSheet("color: white;")
         text_label.setContentsMargins(20, 20, 20, 20)
 
-        # Create a horizontal layout for the icon and text
         vertical_layout = QVBoxLayout()
         vertical_layout.addWidget(icon_label)
         vertical_layout.addWidget(text_label)

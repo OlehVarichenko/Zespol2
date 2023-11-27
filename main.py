@@ -4,6 +4,7 @@ from enum import IntEnum
 from typing import Optional
 
 import cv2
+import psycopg2
 from torch import cuda
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
     QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QStackedWidget
@@ -21,8 +22,8 @@ from db.db_communicator import PostgresDatabaseCommunicator
 # Inicjalizacja detektora
 yolov7 = YOLOv7()
 ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
-yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustaw progi pewności na 0.7
-# wybór cpu/gpu
+yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustawienie progów pewności
+# Wybór cpu/gpu
 device = 'cuda' if cuda.is_available() else 'cpu'
 yolov7.load('best.weights', classes='classes.yaml', device=device)
 
@@ -117,16 +118,18 @@ class ParkingApp(QMainWindow):
         self.frames_with_same_detection: int = 0
 
     def on_vehicle_detection(self, vehicle_type: str, license_plate: str):
-        bill = self.db_communicator.get_bill(license_plate)
-        if bill is None:
-            self.open_welcome_screen(vehicle_type, license_plate)
-        else:
-            self.open_exit_screen(bill.stay_id, vehicle_type,
-                                  license_plate, bill.tariff, bill.stay_duration)
+        try:
+            bill = self.db_communicator.get_bill(license_plate)
+            if bill is None:
+                self.open_welcome_screen(vehicle_type, license_plate)
+            else:
+                self.open_exit_screen(bill.stay_id, vehicle_type,
+                                      license_plate, bill.tariff, bill.stay_duration)
+        except:
+            self.open_message_screen(Messages.GENERAL_ERROR)
 
     def open_welcome_screen(self, vehicle_type: str, license_plate: str):
         if self.stacked_widget.currentIndex() == 0:
-
             try:
                 sector_name = self.db_communicator.new_stay(vehicle_type, license_plate)
 
@@ -134,6 +137,13 @@ class ParkingApp(QMainWindow):
                                                     license_plate, sector_name)
                 self.stacked_widget.addWidget(self.welcome_screen)
                 self.stacked_widget.setCurrentIndex(1)
+            except psycopg2.Error as err:
+                if err.pgcode == 'NO_FREE_PARKING_LOTS':
+                    self.open_message_screen(Messages.NO_FREE_PARKING_LOTS)
+                elif err.pgcode == 'NO_FREE_PARKING_LOTS_SOME_TYPE':
+                    self.open_message_screen(Messages.NO_FREE_PARKING_LOTS_SOME_TYPE)
+                else:
+                    self.open_message_screen(Messages.GENERAL_ERROR)
             except:
                 self.open_message_screen(Messages.GENERAL_ERROR)
 
@@ -150,14 +160,17 @@ class ParkingApp(QMainWindow):
     def open_exit_screen(self, stay_id: int, vehicle_type: str, license_plate: str,
                          tariff: Decimal, stay_duration: int):
         if self.stacked_widget.currentIndex() == 0:
-            self.exit_screen = ExitScreen(self.stacked_widget, stay_id, vehicle_type,
-                                          license_plate, tariff, stay_duration)
+            try:
+                self.exit_screen = ExitScreen(self.stacked_widget, stay_id, vehicle_type,
+                                              license_plate, tariff, stay_duration)
 
-            self.stacked_widget.addWidget(self.exit_screen)
-            self.stacked_widget.setCurrentIndex(1)
+                self.stacked_widget.addWidget(self.exit_screen)
+                self.stacked_widget.setCurrentIndex(1)
+            except:
+                self.open_message_screen(Messages.GENERAL_ERROR)
 
     def close_all_screens(self):
-        if self.stacked_widget.currentIndex() != 0:
+        if self.stacked_widget.currentIndex() != 0 and self.stacked_widget.count() > 0:
             self.stacked_widget.setCurrentIndex(0)
             for i in range(self.stacked_widget.count() - 1, 0, -1):
                 widget = self.stacked_widget.widget(i)

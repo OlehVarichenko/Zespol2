@@ -1,6 +1,7 @@
 from decimal import Decimal
 from math import floor
 
+import psycopg2
 from PyQt5.QtWidgets import QWidget, \
     QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QIcon
@@ -119,9 +120,12 @@ class ExitScreen(QWidget):
         )
 
     def on_voucher_button_click(self):
-        self.parent().parent().db_communicator.finish_stay(self.stay_id,
-                                                           self.parking_time, self.total)
-        self.parent().parent().open_message_screen(Messages.PAYMENT_SUCCESSFUL)
+        try:
+            self.parent().parent().db_communicator.finish_stay(self.stay_id,
+                                                               self.parking_time, self.total)
+            self.parent().parent().open_message_screen(Messages.PAYMENT_SUCCESSFUL)
+        except psycopg2.Error:
+            self.parent().parent().open_message_screen(Messages.PAYMENT_UNSUCCESSFUL)
 
     def __init__(self, parent, stay_id: int, vehicle_type: str,
                  license_plate: str, tariff: Decimal, stay_duration: int):
