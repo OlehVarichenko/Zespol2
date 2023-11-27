@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, \
-    QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout
+    QLabel, QGridLayout, QPushButton, QSizePolicy, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
@@ -38,11 +38,10 @@ class WelcomeScreen(QWidget):
 
         vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_class}.png')
         vehicle_icon_label = QLabel()
-        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(250, 250))
+        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(200, 200))
         vehicle_icon_label.setAlignment(Qt.AlignCenter)
         vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
 
-        # Create a horizontal layout for the icon and text
         vehicle_type_layout = QHBoxLayout()
         vehicle_type_layout.addWidget(vehicle_icon_label)
         vehicle_type_layout.addWidget(vehicle_type_label)
@@ -60,11 +59,10 @@ class WelcomeScreen(QWidget):
 
         location_original_icon = QIcon('gui/resources/images/location.png')
         location_icon_label = QLabel()
-        location_icon_label.setPixmap(location_original_icon.pixmap(100, 100))
+        location_icon_label.setPixmap(location_original_icon.pixmap(150, 150))
         location_icon_label.setAlignment(Qt.AlignCenter)
         location_icon_label.setContentsMargins(20, 20, 20, 20)
 
-        # Create a horizontal layout for the icon and text
         location_layout = QHBoxLayout()
         location_layout.addWidget(location_icon_label)
         location_layout.addWidget(location_label)
@@ -76,13 +74,13 @@ class WelcomeScreen(QWidget):
     def get_horizontal_button(self, text: str, icon_path: str):
         original_icon = QIcon(icon_path)
         icon_label = QLabel()
-        icon_label.setPixmap(original_icon.pixmap(65, 65))
+        icon_label.setPixmap(original_icon.pixmap(100, 100))
         icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
         icon_label.setContentsMargins(5, 5, 5, 5)
 
         text_label = QLabel()
         text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignLeft)
-        text_label.setFont(QFont("Arial", 30, QFont.Bold))
+        text_label.setFont(QFont("Arial", 35, QFont.Bold))
         text_label.setText(text)
         text_label.setContentsMargins(5, 5, 5, 5)
 
@@ -125,9 +123,8 @@ class WelcomeScreen(QWidget):
         main_layout.setSpacing(5)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
-        white_fullscreen_label = QLabel()
-        white_fullscreen_label.setStyleSheet("background-color: white;")
-        main_layout.addWidget(white_fullscreen_label, 1, 0, 8, 16)
+        data_widget = QWidget()
+        data_layout = QVBoxLayout(data_widget)
 
         ## -- NR REJESTRACYJNY
         license_plate_label = self.get_license_plate_label()
@@ -135,11 +132,11 @@ class WelcomeScreen(QWidget):
 
         ## -- TYP POJAZDU
         vehicle_type_layout = self.get_vehicle_type_layout()
-        main_layout.addLayout(vehicle_type_layout, 1, 5, 1, 6)
+        data_layout.addLayout(vehicle_type_layout)
 
         ## -- MIEJSCE PARKINGU
         parking_sector_layout = self.get_parking_sector_layout()
-        main_layout.addLayout(parking_sector_layout, 2, 4, 1, 8)
+        data_layout.addLayout(parking_sector_layout)
 
         ## -- PRZYCISK "POKAŻ SCHEMAT"
         show_location_button = self.get_horizontal_button(
@@ -147,6 +144,11 @@ class WelcomeScreen(QWidget):
             'gui/resources/images/location_help.png'
         )
         show_location_button.clicked.connect(self.show_sector_location_help)
-        main_layout.addWidget(show_location_button, 5, 5, 2, 6)
+        data_layout.addWidget(show_location_button)
+
+        data_widget.setLayout(data_layout)
+        data_widget.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+        data_widget.setStyleSheet("background-color: white;")
+        main_layout.addWidget(data_widget, 1, 0, 8, 16)
 
         self.setLayout(main_layout)

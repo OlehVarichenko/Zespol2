@@ -52,7 +52,6 @@ class ExitScreen(QWidget):
         text_label.setText(text)
         text_label.setContentsMargins(20, 20, 20, 20)
 
-        # Create a horizontal layout for the icon and text
         horizontal_layout = QHBoxLayout()
         horizontal_layout.addWidget(icon_label)
         horizontal_layout.addWidget(text_label)
@@ -141,9 +140,8 @@ class ExitScreen(QWidget):
 
         main_layout.setContentsMargins(0, 0, 0, 0)
 
-        white_fullscreen_label = QLabel()
-        white_fullscreen_label.setStyleSheet("background-color: white;")
-        main_layout.addWidget(white_fullscreen_label, 1, 0, 8, 16)
+        data_widget = QWidget()
+        data_layout = QVBoxLayout(data_widget)
 
         ## -- NR REJESTRACYJNY
         license_plate_label = self.get_license_plate_label()
@@ -151,33 +149,43 @@ class ExitScreen(QWidget):
 
         ## -- TARYFA DLA TYPU POJAZDU
         vehicle_type_layout = self.get_vehicle_tariff_layout()
-        main_layout.addLayout(vehicle_type_layout, 1, 6, 1, 4)
+        data_layout.addLayout(vehicle_type_layout)
 
         ## -- CZAS POSTOJU
         parking_sector_layout = self.get_parking_time_layout()
-        main_layout.addLayout(parking_sector_layout, 2, 5, 1, 6)
+        data_layout.addLayout(parking_sector_layout)
 
         ## -- PODSUMOWANIE
         total_sum_layout = self.get_total_layout()
-        main_layout.addLayout(total_sum_layout, 3, 5, 1, 6)
+        data_layout.addLayout(total_sum_layout)
+
+        buttons_layout = QHBoxLayout(data_widget)
 
         ## -- PRZYCISK BLIK
         blik_button = self.generate_button(
             "Zapłać\nBLIKiem", 'gui/resources/images/blik.png'
         )
-        main_layout.addWidget(blik_button, 5, 1, 3, 4)
+        buttons_layout.addWidget(blik_button)
 
         ### PRZYCISK KARTA
         card_button = self.generate_button(
             "Zapłać\nkartą", 'gui/resources/images/credit_card.png'
         )
-        main_layout.addWidget(card_button, 5, 6, 3, 4)
+        buttons_layout.addWidget(card_button)
 
         # PRZYCISK KOD
-        voucher_button = self.generate_button(
-            "Zapłać\nkodem", 'gui/resources/images/coupon.png'
+        test_ride_button = self.generate_button(
+            "Testowy\nprzejazd", 'gui/resources/images/coupon.png'
         )
-        voucher_button.clicked.connect(self.on_voucher_button_click)
-        main_layout.addWidget(voucher_button, 5, 11, 3, 4)
+        test_ride_button.clicked.connect(self.on_voucher_button_click)
+        buttons_layout.addWidget(test_ride_button)
+
+        data_layout.addLayout(buttons_layout)
+
+        data_widget.setLayout(data_layout)
+        data_widget.setSizePolicy(QSizePolicy.MinimumExpanding,
+                                  QSizePolicy.MinimumExpanding)
+        data_widget.setStyleSheet("background-color: white;")
+        main_layout.addWidget(data_widget, 1, 0, 8, 16)
 
         self.setLayout(main_layout)
