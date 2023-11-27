@@ -26,9 +26,9 @@ messages_dict: Dict[IntEnum, Tuple[str, str]] = {
     Messages.NO_FREE_PARKING_LOTS_SOME_TYPE: ("BRAK MIEJSC PARKINGOWYCH\nDLA DANEGO TYPU POJAZDU",
                                               "gui/resources/images/no_entry.png"),
     Messages.PAYMENT_SUCCESSFUL: ("PŁATNOŚĆ DOKONANA POMYŚLNIE\n\nMIŁEGO DNIA!",
-                                  "gui/resources/images/ok.png", 55),
+                                  "gui/resources/images/ok.png"),
     Messages.PAYMENT_UNSUCCESSFUL: ("WYSTĄPIŁ PROBLEM Z PŁATNOŚCIĄ\n\nPROSIMY SPRÓBOWAĆ PONOWNIE",
-                                    "gui/resources/images/error.png", 55)
+                                    "gui/resources/images/error.png")
 }
 
 
@@ -60,7 +60,7 @@ class MessageScreen(QWidget):
         return vertical_layout
 
     def __init__(self, parent, message_code: int,
-                 text_size: int = 75, icon_size: int = 470):
+                 text_size: int = 55, icon_size: int = 470):
         super().__init__(parent)
         self.setWindowTitle("WJAZD")
 
