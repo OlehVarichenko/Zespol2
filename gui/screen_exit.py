@@ -94,11 +94,19 @@ class ExitScreen(QWidget):
 
         minutes = floor(self.parking_time / 60 - hours * 60 - days * 24 * 60)
         if minutes == 1:
-            parking_time_string += f' {floor(minutes)} minuta'
+            parking_time_string += f'{floor(minutes)} minuta'
         elif 2 <= minutes % 10 <= 4 and not 12 <= minutes <= 14:
-            parking_time_string += f' {floor(minutes)} minuty'
+            parking_time_string += f'{floor(minutes)} minuty'
         elif minutes >= 5:
-            parking_time_string += f' {floor(minutes)} minut'
+            parking_time_string += f'{floor(minutes)} minut'
+        elif days == 0 and hours == 0 and minutes == 0:
+            seconds = self.parking_time
+            if seconds == 1:
+                parking_time_string += f'{seconds} sekunda'
+            elif 2 <= seconds % 10 <= 4 and not 12 <= seconds <= 14:
+                parking_time_string += f'{seconds} sekundy'
+            elif seconds >= 5:
+                parking_time_string += f'{seconds} sekund'
 
         return self.get_icon_n_text_layout(
             f'Czas postoju: {parking_time_string}', 50, icon_path, 120
