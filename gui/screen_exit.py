@@ -13,6 +13,17 @@ from gui.screen_message import Messages
 class ExitScreen(QWidget):
     @staticmethod
     def generate_button(text: str, img_path: str):
+        """
+            Funkcja generuje przycisk z odpowiednim obrazkiem na górze i tekstem na dole.
+
+            Args:
+                text(str): Tekst przycisku
+                img_path(str): Ścieżka pliku obrazku
+
+            Returns:
+                QPushButton
+
+        """
         original_icon = QIcon(img_path)
         icon_label = QLabel()
         icon_label.setPixmap(original_icon.pixmap(75, 75))
@@ -40,7 +51,20 @@ class ExitScreen(QWidget):
         return button
 
     @staticmethod
-    def get_icon_n_text_layout(text: str, text_size: int, icon_path: str, icon_size: int):
+    def get_icon_n_text_layout(text: str, text_size: int, icon_path: str, icon_size: int) -> QHBoxLayout:
+        """
+        Funkcja zwraca poziomy układ z obrazkiem po lewej stronie i tekstem po prawej
+
+        Args:
+            text(str): Tekst
+            text_size(int): Rozmiar tekstu
+            icon_path(str): Ścieżka z plikiem obrazku
+            icon_size(int): Rozmiar wszystkich stron obrazku
+
+        Returns:
+            QHBoxLayout
+
+        """
         original_icon = QIcon(icon_path)
         icon_label = QLabel()
         icon_label.setPixmap(original_icon.pixmap(icon_size, icon_size))
@@ -61,7 +85,14 @@ class ExitScreen(QWidget):
 
         return horizontal_layout
 
-    def get_license_plate_label(self):
+    def get_license_plate_label(self) -> QLabel:
+        """
+        Funkcja zwraza QLabel z numerem rejestracyjnym pojazdu
+
+        Returns:
+            QLabel
+
+        """
         license_plate_label = QLabel(f"{self.license_plate}: opłaty")
         license_plate_label.setAlignment(Qt.AlignCenter)
         license_plate_label.setStyleSheet("background-color: white; color: black;")
@@ -69,13 +100,28 @@ class ExitScreen(QWidget):
 
         return license_plate_label
 
-    def get_vehicle_tariff_layout(self):
+    def get_vehicle_tariff_layout(self) -> QHBoxLayout:
+        """
+        Funkcja zwraca poziomy układ z obrazkiem pokazującym typ pojazdu po lewej stronie
+        oraz tekst z odpowiednią taryfą za godzinę po prawej stronie
+
+        Returns:
+            QHBoxLayout
+
+        """
         icon_path = f'gui/resources/images/{self.vehicle_type}.png'
         return self.get_icon_n_text_layout(
             f'Taryfa: {round(self.tariff, 2)} zł/h', 50, icon_path,120
         )
 
-    def get_parking_time_layout(self):
+    def get_parking_time_layout(self) -> QHBoxLayout:
+        """
+        Funkcja zwraza poziomy układ z ilustrującym obrazkiem + czasem postoju pojazdu
+
+        Returns:
+            QHBoxLayout
+
+        """
         icon_path = f'gui/resources/images/clock.png'
         parking_time_string = ''
 
@@ -113,13 +159,27 @@ class ExitScreen(QWidget):
             f'Czas postoju: {parking_time_string}', 50, icon_path, 120
         )
 
-    def get_total_layout(self):
+    def get_total_layout(self) -> QHBoxLayout:
+        """
+        Funkcja zwraca poziomy układ z ilustrującym obrazkiem + łączną kwotą do zapłaty
+
+        Returns:
+            QHBoxLayout
+
+        """
         icon_path = f'gui/resources/images/wallet.png'
         return self.get_icon_n_text_layout(
             f'Do zapłaty: {self.total} zł', 50, icon_path, 120
         )
 
-    def on_voucher_button_click(self):
+    def on_voucher_button_click(self) -> None:
+        """
+        Funkcja podpina się pod przycisk przejazdu testowego i imituje pomyślne dokonanie płatności
+
+        Returns:
+            None
+
+        """
         try:
             self.parent().parent().db_communicator.finish_stay(self.stay_id,
                                                                self.parking_time, self.total)
@@ -129,8 +189,19 @@ class ExitScreen(QWidget):
 
     def __init__(self, parent, stay_id: int, vehicle_type: str,
                  license_plate: str, tariff: Decimal, stay_duration: int):
+        """
+        Funkcja przyjmuje niezbędne wartości do funkcjonowania tego widżetu
+        oraz dodaje elementy do wyświetlenia na widżecie
+
+        Args:
+            parent: Obiekt rodzicielski
+            stay_id(int): ID postoju
+            vehicle_type(str): Typ pojazdu
+            license_plate(str): Numer rejestracyjny
+            tariff(Decimal): Taryfa za godzinę
+            stay_duration(int): Czas postoju w sekundach
+        """
         super().__init__(parent)
-        self.setWindowTitle("WYJAZD")
 
         self.vehicle_type: str = vehicle_type
         self.license_plate: str = license_plate
@@ -179,13 +250,13 @@ class ExitScreen(QWidget):
         )
         buttons_layout.addWidget(blik_button)
 
-        ### PRZYCISK KARTA
+        ## -- PRZYCISK KARTA
         card_button = self.generate_button(
             "Zapłać\nkartą", 'gui/resources/images/credit_card.png'
         )
         buttons_layout.addWidget(card_button)
 
-        # PRZYCISK KOD
+        ## -- PRZYCISK KOD
         test_ride_button = self.generate_button(
             "Testowy\nprzejazd", 'gui/resources/images/coupon.png'
         )
