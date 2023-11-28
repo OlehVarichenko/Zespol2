@@ -81,7 +81,7 @@ class WelcomeScreen(QWidget):
 
         """
         vehicle_type = self.get_vehicle_type_text(self.vehicle_class)
-        icon_path = f'gui/resources/images/{self.vehicle_class}.png'
+        icon_path = f'resources/images/{self.vehicle_class}.png'
         return self.get_icon_n_text_layout(
             vehicle_type, 65, icon_path, 200
         )
@@ -96,7 +96,7 @@ class WelcomeScreen(QWidget):
 
         """
         text = f"Miejsce do parkowania: Sektor {self.sector_name}"
-        icon_path = f'gui/resources/images/location.png'
+        icon_path = f'resources/images/location.png'
         return self.get_icon_n_text_layout(
             text, 45, icon_path, 150
         )
@@ -199,7 +199,7 @@ class WelcomeScreen(QWidget):
         ## -- PRZYCISK "POKAŻ SCHEMAT"
         show_location_button = self.generate_horizontal_button(
             "Pokaż miejsce na schemacie",
-            'gui/resources/images/location_help.png'
+            'resources/images/location_help.png'
         )
         show_location_button.clicked.connect(self.show_sector_location_help)
         data_layout.addWidget(show_location_button)

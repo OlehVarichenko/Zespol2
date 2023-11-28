@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pl" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>byte_tracker package &mdash; Parking automatyczny  - dokumentacja</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=9893e7ba"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=a186e9ce"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Indeks" href="genindex.html" />
+    <link rel="search" title="Szukaj" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Parking automatyczny
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Szukaj" aria-label="Szukaj" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="db.html">db package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">gui package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Parking automatyczny</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">byte_tracker package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/byte_tracker.rst.txt" rel="nofollow"> Zobacz źródło strony</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="byte-tracker-package">
+<h1>byte_tracker package<a class="headerlink" href="#byte-tracker-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-byte_tracker.base_track">
+<span id="byte-tracker-base-track-module"></span><h2>byte_tracker.base_track module<a class="headerlink" href="#module-byte_tracker.base_track" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byte_tracker.base_track.</span></span><span class="sig-name descname"><span class="pre">BaseTrack</span></span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.activate">
+<span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.activate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.curr_feature">
+<span class="sig-name descname"><span class="pre">curr_feature</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.curr_feature" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.end_frame">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">end_frame</span></span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.end_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.features">
+<span class="sig-name descname"><span class="pre">features</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.features" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.frame_id">
+<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.frame_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.history">
+<span class="sig-name descname"><span class="pre">history</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.history" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.is_activated">
+<span class="sig-name descname"><span class="pre">is_activated</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.is_activated" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.location">
+<span class="sig-name descname"><span class="pre">location</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(inf,</span> <span class="pre">inf)</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.location" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.mark_lost">
+<span class="sig-name descname"><span class="pre">mark_lost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.mark_lost" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.mark_removed">
+<span class="sig-name descname"><span class="pre">mark_removed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.mark_removed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.next_id">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.next_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.score">
+<span class="sig-name descname"><span class="pre">score</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.score" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.start_frame">
+<span class="sig-name descname"><span class="pre">start_frame</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.start_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.state">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.state" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.time_since_update">
+<span class="sig-name descname"><span class="pre">time_since_update</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.time_since_update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.track_id">
+<span class="sig-name descname"><span class="pre">track_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.track_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.base_track.BaseTrack.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.base_track.BaseTrack.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="byte_tracker.base_track.TrackState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byte_tracker.base_track.</span></span><span class="sig-name descname"><span class="pre">TrackState</span></span><a class="headerlink" href="#byte_tracker.base_track.TrackState" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.TrackState.Lost">
+<span class="sig-name descname"><span class="pre">Lost</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#byte_tracker.base_track.TrackState.Lost" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.TrackState.New">
+<span class="sig-name descname"><span class="pre">New</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#byte_tracker.base_track.TrackState.New" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.TrackState.Removed">
+<span class="sig-name descname"><span class="pre">Removed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#byte_tracker.base_track.TrackState.Removed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.base_track.TrackState.Tracked">
+<span class="sig-name descname"><span class="pre">Tracked</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#byte_tracker.base_track.TrackState.Tracked" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-byte_tracker.kalman_filter">
+<span id="byte-tracker-kalman-filter-module"></span><h2>byte_tracker.kalman_filter module<a class="headerlink" href="#module-byte_tracker.kalman_filter" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byte_tracker.kalman_filter.</span></span><span class="sig-name descname"><span class="pre">KalmanFilter</span></span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter.gating_distance">
+<span class="sig-name descname"><span class="pre">gating_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'maha'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter.gating_distance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter.initiate">
+<span class="sig-name descname"><span class="pre">initiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter.initiate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter.multi_predict">
+<span class="sig-name descname"><span class="pre">multi_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter.multi_predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter.project" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.kalman_filter.KalmanFilter.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.kalman_filter.KalmanFilter.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-byte_tracker.matching">
+<span id="byte-tracker-matching-module"></span><h2>byte_tracker.matching module<a class="headerlink" href="#module-byte_tracker.matching" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.embedding_distance">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">embedding_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detections</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cosine'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.embedding_distance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.fuse_iou">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">fuse_iou</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.fuse_iou" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.fuse_motion">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">fuse_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detections</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.98</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.fuse_motion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.fuse_score">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">fuse_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.fuse_score" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.gate_cost_matrix">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">gate_cost_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detections</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.gate_cost_matrix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.iou_distance">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">iou_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atracks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">btracks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.iou_distance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.ious">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">ious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atlbrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">btlbrs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.ious" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.linear_assignment">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">linear_assignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresh</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.linear_assignment" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.merge_matches">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">merge_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.merge_matches" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.matching.v_iou_distance">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.matching.</span></span><span class="sig-name descname"><span class="pre">v_iou_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atracks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">btracks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.matching.v_iou_distance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-byte_tracker">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-byte_tracker" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="byte_tracker.BYTETracker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byte_tracker.</span></span><span class="sig-name descname"><span class="pre">BYTETracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_buffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.BYTETracker" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.BYTETracker.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.BYTETracker.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="byte_tracker.STrack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byte_tracker.</span></span><span class="sig-name descname"><span class="pre">STrack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlwh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <a class="reference internal" href="#byte_tracker.base_track.BaseTrack" title="byte_tracker.base_track.BaseTrack"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTrack</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.activate">
+<span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kalman_filter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.activate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.multi_predict">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">multi_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stracks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.multi_predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.predict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.re_activate">
+<span class="sig-name descname"><span class="pre">re_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.re_activate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="byte_tracker.STrack.shared_kalman">
+<span class="sig-name descname"><span class="pre">shared_kalman</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;byte_tracker.kalman_filter.KalmanFilter</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#byte_tracker.STrack.shared_kalman" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="byte_tracker.STrack.tlbr">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tlbr</span></span><a class="headerlink" href="#byte_tracker.STrack.tlbr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.tlbr_to_tlwh">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tlbr_to_tlwh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlbr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.tlbr_to_tlwh" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="byte_tracker.STrack.tlwh">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tlwh</span></span><a class="headerlink" href="#byte_tracker.STrack.tlwh" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.tlwh_to_tlbr">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tlwh_to_tlbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlwh</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.tlwh_to_tlbr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.tlwh_to_xyah">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tlwh_to_xyah</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlwh</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.tlwh_to_xyah" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.to_xyah">
+<span class="sig-name descname"><span class="pre">to_xyah</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.to_xyah" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byte_tracker.STrack.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.STrack.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.joint_stracks">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.</span></span><span class="sig-name descname"><span class="pre">joint_stracks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlista</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlistb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.joint_stracks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.remove_duplicate_stracks">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.</span></span><span class="sig-name descname"><span class="pre">remove_duplicate_stracks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stracksa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stracksb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.remove_duplicate_stracks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byte_tracker.sub_stracks">
+<span class="sig-prename descclassname"><span class="pre">byte_tracker.</span></span><span class="sig-name descname"><span class="pre">sub_stracks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlista</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlistb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#byte_tracker.sub_stracks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Prawa zastrzeżone 2023, Maksym Kharchenko, Oleh Varichenko, Ihor Horshkov.</p>
+  </div>
+
+  Zbudowano w <a href="https://www.sphinx-doc.org/">Sphinx</a> używając
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    dostarczone przez <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -113,7 +113,7 @@ class ExitScreen(QWidget):
             QHBoxLayout
 
         """
-        icon_path = f'gui/resources/images/{self.vehicle_type}.png'
+        icon_path = f'resources/images/{self.vehicle_type}.png'
         return self.get_icon_n_text_layout(
             f'Taryfa: {round(self.tariff, 2)} zł/h', 50, icon_path,120
         )
@@ -126,7 +126,7 @@ class ExitScreen(QWidget):
             QHBoxLayout
 
         """
-        icon_path = f'gui/resources/images/clock.png'
+        icon_path = f'resources/images/clock.png'
         parking_time_string = ''
 
         days = floor(self.parking_time / 60 / 60 / 24)
@@ -171,7 +171,7 @@ class ExitScreen(QWidget):
             QHBoxLayout
 
         """
-        icon_path = f'gui/resources/images/wallet.png'
+        icon_path = f'resources/images/wallet.png'
         return self.get_icon_n_text_layout(
             f'Do zapłaty: {self.total} zł', 50, icon_path, 120
         )
@@ -250,19 +250,19 @@ class ExitScreen(QWidget):
 
         ## -- PRZYCISK BLIK
         blik_button = self.generate_button(
-            "Zapłać\nBLIKiem", 'gui/resources/images/blik.png'
+            "Zapłać\nBLIKiem", 'resources/images/blik.png'
         )
         buttons_layout.addWidget(blik_button)
 
         ## -- PRZYCISK KARTA
         card_button = self.generate_button(
-            "Zapłać\nkartą", 'gui/resources/images/credit_card.png'
+            "Zapłać\nkartą", 'resources/images/credit_card.png'
         )
         buttons_layout.addWidget(card_button)
 
         ## -- PRZYCISK KOD
         test_ride_button = self.generate_button(
-            "Testowy\nprzejazd", 'gui/resources/images/coupon.png'
+            "Testowy\nprzejazd", 'resources/images/coupon.png'
         )
         test_ride_button.clicked.connect(self.on_voucher_button_click)
         buttons_layout.addWidget(test_ride_button)

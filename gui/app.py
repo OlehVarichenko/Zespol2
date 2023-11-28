@@ -24,7 +24,7 @@ ocr_classes = ['tablica', 'truck', 'motorcycle', 'car']
 yolov7.set(ocr_classes=ocr_classes, conf_thres=0.7)  # Ustawienie progów pewności
 # Wybór cpu/gpu
 device = 'cuda' if cuda.is_available() else 'cpu'
-yolov7.load('best.weights', classes='classes.yaml', device=device)
+yolov7.load('../best.weights', classes='../classes.yaml', device=device)
 
 
 def sanitize_license_plate(license_plate: str) -> str:

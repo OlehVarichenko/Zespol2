@@ -98,7 +98,7 @@ class LocationHelpScreen(QWidget):
             sector_layout = QVBoxLayout(sector_widget)
             sector_layout.setAlignment(Qt.AlignCenter)
 
-            vehicle_original_icon = QIcon(f'gui/resources/images/{sector.vehicle_type_name}.png')
+            vehicle_original_icon = QIcon(f'resources/images/{sector.vehicle_type_name}.png')
             vehicle_icon_label = QLabel()
             vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(120, 120))
             vehicle_icon_label.setAlignment(Qt.AlignCenter)
@@ -128,6 +128,6 @@ class LocationHelpScreen(QWidget):
         parking_scheme_widget.setLayout(parking_scheme_layout)
         main_layout.addWidget(parking_scheme_widget, 0, 4, 9, 12)
 
-        back_button = self.generate_button('Powrót', 'gui/resources/images/back.png')
+        back_button = self.generate_button('Powrót', 'resources/images/back.png')
         back_button.clicked.connect(self.close_screen)
         main_layout.addWidget(back_button, 3, 0, 3, 4)

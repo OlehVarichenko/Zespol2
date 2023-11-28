@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pl" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gui package &mdash; Parking automatyczny  - dokumentacja</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=9893e7ba"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=a186e9ce"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Indeks" href="genindex.html" />
+    <link rel="search" title="Szukaj" href="search.html" />
+    <link rel="prev" title="db package" href="db.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Parking automatyczny
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Szukaj" aria-label="Szukaj" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="db.html">db package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">gui package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gui.screen_exit">gui.screen_exit module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui.screen_exit.ExitScreen"><code class="docutils literal notranslate"><span class="pre">ExitScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.generate_button"><code class="docutils literal notranslate"><span class="pre">ExitScreen.generate_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.get_icon_n_text_layout"><code class="docutils literal notranslate"><span class="pre">ExitScreen.get_icon_n_text_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.get_license_plate_label"><code class="docutils literal notranslate"><span class="pre">ExitScreen.get_license_plate_label()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.get_parking_time_layout"><code class="docutils literal notranslate"><span class="pre">ExitScreen.get_parking_time_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.get_total_layout"><code class="docutils literal notranslate"><span class="pre">ExitScreen.get_total_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.get_vehicle_tariff_layout"><code class="docutils literal notranslate"><span class="pre">ExitScreen.get_vehicle_tariff_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_exit.ExitScreen.on_voucher_button_click"><code class="docutils literal notranslate"><span class="pre">ExitScreen.on_voucher_button_click()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gui.screen_location">gui.screen_location module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui.screen_location.LocationHelpScreen"><code class="docutils literal notranslate"><span class="pre">LocationHelpScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_location.LocationHelpScreen.close_screen"><code class="docutils literal notranslate"><span class="pre">LocationHelpScreen.close_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_location.LocationHelpScreen.generate_button"><code class="docutils literal notranslate"><span class="pre">LocationHelpScreen.generate_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_location.LocationHelpScreen.init_ui"><code class="docutils literal notranslate"><span class="pre">LocationHelpScreen.init_ui()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gui.screen_message">gui.screen_message module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui.screen_message.MessageScreen"><code class="docutils literal notranslate"><span class="pre">MessageScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.MessageScreen.get_message_layout"><code class="docutils literal notranslate"><span class="pre">MessageScreen.get_message_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.MessageScreen.messages_dict"><code class="docutils literal notranslate"><span class="pre">MessageScreen.messages_dict</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gui.screen_message.Messages"><code class="docutils literal notranslate"><span class="pre">Messages</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.Messages.DETECTION_ERROR"><code class="docutils literal notranslate"><span class="pre">Messages.DETECTION_ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.Messages.GENERAL_ERROR"><code class="docutils literal notranslate"><span class="pre">Messages.GENERAL_ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.Messages.NO_FREE_PARKING_LOTS"><code class="docutils literal notranslate"><span class="pre">Messages.NO_FREE_PARKING_LOTS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.Messages.NO_FREE_PARKING_LOTS_SOME_TYPE"><code class="docutils literal notranslate"><span class="pre">Messages.NO_FREE_PARKING_LOTS_SOME_TYPE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.Messages.PAYMENT_SUCCESSFUL"><code class="docutils literal notranslate"><span class="pre">Messages.PAYMENT_SUCCESSFUL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_message.Messages.PAYMENT_UNSUCCESSFUL"><code class="docutils literal notranslate"><span class="pre">Messages.PAYMENT_UNSUCCESSFUL</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gui.screen_welcome">gui.screen_welcome module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.generate_horizontal_button"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.generate_horizontal_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.get_icon_n_text_layout"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.get_icon_n_text_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.get_license_plate_label"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.get_license_plate_label()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.get_parking_sector_layout"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.get_parking_sector_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.get_vehicle_type_layout"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.get_vehicle_type_layout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.get_vehicle_type_text"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.get_vehicle_type_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.screen_welcome.WelcomeScreen.show_sector_location_help"><code class="docutils literal notranslate"><span class="pre">WelcomeScreen.show_sector_location_help()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gui.app">gui.app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui.app.ParkingApp"><code class="docutils literal notranslate"><span class="pre">ParkingApp</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.close_all_screens"><code class="docutils literal notranslate"><span class="pre">ParkingApp.close_all_screens()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.get_resized_pixmap_from_frame"><code class="docutils literal notranslate"><span class="pre">ParkingApp.get_resized_pixmap_from_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.on_vehicle_detection"><code class="docutils literal notranslate"><span class="pre">ParkingApp.on_vehicle_detection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.open_exit_screen"><code class="docutils literal notranslate"><span class="pre">ParkingApp.open_exit_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.open_file_dialog"><code class="docutils literal notranslate"><span class="pre">ParkingApp.open_file_dialog()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.open_message_screen"><code class="docutils literal notranslate"><span class="pre">ParkingApp.open_message_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.open_welcome_screen"><code class="docutils literal notranslate"><span class="pre">ParkingApp.open_welcome_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.ParkingApp.update_frame"><code class="docutils literal notranslate"><span class="pre">ParkingApp.update_frame()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gui.app.recognize_vehicle"><code class="docutils literal notranslate"><span class="pre">recognize_vehicle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gui.app.sanitize_license_plate"><code class="docutils literal notranslate"><span class="pre">sanitize_license_plate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Parking automatyczny</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">gui package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/gui.rst.txt" rel="nofollow"> Zobacz źródło strony</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gui-package">
+<h1>gui package<a class="headerlink" href="#gui-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-gui.screen_exit">
+<span id="gui-screen-exit-module"></span><h2>gui.screen_exit module<a class="headerlink" href="#module-gui.screen_exit" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.screen_exit.</span></span><span class="sig-name descname"><span class="pre">ExitScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stay_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vehicle_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tariff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Decimal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stay_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_exit.ExitScreen" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>Klasa przedstawia sobą definicję widżetu z ekranem wyjściowym (do opłat).
+Zawiera odpowiednie funkcje do generowania widżetu.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.generate_button">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_exit.ExitScreen.generate_button" title="Link to this definition"></a></dt>
+<dd><p>Funkcja generuje przycisk z odpowiednim obrazkiem na górze i tekstem na dole.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text(str): Tekst przycisku
+img_path(str): Ścieżka pliku obrazku</p>
+</dd>
+<dt>Returns:</dt><dd><p>QPushButton</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.get_icon_n_text_layout">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_icon_n_text_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_exit.ExitScreen.get_icon_n_text_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca poziomy układ z obrazkiem po lewej stronie i tekstem po prawej</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text(str): Tekst
+text_size(int): Rozmiar tekstu
+icon_path(str): Ścieżka z plikiem obrazku
+icon_size(int): Rozmiar wszystkich stron obrazku</p>
+</dd>
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.get_license_plate_label">
+<span class="sig-name descname"><span class="pre">get_license_plate_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QLabel</span></span></span><a class="headerlink" href="#gui.screen_exit.ExitScreen.get_license_plate_label" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraza QLabel z numerem rejestracyjnym pojazdu</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>QLabel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.get_parking_time_layout">
+<span class="sig-name descname"><span class="pre">get_parking_time_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_exit.ExitScreen.get_parking_time_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraza poziomy układ z ilustrującym obrazkiem + czasem postoju pojazdu</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.get_total_layout">
+<span class="sig-name descname"><span class="pre">get_total_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_exit.ExitScreen.get_total_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca poziomy układ z ilustrującym obrazkiem + łączną kwotą do zapłaty</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.get_vehicle_tariff_layout">
+<span class="sig-name descname"><span class="pre">get_vehicle_tariff_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_exit.ExitScreen.get_vehicle_tariff_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca poziomy układ z obrazkiem pokazującym typ pojazdu po lewej stronie
+oraz tekst z odpowiednią taryfą za godzinę po prawej stronie</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_exit.ExitScreen.on_voucher_button_click">
+<span class="sig-name descname"><span class="pre">on_voucher_button_click</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.screen_exit.ExitScreen.on_voucher_button_click" title="Link to this definition"></a></dt>
+<dd><p>Funkcja podpina się pod przycisk przejazdu testowego i imituje pomyślne dokonanie płatności</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.screen_location">
+<span id="gui-screen-location-module"></span><h2>gui.screen_location module<a class="headerlink" href="#module-gui.screen_location" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.screen_location.LocationHelpScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.screen_location.</span></span><span class="sig-name descname"><span class="pre">LocationHelpScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_sector_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_location.LocationHelpScreen" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_location.LocationHelpScreen.close_screen">
+<span class="sig-name descname"><span class="pre">close_screen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.screen_location.LocationHelpScreen.close_screen" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zamyka wszystkie ekrany/komunikaty i dzięki temu wraca do ekranu głównego
+odtwarzającego video z kamerki.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_location.LocationHelpScreen.generate_button">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QPushButton</span></span></span><a class="headerlink" href="#gui.screen_location.LocationHelpScreen.generate_button" title="Link to this definition"></a></dt>
+<dd><p>Funkcja generuje przycisk z odpowiednim obrazkiem po lewej stronie i tekstem po prawej.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text(str): Tekst przycisku
+img_path(str): Ścieżka pliku obrazku</p>
+</dd>
+<dt>Returns:</dt><dd><p>QPushButton</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_location.LocationHelpScreen.init_ui">
+<span class="sig-name descname"><span class="pre">init_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.screen_location.LocationHelpScreen.init_ui" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zajmuje się dodaniem wszystkich elementów do ekranu.
+Głównymi elementami są przycisk powrotu oraz schemat w postaci
+QGridLayoutu ilustrujący położenie sektorów parkingu.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.screen_message">
+<span id="gui-screen-message-module"></span><h2>gui.screen_message module<a class="headerlink" href="#module-gui.screen_message" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.screen_message.MessageScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.screen_message.</span></span><span class="sig-name descname"><span class="pre">MessageScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">55</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">470</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_message.MessageScreen" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>Klasa przedstawia sobą definicję widżetu z komunikatem
+(zawiera odpowiednie dane oraz funkcje do generowania widżetu).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_message.MessageScreen.get_message_layout">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_message_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QVBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_message.MessageScreen.get_message_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca pionowy układ z obrazkiem na górze + komunikatem na dole</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text(str): Tekst komunikatu
+icon_path(str): Ścieżka z plikiem obrazku
+text_size(int): Rozmiar czcionki
+icon_size(int): Rozmiar obrazku</p>
+</dd>
+<dt>Returns:</dt><dd><p>QVBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.MessageScreen.messages_dict">
+<span class="sig-name descname"><span class="pre">messages_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">IntEnum</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{Messages.DETECTION_ERROR:</span> <span class="pre">('WYSTĄPIŁ</span> <span class="pre">BŁĄD</span> <span class="pre">DETEKCJI\nPROSIMY</span> <span class="pre">O</span> <span class="pre">ZWRÓCENIE</span> <span class="pre">SIĘ</span> <span class="pre">DO</span> <span class="pre">OBSŁUGI',</span> <span class="pre">'gui/resources/images/error.png'),</span> <span class="pre">Messages.GENERAL_ERROR:</span> <span class="pre">('WYSTĄPIŁ</span> <span class="pre">BŁĄD</span> <span class="pre">SYSTEMU\nPROSIMY</span> <span class="pre">O</span> <span class="pre">ZWRÓCENIE</span> <span class="pre">SIĘ</span> <span class="pre">DO</span> <span class="pre">OBSŁUGI',</span> <span class="pre">'gui/resources/images/error.png'),</span> <span class="pre">Messages.NO_FREE_PARKING_LOTS:</span> <span class="pre">('BRAK</span> <span class="pre">MIEJSC</span> <span class="pre">PARKINGOWYCH',</span> <span class="pre">'gui/resources/images/no_entry.png'),</span> <span class="pre">Messages.NO_FREE_PARKING_LOTS_SOME_TYPE:</span> <span class="pre">('BRAK</span> <span class="pre">MIEJSC</span> <span class="pre">PARKINGOWYCH\nDLA</span> <span class="pre">DANEGO</span> <span class="pre">TYPU</span> <span class="pre">POJAZDU',</span> <span class="pre">'gui/resources/images/no_entry.png'),</span> <span class="pre">Messages.PAYMENT_SUCCESSFUL:</span> <span class="pre">('PŁATNOŚĆ</span> <span class="pre">DOKONANA</span> <span class="pre">POMYŚLNIE\nMIŁEGO</span> <span class="pre">DNIA!',</span> <span class="pre">'gui/resources/images/ok.png'),</span> <span class="pre">Messages.PAYMENT_UNSUCCESSFUL:</span> <span class="pre">('WYSTĄPIŁ</span> <span class="pre">PROBLEM</span> <span class="pre">Z</span> <span class="pre">PŁATNOŚCIĄ\nPROSIMY</span> <span class="pre">SPRÓBOWAĆ</span> <span class="pre">PONOWNIE',</span> <span class="pre">'gui/resources/images/error.png')}</span></em><a class="headerlink" href="#gui.screen_message.MessageScreen.messages_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.screen_message.Messages">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.screen_message.</span></span><span class="sig-name descname"><span class="pre">Messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_message.Messages" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<p>Klasa zawiera kody błędów, dla których utworzono słownik z komunikatami i obrazkami.
+Dziedziczenie po IntEnum pozwala na tworzenie obiektu enum po przekazanym numerze.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.Messages.DETECTION_ERROR">
+<span class="sig-name descname"><span class="pre">DETECTION_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-2</span></em><a class="headerlink" href="#gui.screen_message.Messages.DETECTION_ERROR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.Messages.GENERAL_ERROR">
+<span class="sig-name descname"><span class="pre">GENERAL_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#gui.screen_message.Messages.GENERAL_ERROR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.Messages.NO_FREE_PARKING_LOTS">
+<span class="sig-name descname"><span class="pre">NO_FREE_PARKING_LOTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#gui.screen_message.Messages.NO_FREE_PARKING_LOTS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.Messages.NO_FREE_PARKING_LOTS_SOME_TYPE">
+<span class="sig-name descname"><span class="pre">NO_FREE_PARKING_LOTS_SOME_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#gui.screen_message.Messages.NO_FREE_PARKING_LOTS_SOME_TYPE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.Messages.PAYMENT_SUCCESSFUL">
+<span class="sig-name descname"><span class="pre">PAYMENT_SUCCESSFUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#gui.screen_message.Messages.PAYMENT_SUCCESSFUL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.screen_message.Messages.PAYMENT_UNSUCCESSFUL">
+<span class="sig-name descname"><span class="pre">PAYMENT_UNSUCCESSFUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#gui.screen_message.Messages.PAYMENT_UNSUCCESSFUL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.screen_welcome">
+<span id="gui-screen-welcome-module"></span><h2>gui.screen_welcome module<a class="headerlink" href="#module-gui.screen_welcome" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.screen_welcome.</span></span><span class="sig-name descname"><span class="pre">WelcomeScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vehicle_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sector_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>Klasa przedstawia sobą definicję widżetu z ekranem powitalnym,
+który pokazuje wykryty nr rejestracyny, typ pojazdu oraz daje
+możliwość zapoznania się ze schematem parkingu.</p>
+<p>Zawiera odpowiednie funkcje do generowania widżetu.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.generate_horizontal_button">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_horizontal_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QPushButton</span></span></span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.generate_horizontal_button" title="Link to this definition"></a></dt>
+<dd><p>Funkcja generuje przycisk z odpowiednim obrazkiem po lewej stronie i tekstem po prawej.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text(str): Tekst przycisku
+img_path(str): Ścieżka pliku obrazku</p>
+</dd>
+<dt>Returns:</dt><dd><p>QPushButton</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.get_icon_n_text_layout">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_icon_n_text_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.get_icon_n_text_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca poziomy układ z obrazkiem po lewej stronie i tekstem po prawej</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text(str): Tekst
+text_size(int): Rozmiar tekstu
+icon_path(str): Ścieżka z plikiem obrazku
+icon_size(int): Rozmiar wszystkich stron obrazku</p>
+</dd>
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.get_license_plate_label">
+<span class="sig-name descname"><span class="pre">get_license_plate_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.get_license_plate_label" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.get_parking_sector_layout">
+<span class="sig-name descname"><span class="pre">get_parking_sector_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.get_parking_sector_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca poziomy układ z obrazkiem ilustrującym po lewej stronie
+oraz tekstem z nazwą sektora po prawej stronie.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.get_vehicle_type_layout">
+<span class="sig-name descname"><span class="pre">get_vehicle_type_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QHBoxLayout</span></span></span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.get_vehicle_type_layout" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca poziomy układ z obrazkiem pokazującym typ pojazdu po lewej stronie
+oraz odpowiednim tekstem po prawej stronie.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>QHBoxLayout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.get_vehicle_type_text">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_vehicle_type_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.get_vehicle_type_text" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.screen_welcome.WelcomeScreen.show_sector_location_help">
+<span class="sig-name descname"><span class="pre">show_sector_location_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.screen_welcome.WelcomeScreen.show_sector_location_help" title="Link to this definition"></a></dt>
+<dd><p>Pokazuje (dodaje na góre głownego stosu widżetów i aktywuje) widżet ze schematem parkingu.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gui.app">
+<span id="gui-app-module"></span><h2>gui.app module<a class="headerlink" href="#module-gui.app" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.app.ParkingApp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.app.</span></span><span class="sig-name descname"><span class="pre">ParkingApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_load_video_button</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gui.app.ParkingApp" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">QMainWindow</span></code></p>
+<p>Klasa główna aplikacji. Zawiera w sobie kod zarządzający.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.close_all_screens">
+<span class="sig-name descname"><span class="pre">close_all_screens</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.close_all_screens" title="Link to this definition"></a></dt>
+<dd><p>Usuwa wszystkie widżety ze stosu i wraca do ekranu z odtwarzaniem strumienia video.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.get_resized_pixmap_from_frame">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_resized_pixmap_from_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QPixmap</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.get_resized_pixmap_from_frame" title="Link to this definition"></a></dt>
+<dd><p>Funkcja zwraca pixmap o odpowiedniej wielkości na podstawie klatki video.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frame: Klatka video
+width: Żądana szerokość
+height: Żądana wysokość</p>
+</dd>
+<dt>Returns:</dt><dd><p>QPixmap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.on_vehicle_detection">
+<span class="sig-name descname"><span class="pre">on_vehicle_detection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vehicle_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.on_vehicle_detection" title="Link to this definition"></a></dt>
+<dd><p>Funkcja próbująca pobrać rachunek za postój i wyświetlić ekran z opłatami.
+W razie braku postoju (bill is None) wyświetla ekran powitalny + dodaje postój do bazy.</p>
+<p>W razie wyjątku wyświetla komunikat z błędem.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>vehicle_type(str): Typ pojazdu (car/motorcycle/truck)
+license_plate(str): Numer rejestracyjny</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.open_exit_screen">
+<span class="sig-name descname"><span class="pre">open_exit_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stay_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vehicle_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tariff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Decimal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stay_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.open_exit_screen" title="Link to this definition"></a></dt>
+<dd><p>Funkcja wyświetla ekran z opłatami.</p>
+<p>W razie wyjątku wyświetla komunikat z błędem.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>stay_id(int): ID postoju
+vehicle_type(str): Typ pojazdu
+license_plate(str): Numer rejestracyjny
+tariff(Decimal): Taryfa za godzinę
+stay_duration(int): Czas postoju w sekundach</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.open_file_dialog">
+<span class="sig-name descname"><span class="pre">open_file_dialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gui.app.ParkingApp.open_file_dialog" title="Link to this definition"></a></dt>
+<dd><p>Funkcja otwiera dialog z wyborem pliku video po naciśnięciu odpowiedniego przycisku.
+W razie wyboru odpowiedniego pliku zamyka strumień video o ile jest obecny
+i ustawia odpowiednio źródło strumienia video.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.open_message_screen">
+<span class="sig-name descname"><span class="pre">open_message_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message_enum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IntEnum</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.open_message_screen" title="Link to this definition"></a></dt>
+<dd><p>Funkcja usuwa wszystkie widżety ze stosu, dodaje komunikat na stos i wyswietla go.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message_enum(IntEnum): Enum z typem komunikatu</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.open_welcome_screen">
+<span class="sig-name descname"><span class="pre">open_welcome_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vehicle_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.open_welcome_screen" title="Link to this definition"></a></dt>
+<dd><p>Funkcja dodaje do bazy danych nowy postój i wyświetla ekran powitalny.</p>
+<p>W razie wyjątku wyświetla komunikat z błędem.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>vehicle_type(str): Typ pojazdu (car/motorcycle/truck)
+license_plate(str): Numer rejestracyjny</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.ParkingApp.update_frame">
+<span class="sig-name descname"><span class="pre">update_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gui.app.ParkingApp.update_frame" title="Link to this definition"></a></dt>
+<dd><p>Funkcja uruchamia się przez QTimera i sprawdza obecność nowych klatek w strumieniu video,
+uzyskuje dane od modelu i podejmuje działania po uzyskaniu danych.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.app.recognize_vehicle">
+<span class="sig-prename descclassname"><span class="pre">gui.app.</span></span><span class="sig-name descname"><span class="pre">recognize_vehicle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gui.app.recognize_vehicle" title="Link to this definition"></a></dt>
+<dd><p>Funkcja przekazuje klatkę YOLOv7 i dostaje wynik</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frame:</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tuple[Optional[str], Optional[str]]: Numer rejestracyjny, typ pojazdu</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gui.app.sanitize_license_plate">
+<span class="sig-prename descclassname"><span class="pre">gui.app.</span></span><span class="sig-name descname"><span class="pre">sanitize_license_plate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">license_plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#gui.app.sanitize_license_plate" title="Link to this definition"></a></dt>
+<dd><p>Funkcja usuwa niepożądane znaki z wykrytych numerów rejestracyjnych</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>license_plate(str): Numer rejestracyjny</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: Oczyszczony numer rejestracyjny</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-gui">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gui" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="db.html" class="btn btn-neutral float-left" title="db package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Poprzedni</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Prawa zastrzeżone 2023, Maksym Kharchenko, Oleh Varichenko, Ihor Horshkov.</p>
+  </div>
+
+  Zbudowano w <a href="https://www.sphinx-doc.org/">Sphinx</a> używając
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    dostarczone przez <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
