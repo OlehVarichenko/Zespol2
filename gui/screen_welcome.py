@@ -71,14 +71,30 @@ class WelcomeScreen(QWidget):
 
         return horizontal_layout
 
-    def get_vehicle_type_layout(self):
+    def get_vehicle_type_layout(self) -> QHBoxLayout:
+        """
+            Funkcja zwraca poziomy układ z obrazkiem pokazującym typ pojazdu po lewej stronie
+            oraz odpowiednim tekstem po prawej stronie.
+
+            Returns:
+                QHBoxLayout
+
+        """
         vehicle_type = self.get_vehicle_type_text(self.vehicle_class)
         icon_path = f'gui/resources/images/{self.vehicle_class}.png'
         return self.get_icon_n_text_layout(
             vehicle_type, 65, icon_path, 200
         )
 
-    def get_parking_sector_layout(self):
+    def get_parking_sector_layout(self) -> QHBoxLayout:
+        """
+        Funkcja zwraca poziomy układ z obrazkiem ilustrującym po lewej stronie
+        oraz tekstem z nazwą sektora po prawej stronie.
+
+        Returns:
+            QHBoxLayout
+
+        """
         text = f"Miejsce do parkowania: Sektor {self.sector_name}"
         icon_path = f'gui/resources/images/location.png'
         return self.get_icon_n_text_layout(
@@ -86,8 +102,19 @@ class WelcomeScreen(QWidget):
         )
 
     @staticmethod
-    def get_horizontal_button(text: str, icon_path: str):
-        original_icon = QIcon(icon_path)
+    def generate_horizontal_button(text: str, img_path: str) -> QPushButton:
+        """
+            Funkcja generuje przycisk z odpowiednim obrazkiem po lewej stronie i tekstem po prawej.
+
+            Args:
+                text(str): Tekst przycisku
+                img_path(str): Ścieżka pliku obrazku
+
+            Returns:
+                QPushButton
+
+        """
+        original_icon = QIcon(img_path)
         icon_label = QLabel()
         icon_label.setPixmap(original_icon.pixmap(100, 100))
         icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight)
@@ -113,7 +140,14 @@ class WelcomeScreen(QWidget):
 
         return button
 
-    def show_sector_location_help(self):
+    def show_sector_location_help(self) -> None:
+        """
+        Pokazuje (dodaje na góre głownego stosu widżetów i aktywuje) widżet ze schematem parkingu.
+
+        Returns:
+            None
+
+        """
         location_help_screen = LocationHelpScreen(self.sector_name, parent=self)
 
         self.parent().addWidget(location_help_screen)
@@ -121,8 +155,17 @@ class WelcomeScreen(QWidget):
 
     def __init__(self, parent, vehicle_class: str,
                  license_plate: str, sector_name: str):
+        """
+        Funckja inizcalizuje ekran powitalny za pomocą wartości
+        uzyskanych od modelu YOLOv7.
+
+        Args:
+            parent: Widżet rodzicielski
+            vehicle_class(str): Klasa pojazdu YOLOv7 (car/motorcycle/truck)
+            license_plate(str): Numer rejestracyjny
+            sector_name(str): Pobrana z bazy danych nazwa sektoru do parkowania pojazdu
+        """
         super().__init__(parent)
-        self.setWindowTitle("WJAZD")
 
         self.vehicle_class: str = vehicle_class
         self.license_plate: str = license_plate
@@ -154,7 +197,7 @@ class WelcomeScreen(QWidget):
         data_layout.addLayout(parking_sector_layout)
 
         ## -- PRZYCISK "POKAŻ SCHEMAT"
-        show_location_button = self.get_horizontal_button(
+        show_location_button = self.generate_horizontal_button(
             "Pokaż miejsce na schemacie",
             'gui/resources/images/location_help.png'
         )
