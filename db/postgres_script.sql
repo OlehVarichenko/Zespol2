@@ -146,7 +146,7 @@ DECLARE
 BEGIN
     SELECT s.id, s.name INTO new_stay_sector_id, new_stay_sector_name
     FROM sectors s JOIN vehicle_types vt on vt.id = s.vehicle_type_id
-    WHERE vt.name = arg_type
+    WHERE vt.name = arg_type AND s.places_occupied < s.number_of_places
     ORDER BY s.places_occupied
     LIMIT 1;
 
