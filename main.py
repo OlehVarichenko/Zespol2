@@ -1,7 +1,7 @@
 import sys
 from decimal import Decimal
 from enum import IntEnum
-from typing import Optional
+from typing import Optional, Tuple
 
 import cv2
 from torch import cuda
@@ -28,13 +28,33 @@ yolov7.load('best.weights', classes='classes.yaml', device=device)
 
 
 def sanitize_license_plate(license_plate: str) -> str:
+    """
+    Funkcja usuwa niepożądane znaki z wykrytych numerów rejestracyjnych
+
+    Args:
+        license_plate(str): Numer rejestracyjny
+
+    Returns:
+        str: Oczyszczony numer rejestracyjny
+
+    """
     license_plate = license_plate.replace(' ', '')
     license_plate = license_plate.replace('-', '')
     license_plate = license_plate.replace('/', '')
     return license_plate
 
 
-def recognize_vehicle(frame):
+def recognize_vehicle(frame) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Funkcja przekazuje klatkę YOLOv7 i dostaje wynik
+
+    Args:
+        frame:
+
+    Returns:
+        Tuple[Optional[str], Optional[str]]: Numer rejestracyjny, typ pojazdu
+
+    """
     # Wykrywanie obiektów na klatce
     detections = yolov7.detect(frame, track=True)
 
@@ -56,8 +76,17 @@ def recognize_vehicle(frame):
 
 
 class ParkingApp(QMainWindow):
+    """
+    Klasa główna aplikacji. Zawiera w sobie kod zarządzający.
+    """
 
     def __init__(self, show_load_video_button: bool):
+        """
+        Funkcja inicjalizuje aplikację. Pozwala na wybór źródła video pomiędzy kamerką a plikami video.
+
+        Args:
+            show_load_video_button(bool): Czy ignorować kamerkę i zamiast tego wyświetlić przycisk z możliwością ładowania video?
+        """
         super().__init__()
 
         self.welcome_screen = None
@@ -71,6 +100,8 @@ class ParkingApp(QMainWindow):
 
         self.setWindowTitle("PARKING AUTOMATYCZNY")
 
+        # Główny (centralny) widżet stosowy do którego można dodawać/usuwać widżety,
+        # używany podczas całego działania aplikacji
         self.stacked_widget = QStackedWidget(self)
         self.setCentralWidget(self.stacked_widget)
 
@@ -91,9 +122,7 @@ class ParkingApp(QMainWindow):
 
         main_window_layout.addWidget(header_label, 0, 0, 1, 16)
 
-        self.playing_video = False
-        self.vehicle_already_detected = False
-
+        # Jeśli plik zamiast kamerki
         if show_load_video_button:
             self.load_video_button = QPushButton('Przetestuj video')
             self.load_video_button.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
@@ -107,16 +136,35 @@ class ParkingApp(QMainWindow):
 
         self.stacked_widget.addWidget(self.main_window_widget)
 
+        # Zegar sondujący kamerkę/plik video
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(10)
 
+        # Flagi używane w celu uniemożliwienia zduplikowanych/nietrafnych wykryć
+        # oraz w celu zamknięcia widżetów po odjeździe pojazdu
         self.frames_without_detection: int = 0
         self.previous_license_plate: Optional[str] = None
         self.previous_vehicle_type: Optional[str] = None
         self.frames_with_same_detection: int = 0
+        self.playing_video = False
+        self.vehicle_already_detected = False
 
-    def on_vehicle_detection(self, vehicle_type: str, license_plate: str):
+    def on_vehicle_detection(self, vehicle_type: str, license_plate: str) -> None:
+        """
+        Funkcja próbująca pobrać rachunek za postój i wyświetlić ekran z opłatami.
+        W razie braku postoju (bill is None) wyświetla ekran powitalny + dodaje postój do bazy.
+
+        W razie wyjątku wyświetla komunikat z błędem.
+
+        Args:
+            vehicle_type(str): Typ pojazdu (car/motorcycle/truck)
+            license_plate(str): Numer rejestracyjny
+
+        Returns:
+            None
+
+        """
         try:
             bill = self.db_communicator.get_bill(license_plate)
             if bill is None:
@@ -127,7 +175,20 @@ class ParkingApp(QMainWindow):
         except:
             self.open_message_screen(Messages.GENERAL_ERROR)
 
-    def open_welcome_screen(self, vehicle_type: str, license_plate: str):
+    def open_welcome_screen(self, vehicle_type: str, license_plate: str) -> None:
+        """
+        Funkcja dodaje do bazy danych nowy postój i wyświetla ekran powitalny.
+
+        W razie wyjątku wyświetla komunikat z błędem.
+
+        Args:
+            vehicle_type(str): Typ pojazdu (car/motorcycle/truck)
+            license_plate(str): Numer rejestracyjny
+
+        Returns:
+            None
+
+        """
         if self.stacked_widget.currentIndex() == 0:
             try:
                 sector_name = self.db_communicator.new_stay(vehicle_type, license_plate)
@@ -142,7 +203,17 @@ class ParkingApp(QMainWindow):
             except:
                 self.open_message_screen(Messages.GENERAL_ERROR)
 
-    def open_message_screen(self, message_enum: IntEnum):
+    def open_message_screen(self, message_enum: IntEnum) -> None:
+        """
+        Funkcja usuwa wszystkie widżety ze stosu, dodaje komunikat na stos i wyswietla go.
+
+        Args:
+            message_enum(IntEnum): Enum z typem komunikatu
+
+        Returns:
+            None
+
+        """
         self.close_all_screens()
 
         if self.stacked_widget.currentIndex() == 0:
@@ -153,7 +224,23 @@ class ParkingApp(QMainWindow):
             self.stacked_widget.setCurrentIndex(1)
 
     def open_exit_screen(self, stay_id: int, vehicle_type: str, license_plate: str,
-                         tariff: Decimal, stay_duration: int):
+                         tariff: Decimal, stay_duration: int) -> None:
+        """
+        Funkcja wyświetla ekran z opłatami.
+
+        W razie wyjątku wyświetla komunikat z błędem.
+
+        Args:
+            stay_id(int): ID postoju
+            vehicle_type(str): Typ pojazdu
+            license_plate(str): Numer rejestracyjny
+            tariff(Decimal): Taryfa za godzinę
+            stay_duration(int): Czas postoju w sekundach
+
+        Returns:
+            None
+
+        """
         if self.stacked_widget.currentIndex() == 0:
             try:
                 self.exit_screen = ExitScreen(self.stacked_widget, stay_id, vehicle_type,
@@ -164,7 +251,14 @@ class ParkingApp(QMainWindow):
             except:
                 self.open_message_screen(Messages.GENERAL_ERROR)
 
-    def close_all_screens(self):
+    def close_all_screens(self) -> None:
+        """
+        Usuwa wszystkie widżety ze stosu i wraca do ekranu z odtwarzaniem strumienia video.
+
+        Returns:
+            None
+
+        """
         if self.stacked_widget.currentIndex() != 0 and self.stacked_widget.count() > 0:
             self.stacked_widget.setCurrentIndex(0)
             for i in range(self.stacked_widget.count() - 1, 0, -1):
@@ -173,7 +267,19 @@ class ParkingApp(QMainWindow):
                 widget.setParent(None)
 
     @staticmethod
-    def get_resized_pixmap_from_frame(frame, width: int, height: int):
+    def get_resized_pixmap_from_frame(frame, width: int, height: int) -> QPixmap:
+        """
+        Funkcja zwraca pixmap o odpowiedniej wielkości na podstawie klatki video.
+
+        Args:
+            frame: Klatka video
+            width: Żądana szerokość
+            height: Żądana wysokość
+
+        Returns:
+            QPixmap
+
+        """
         frame_resized = cv2.resize(frame, (width, height))
         frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
         height, width, channel = frame_resized.shape
@@ -183,7 +289,15 @@ class ParkingApp(QMainWindow):
 
         return pixmap
 
-    def update_frame(self):
+    def update_frame(self) -> None:
+        """
+        Funkcja uruchamia się przez QTimera i sprawdza obecność nowych klatek w strumieniu video,
+        uzyskuje dane od modelu i podejmuje działania po uzyskaniu danych.
+
+        Returns:
+            None
+
+        """
         if self.cap is not None:
             ret, frame = self.cap.read()
             if ret:
@@ -211,7 +325,9 @@ class ParkingApp(QMainWindow):
                     else:
                         self.frames_with_same_detection = 0
 
+                    # Przeciwdziałamy złej detekcji, przyjmyjemy tylko stabilnie wykrywane dane
                     if self.frames_with_same_detection > 5:
+                        # Przeciwdziałamy powtórnej detekcji
                         if not self.vehicle_already_detected:
                             self.on_vehicle_detection(vehicle_type, license_plate)
                         self.vehicle_already_detected = True
@@ -219,13 +335,13 @@ class ParkingApp(QMainWindow):
                     self.previous_license_plate = license_plate
                     self.previous_vehicle_type = vehicle_type
                     self.frames_without_detection = 0
+                # W razie niewykrycia pojazdu
                 else:
-
                     self.frames_without_detection += 1
                     if self.frames_without_detection > 60:
                         self.vehicle_already_detected = False
                         self.close_all_screens()
-
+            # W razie braku klatek
             else:
                 self.playing_video = False
                 self.vehicle_already_detected = False
@@ -236,6 +352,15 @@ class ParkingApp(QMainWindow):
                     self.load_video_button.show()
 
     def open_file_dialog(self):
+        """
+        Funkcja otwiera dialog z wyborem pliku video po naciśnięciu odpowiedniego przycisku.
+        W razie wyboru odpowiedniego pliku zamyka strumień video o ile jest obecny
+        i ustawia odpowiednio źródło strumienia video.
+
+        Returns:
+            None
+
+        """
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         file, _ = QFileDialog.getOpenFileName(self, "Open Video File", "",
@@ -247,9 +372,9 @@ class ParkingApp(QMainWindow):
             self.cap = cv2.VideoCapture(file)
 
             if self.cap.isOpened():
-                print(f"Selected file: {file}")
+                print(f"Wybrano plik: {file}")
             else:
-                print(f"Failed to open the video file: {file}")
+                print(f"Nie udało się otworzyć pliku: {file}")
 
 
 if __name__ == '__main__':
