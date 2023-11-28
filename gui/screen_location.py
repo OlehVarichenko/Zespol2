@@ -6,13 +6,32 @@ from PyQt5.QtCore import Qt
 
 class LocationHelpScreen(QWidget):
     def __init__(self, highlight_sector_name: str, parent=None):
+        """
+        Funkcja przyjmuje nazwę sektoru do podświetlenia na schemacie,
+        a także opcjonalnie widżet rodzicielski całego ekranu.
+
+        Args:
+            highlight_sector_name(str): Nazwa sektoru do podświetlenia na schemacie
+            parent:
+        """
         super().__init__(parent)
         self.highlight_sector_name: str = highlight_sector_name
         self.sectors_data = self.parent().parent().parent().db_communicator.get_sectors_data()
         self.init_ui()
 
     @staticmethod
-    def generate_button(text: str, img_path: str):
+    def generate_button(text: str, img_path: str) -> QPushButton:
+        """
+        Funkcja generuje przycisk z odpowiednim obrazkiem po lewej stronie i tekstem po prawej.
+
+        Args:
+            text(str): Tekst przycisku
+            img_path(str): Ścieżka pliku obrazku
+
+        Returns:
+            QPushButton
+
+        """
         original_icon = QIcon(img_path)
         icon_label = QLabel()
         icon_label.setPixmap(original_icon.pixmap(125, 125))
@@ -39,13 +58,29 @@ class LocationHelpScreen(QWidget):
 
         return button
 
-    def close_screen(self):
+    def close_screen(self) -> None:
+        """
+        Funkcja zamyka wszystkie ekrany/komunikaty i dzięki temu wraca do ekranu głównego
+        odtwarzającego video z kamerki.
+
+        Returns:
+            None
+        """
         curr_index = self.parent().currentIndex()
         self.parent().setCurrentIndex(curr_index - 1)
         self.parent().removeWidget(self)
         self.setParent(None)
 
-    def init_ui(self):
+    def init_ui(self) -> None:
+        """
+        Funkcja zajmuje się dodaniem wszystkich elementów do ekranu.
+        Głównymi elementami są przycisk powrotu oraz schemat w postaci
+        QGridLayoutu ilustrujący położenie sektorów parkingu.
+
+        Returns:
+            None
+
+        """
         main_layout = QGridLayout()
 
         white_fullscreen_label = QLabel()
