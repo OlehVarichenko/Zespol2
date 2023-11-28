@@ -8,6 +8,13 @@ from gui.screen_location import LocationHelpScreen
 
 
 class WelcomeScreen(QWidget):
+    """
+    Klasa przedstawia sobą definicję widżetu z ekranem powitalnym,
+    który pokazuje wykryty nr rejestracyny, typ pojazdu oraz daje
+    możliwość zapoznania się ze schematem parkingu.
+
+    Zawiera odpowiednie funkcje do generowania widżetu.
+    """
     def get_license_plate_label(self):
         license_plate_label = QLabel(f"Witaj, {self.license_plate}!")
         license_plate_label.setAlignment(Qt.AlignCenter)
@@ -29,49 +36,57 @@ class WelcomeScreen(QWidget):
 
         return vehicle_type_text
 
+    @staticmethod
+    def get_icon_n_text_layout(text: str, text_size: int, icon_path: str, icon_size: int) -> QHBoxLayout:
+        """
+        Funkcja zwraca poziomy układ z obrazkiem po lewej stronie i tekstem po prawej
+
+        Args:
+            text(str): Tekst
+            text_size(int): Rozmiar tekstu
+            icon_path(str): Ścieżka z plikiem obrazku
+            icon_size(int): Rozmiar wszystkich stron obrazku
+
+        Returns:
+            QHBoxLayout
+
+        """
+        original_icon = QIcon(icon_path)
+        icon_label = QLabel()
+        icon_label.setPixmap(original_icon.pixmap(icon_size, icon_size))
+        icon_label.setAlignment(Qt.AlignCenter)
+        icon_label.setContentsMargins(20, 20, 20, 20)
+
+        text_label = QLabel()
+        text_label.setAlignment(Qt.AlignCenter)
+        text_label.setFont(QFont("Arial", text_size, QFont.Bold))
+        text_label.setText(text)
+        text_label.setContentsMargins(20, 20, 20, 20)
+
+        horizontal_layout = QHBoxLayout()
+        horizontal_layout.addWidget(icon_label)
+        horizontal_layout.addWidget(text_label)
+        horizontal_layout.setAlignment(Qt.AlignCenter)
+        horizontal_layout.setContentsMargins(0, 0, 0, 0)
+
+        return horizontal_layout
+
     def get_vehicle_type_layout(self):
-        vehicle_type_label = QLabel()
-        vehicle_type_label.setAlignment(Qt.AlignCenter)
-        vehicle_type_label.setFont(QFont("Arial", 65, QFont.Bold))
-        vehicle_type_label.setText(self.get_vehicle_type_text(self.vehicle_class))
-        vehicle_type_label.setContentsMargins(20, 20, 20, 20)
-
-        vehicle_original_icon = QIcon(f'gui/resources/images/{self.vehicle_class}.png')
-        vehicle_icon_label = QLabel()
-        vehicle_icon_label.setPixmap(vehicle_original_icon.pixmap(200, 200))
-        vehicle_icon_label.setAlignment(Qt.AlignCenter)
-        vehicle_icon_label.setContentsMargins(20, 20, 20, 20)
-
-        vehicle_type_layout = QHBoxLayout()
-        vehicle_type_layout.addWidget(vehicle_icon_label)
-        vehicle_type_layout.addWidget(vehicle_type_label)
-        vehicle_type_layout.setAlignment(Qt.AlignCenter)
-        vehicle_type_layout.setContentsMargins(0, 0, 0, 0)
-
-        return vehicle_type_layout
+        vehicle_type = self.get_vehicle_type_text(self.vehicle_class)
+        icon_path = f'gui/resources/images/{self.vehicle_class}.png'
+        return self.get_icon_n_text_layout(
+            vehicle_type, 65, icon_path, 200
+        )
 
     def get_parking_sector_layout(self):
-        location_label = QLabel()
-        location_label.setAlignment(Qt.AlignCenter)
-        location_label.setFont(QFont("Arial", 45, QFont.Bold))
-        location_label.setText(f"Miejsce do parkowania: Sektor {self.sector_name}")
-        location_label.setContentsMargins(20, 20, 20, 20)
+        text = f"Miejsce do parkowania: Sektor {self.sector_name}"
+        icon_path = f'gui/resources/images/location.png'
+        return self.get_icon_n_text_layout(
+            text, 45, icon_path, 150
+        )
 
-        location_original_icon = QIcon('gui/resources/images/location.png')
-        location_icon_label = QLabel()
-        location_icon_label.setPixmap(location_original_icon.pixmap(150, 150))
-        location_icon_label.setAlignment(Qt.AlignCenter)
-        location_icon_label.setContentsMargins(20, 20, 20, 20)
-
-        location_layout = QHBoxLayout()
-        location_layout.addWidget(location_icon_label)
-        location_layout.addWidget(location_label)
-        location_layout.setAlignment(Qt.AlignCenter)
-        location_layout.setContentsMargins(0, 0, 0, 0)
-
-        return location_layout
-
-    def get_horizontal_button(self, text: str, icon_path: str):
+    @staticmethod
+    def get_horizontal_button(text: str, icon_path: str):
         original_icon = QIcon(icon_path)
         icon_label = QLabel()
         icon_label.setPixmap(original_icon.pixmap(100, 100))

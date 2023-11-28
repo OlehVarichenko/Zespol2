@@ -11,6 +11,10 @@ from gui.screen_message import Messages
 
 
 class ExitScreen(QWidget):
+    """
+    Klasa przedstawia sobą definicję widżetu z ekranem wyjściowym (do opłat).
+    Zawiera odpowiednie funkcje do generowania widżetu.
+    """
     @staticmethod
     def generate_button(text: str, img_path: str):
         """
