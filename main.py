@@ -4,7 +4,6 @@ from enum import IntEnum
 from typing import Optional
 
 import cv2
-import psycopg2
 from torch import cuda
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
     QLabel, QGridLayout, QPushButton, QFileDialog, QSizePolicy, QStackedWidget
@@ -132,18 +131,14 @@ class ParkingApp(QMainWindow):
         if self.stacked_widget.currentIndex() == 0:
             try:
                 sector_name = self.db_communicator.new_stay(vehicle_type, license_plate)
+                if sector_name is None:
+                    self.open_message_screen(Messages.NO_FREE_PARKING_LOTS_SOME_TYPE)
+                    return
 
                 self.welcome_screen = WelcomeScreen(self.stacked_widget, vehicle_type,
                                                     license_plate, sector_name)
                 self.stacked_widget.addWidget(self.welcome_screen)
                 self.stacked_widget.setCurrentIndex(1)
-            except psycopg2.Error as err:
-                if err.pgcode == 'NO_FREE_PARKING_LOTS':
-                    self.open_message_screen(Messages.NO_FREE_PARKING_LOTS)
-                elif err.pgcode == 'NO_FREE_PARKING_LOTS_SOME_TYPE':
-                    self.open_message_screen(Messages.NO_FREE_PARKING_LOTS_SOME_TYPE)
-                else:
-                    self.open_message_screen(Messages.GENERAL_ERROR)
             except:
                 self.open_message_screen(Messages.GENERAL_ERROR)
 
